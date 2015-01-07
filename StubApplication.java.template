@@ -1,0 +1,87 @@
+package org.bbs.osgi.activity;
+
+import org.bbs.osgi.activity.ApplicationAgent;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.annotation.SuppressLint;
+import android.app.Application;
+import android.content.res.Configuration;
+
+public class CLASS_NAME extends Application {
+	private static final String TAG = AbsApplication.class.getSimpleName();
+	protected static boolean LOG = true;
+	protected static boolean LOG_LIFECYCLE = false && LOG;
+	protected static boolean LOG_MEMORY = true && LOG;
+	protected static boolean LOG_CONTENT = true && LOG;
+
+	protected List<STUB> mAgents;
+	
+	public void callStubOnCreate(STUB stub){
+		stub.onCreate();
+		if (LOG_LIFECYCLE) {
+			_log(stub, TAG, "call stub onCreate().");
+		}
+	}
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		mAgents = new ArrayList<STUB>();
+	}
+
+	@Override
+	public void onTerminate() {
+		super.onTerminate();
+		for (STUB a : mAgents) {
+			a.onTerminate();
+			if (LOG_MEMORY) {
+				_log(a, TAG, "call stub onTerminate().");
+			}
+		}
+	}
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		for (STUB a : mAgents) {
+			a.onConfigurationChanged(newConfig);
+			if (LOG_CONTENT) {
+				_log(a, TAG, "call stub onConfigurationChanged(). newConfig: " + newConfig);
+			}
+		}
+	}
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+		for (STUB a : mAgents) {
+			a.onLowMemory();
+			if (LOG_MEMORY) {
+				_log(a, TAG, "call stub onLowMemory().");
+			}
+		}
+	}
+
+	@SuppressLint("NewApi")
+	@Override
+	public void onTrimMemory(int level) {
+		super.onTrimMemory(level);
+		for (STUB a : mAgents) {
+			a.onTrimMemory(level);
+			if (LOG_MEMORY) {
+				_log(a, TAG, "call stub onTrimMemory(). level: " + level);
+			}
+		}
+	}	
+	
+	
+	// auxiliary function
+	private void _log(STUB agent, String tag, String message) {
+	   logD(tag, message);
+	   logD(tag, "call stub:" + agent);
+    }
+    protected void logD(String tag, String message) {
+	   android.util.Log.d(tag, message);
+    }	
+
+}
