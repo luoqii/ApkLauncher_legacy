@@ -578,18 +578,9 @@ public class ReflectUtil {
 					Method m = ContextWrapper.class.getDeclaredMethod("attachBaseContext", new Class[]{Context.class});
 					m.setAccessible(true);
 					m.invoke(activity, new Object[]{application});
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
+				} catch (Exception e) {
 					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new RuntimeException("error in attachBaseContext", e);
 				}
 				
 			}
@@ -627,7 +618,7 @@ public class ReflectUtil {
 			    fields = new String[] {
 			    		"mBase",
 			    };
-			    copyFields(ContextWrapper.class, fields, host, target);
+//			    copyFields(ContextWrapper.class, fields, host, target);
 			    
 			    // bundle should user getLayoutInflator always.
 			    try {
@@ -687,6 +678,17 @@ public class ReflectUtil {
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("error in onCreateDialog", e);
+				}
+			}
+
+			public static void setApplication(Activity mTargetActivity,
+					Application app) {
+				try {
+					Field field = Activity.class.getDeclaredField("mApplication");
+					ReflectUtil.ActivityReflectUtil.setField(mTargetActivity, field, app);
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in setApplictivity.", e);
 				}
 			}
 

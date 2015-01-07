@@ -38,7 +38,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 	protected static boolean LOG_MENU = true && LOG;
 	protected static boolean LOG_CONTENT = true && LOG;
 	protected static boolean LOG_DIALOG = true && LOG;
-	protected static boolean LOG_KEY_EVENT = false && LOG;
+	protected static boolean LOG_KEY_EVENT = true && LOG;
 	protected static boolean LOG_MOTTION_EVENT = false && LOG;
 	
 	protected STUB mActivityStub;
@@ -404,7 +404,6 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		return handled && super.dispatchGenericMotionEvent(event);
 	}
 	
-	s
 	// auxiliary function
 	private void _log(String tag, String message) {
 	   logD(tag, message);

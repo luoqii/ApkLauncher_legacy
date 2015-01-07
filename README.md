@@ -36,6 +36,7 @@ Activity.showDialog()
 Activity.showContextMenu() 
 Fragment.startActvity()
 notification
+native lib
 
 TRICK
 =====

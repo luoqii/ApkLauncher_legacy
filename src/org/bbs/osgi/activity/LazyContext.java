@@ -1,13 +1,19 @@
 package org.bbs.osgi.activity;
 
+import java.nio.MappedByteBuffer;
+
 import org.bbs.osgi.activity.ReflectUtil.ActivityReflectUtil;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.content.res.Resources.Theme;
+import android.util.Log;
 
 /**
  * when bundle resource is ready, return this, otherwise, return normally.
@@ -16,9 +22,14 @@ import android.content.res.Resources;
  */
 public class LazyContext extends ContextWrapper {
 
+	private static final String TAG = LazyContext.class.getSimpleName();
 	private Resources mResource;
 	private ClassLoader mClassLoader;
 	private ClassLoader mMergedClassLoader;
+	private PackageManager mPackageManager;
+	private Application mApp;
+	private Theme mTargetTheme;
+	private int mTargetThemeId;
 
 	public LazyContext(Context base) {
 		super(base);
@@ -29,12 +40,44 @@ public class LazyContext extends ContextWrapper {
 		LazyContext.mResource = res;
 	}	
 	
+	public void packageManagerReady(PackageManager pm) {
+		mPackageManager = pm;
+	}
+	
+	public void applicationReady(Application app){
+		mApp = app;
+	}
+	
+	public void themeReady(int theme) {
+		mTargetThemeId = theme;
+	}
+	
 	public void resReady(Resources res) {
 		mResource = res;
 	}
 	
 	public void classLoaderReady(ClassLoader classloader) {
 		mClassLoader = classloader;
+	}
+	
+	@Override
+	public Theme getTheme() {
+		if (null != mTargetTheme) {
+			return mTargetTheme;
+		}
+		if (mResource != null) {
+			if (mTargetThemeId > 0) {
+				if (mTargetTheme == null) {
+					mTargetTheme = mResource.newTheme();
+				}
+				mTargetTheme.applyStyle(mTargetThemeId, true);
+
+				return mTargetTheme;
+			}
+		}
+		
+		return super.getTheme();
+		
 	}
 
 	@Override
@@ -59,22 +102,7 @@ public class LazyContext extends ContextWrapper {
 	}
 	
 	private AssetManager getAsset(Resources r) {
-		return (AssetManager) ActivityReflectUtil.getFiledValue(Resources.class, r, "mAssets");
-//		try {
-//			java.lang.reflect.Field f = Resources.class.getDeclaredField("mAssets");
-//			f.setAccessible(true);
-//			return (AssetManager) f.get(r);
-//		} catch (NoSuchFieldException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IllegalAccessException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IllegalArgumentException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return null;
+		return (AssetManager) ReflectUtil.getFiledValue(Resources.class, r, "mAssets");
 	}
 
 	@Override
@@ -89,6 +117,24 @@ public class LazyContext extends ContextWrapper {
 		}
 		
 		return cl;
+	}
+	
+	@Override
+	public PackageManager getPackageManager() {
+		if (mPackageManager != null) {
+//			return mPackageManager;
+		}
+
+		Log.d(TAG, "getPackageManager" + new Exception().fillInStackTrace());
+		return super.getPackageManager();
+	}
+	
+	@Override
+	public Context getApplicationContext() {
+		if (mApp != null) {
+			return mApp;
+		}
+		return super.getApplicationContext();
 	}
 	
 	class MergedAssetManager 

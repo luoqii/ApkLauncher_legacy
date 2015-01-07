@@ -15,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Environment;
@@ -37,6 +38,7 @@ public class ApkLauncherApplication extends ApplicationWrapper {
 		InstalledAPks apks = InstalledAPks.getInstance();
 		apks.init(this, apkDir);
 	}
+	
 	public void attachBundleAplication(Application app, Resources res, Context baseContext){
 		if (null != res) {
 			if (mLazyContext == null) {
@@ -44,15 +46,28 @@ public class ApkLauncherApplication extends ApplicationWrapper {
 			}
 			mLazyContext.resReady(res);
 		}
+		
+		// we become target appliction's base. 
+//		baseContext = this;
+		
 		ReflectUtil.ApplicationUtil.callAttach(app, baseContext);
 		
 		callStubOnCreate(app);
 		
 		mAgents.add(app);
 	}
+	
+	@Override
+	public PackageManager getPackageManager() {
+		Log.d(TAG, "getPackageManager" + new Exception());
+		return super.getPackageManager();
+	}
 
 	@Override 
     protected void attachBaseContext(Context newBase) {
+		if (mLazyContext == null) {
+			mLazyContext = new LazyContext(newBase);
+		}
     	mLazyContext = new LazyContext(newBase);
         super.attachBaseContext(mLazyContext);
     }

@@ -48,6 +48,7 @@ public abstract class EmbeddedActivityAgent extends ActivityAgent {
 	}
 
 	public static void copyContext(Activity hostActivity, Activity targetActivity, Resources newResource) {
+		// we become target's base context.
 		Context baseContext = new ContextWrapper(hostActivity);
 		baseContext = hostActivity;
 		ActivityReflectUtil.copyBaseContext(targetActivity, baseContext);

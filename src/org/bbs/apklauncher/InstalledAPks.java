@@ -7,6 +7,7 @@ import java.util.List;
 import org.bbs.felix.util.PackageParser;
 import org.bbs.felix.util.PackageParser.ManifestInfoX;
 import org.bbs.felix.util.PackageParser.ManifestInfoX.ActivityInfoX;
+import org.bbs.felix.util.PackageParser.ManifestInfoX.ApplicationInfoX;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -34,6 +35,66 @@ public class InstalledAPks {
 		}
 	}
 	
+	public ApplicationInfoX getApplication(String applicationName) {
+		ApplicationInfoX a = null;
+		boolean has = false;
+		for (ManifestInfoX m : mInfos) {
+			if (applicationName.equals(m.mApplictionInfo.name)) {
+				has = true;
+				a = m.mApplictionInfo;
+				break;
+			}
+		}
+		
+		return a;
+	}
+	
+	public boolean hasApplication(String applicationName) {
+		boolean has = false;
+		for (ManifestInfoX m : mInfos) {
+			if (applicationName.equals(m.mApplictionInfo.name)) {
+				has = true;
+				break;
+			}
+		}
+		
+		return has;
+	}
+	
+	public ActivityInfoX getActivity(String activityName) {
+		ActivityInfoX aInfo = null;
+		boolean has = false;
+		for (ManifestInfoX m : mInfos) {
+			if (m.mApplictionInfo.mActivities != null) {
+				for (ActivityInfoX a : m.mApplictionInfo.mActivities) {
+					if (activityName.equals(a.name)) {
+						has = true;
+						aInfo = a;
+						break;
+					}
+				}
+			}
+		}
+		
+		return aInfo;
+	}
+	
+	public boolean hasActivity(String activityName) {
+		boolean has = false;
+		for (ManifestInfoX m : mInfos) {
+			if (m.mApplictionInfo.mActivities != null) {
+				for (ActivityInfoX a : m.mApplictionInfo.mActivities) {
+					if (activityName.equals(a.name)) {
+						has = true;
+						break;
+					}
+				}
+			}
+		}
+		
+		return has;
+	}
+	
 	public List<ManifestInfoX> getAllApks(){
 		return mInfos;
 	}
@@ -41,11 +102,11 @@ public class InstalledAPks {
 	public ActivityInfoX getActivityInfo(String activityClassName) {
 		ActivityInfoX info = null;
 		for (ManifestInfoX m : mInfos) {
-			if (m.mAppliction != null) { 
-				if (m.mAppliction.mActivities != null &&  m.mAppliction.mActivities.length > 0) {
-					final int count = m.mAppliction.mActivities.length;
+			if (m.mApplictionInfo != null) { 
+				if (m.mApplictionInfo.mActivities != null &&  m.mApplictionInfo.mActivities.length > 0) {
+					final int count = m.mApplictionInfo.mActivities.length;
 					for (int i = 0 ; i < count; i++){
-						ActivityInfoX a = m.mAppliction.mActivities[i];
+						ActivityInfoX a = m.mApplictionInfo.mActivities[i];
 						if (activityClassName.equals(a.name)) {
 							return a;
 						}

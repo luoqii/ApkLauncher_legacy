@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.bbs.felix.util.AndroidUtil;
 import org.bbs.felix.util.PackageParser;
 import org.bbs.felix.util.PackageParser.ManifestInfoX;
 import org.bbs.felix.util.PackageParser.ManifestInfoX.ActivityInfoX;
@@ -15,6 +16,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,9 +31,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class ApkLuncherActivity extends Activity {
-	private static final String TAG = ApkLuncherActivity.class.getSimpleName();
+public class BackUpActivity extends Activity {
+	private static final String TAG = BackUpActivity.class.getSimpleName();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,31 +46,9 @@ public class ApkLuncherActivity extends Activity {
 		RecyclerView recycleView = (RecyclerView) findViewById(R.id.apk_container);
 		LayoutManager layoutM = new LinearLayoutManager(this);
 		recycleView.setLayoutManager(layoutM);
-		InstalledAPks apks = InstalledAPks.getInstance();
-		Adapter adapter = new ApkAdapter(this, parseLauncher(apks.getAllApks()));
+		Adapter adapter = new ApkAdapter(this, getPackageManager().getInstalledApplications(0));
 		recycleView.setAdapter(adapter);
 		;
-	}
-	
-	
-
-	private List<ManifestInfoX.ActivityInfoX> parseLauncher(List<ManifestInfoX> ms) {
-		List<ManifestInfoX.ActivityInfoX> launchers = new ArrayList<PackageParser.ManifestInfoX.ActivityInfoX>();
-		for (ManifestInfoX m : ms) {
-			if (m.mApplictionInfo.mActivities != null) {
-				for (ManifestInfoX.ActivityInfoX a : m.mApplictionInfo.mActivities) {
-					if (a.mIntents != null) {
-						for (ManifestInfoX.IntentInfoX i : a.mIntents) {
-							if (i.hasAction(Intent.ACTION_MAIN) && i.hasCategory(Intent.CATEGORY_LAUNCHER)) {
-								launchers.add(a);
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-		return launchers;
 	}
 	
 	class VH extends RecyclerView.ViewHolder {
@@ -80,11 +62,11 @@ public class ApkLuncherActivity extends Activity {
 	}
 	class ApkAdapter extends RecyclerView.Adapter<VH> {
 
-		private List<ManifestInfoX.ActivityInfoX> mApks;
+		private List<ApplicationInfo> mApks;
 
-		public ApkAdapter(ApkLuncherActivity apkLuncherActivity,
-				List<ManifestInfoX.ActivityInfoX> scanApks) {
-			mApks = scanApks;
+		public ApkAdapter(BackUpActivity apkLuncherActivity,
+				List<ApplicationInfo> list) {
+			mApks = list;
 		}
 
 		@Override
@@ -94,9 +76,9 @@ public class ApkLuncherActivity extends Activity {
 
 		@Override
 		public void onBindViewHolder(VH arg0, int arg1) {
-			ManifestInfoX.ActivityInfoX a = mApks.get(arg1);
+			ApplicationInfo a = mApks.get(arg1);
 			
-			arg0.title.setText(a.name);
+			arg0.title.setText(a.packageName);
 			
 			arg0.itemView.setTag(a);
 		}
@@ -110,15 +92,16 @@ public class ApkLuncherActivity extends Activity {
 				
 				@Override
 				public void onClick(View v) {
-					ManifestInfoX.ActivityInfoX a = (ActivityInfoX) v.getTag();
+					ApplicationInfo a = (ApplicationInfo) v.getTag();
 					
 					Log.d(TAG, "onClick. activity: " + a);
+					File apkFile = new File(a.sourceDir);
+					File DIR = new File("/sdcard/apk");
+					DIR.mkdirs();
+					File backupFile = new File(DIR, a.packageName + ".apk");
+					AndroidUtil.copyFile(apkFile, backupFile);
+					Toast.makeText(BackUpActivity.this, "scr:" + apkFile + " backFile: " + backupFile, Toast.LENGTH_LONG).show();;
 					
-					Intent launcher = new Intent(ApkLuncherActivity.this, StubActivity.class);
-					
-					putExtra(a, launcher);
-					
-					startActivity(launcher);
 				}
 			});
 			return vh;
