@@ -13,16 +13,22 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 
 /**
  * when bundle resource is ready, return this, otherwise, return normally.
  * @author bysong
  *
  */
-public class LazyContext extends ContextWrapper {
+public class LazyContext extends 
+ContextWrapper 
+//ContextThemeWrapper
+{
 
 	private static final String TAG = LazyContext.class.getSimpleName();
+	private static String mPackageName;
 	private Resources mResource;
 	private ClassLoader mClassLoader;
 	private ClassLoader mMergedClassLoader;
@@ -30,14 +36,20 @@ public class LazyContext extends ContextWrapper {
 	private Application mApp;
 	private Theme mTargetTheme;
 	private int mTargetThemeId;
-
+	
 	public LazyContext(Context base) {
 		super(base);
+//		this(base, 0);
 	}
+
+//	public LazyContext(Context base, int themeResId) {
+//		super(base, themeResId);
+//	}
 	
-	public static void bundleReady(LazyContext LazyContext, Bundle bundle, Resources res) {
+	public static void bundleReady(LazyContext LazyContext, Bundle bundle, Resources res, String packageName) {
 		LazyContext.mClassLoader = bundle.adapt(BundleWiring.class).getClassLoader();
 		LazyContext.mResource = res;
+		mPackageName = packageName;
 	}	
 	
 	public void packageManagerReady(PackageManager pm) {
@@ -46,6 +58,10 @@ public class LazyContext extends ContextWrapper {
 	
 	public void applicationReady(Application app){
 		mApp = app;
+	}
+	
+	public void packageNameReady(String packageName) {
+		mPackageName = packageName;
 	}
 	
 	public void themeReady(int theme) {
@@ -80,6 +96,24 @@ public class LazyContext extends ContextWrapper {
 		
 	}
 
+	@Override
+	public String getPackageName() {
+		String pName = doGetPackageName();
+//		Log.d(TAG, "getPackageName(). packageName: " + pName);
+		
+		return pName;
+	}	
+	
+	public String doGetPackageName() {
+//		new Exception("stack info").printStackTrace();
+		if (!TextUtils.isEmpty(mPackageName)) {
+			return mPackageName;
+		}
+		return super.getPackageName();
+	}
+	
+	
+	
 	@Override
 	public Resources getResources() {
 		if (null == mResource) {
@@ -121,11 +155,18 @@ public class LazyContext extends ContextWrapper {
 	
 	@Override
 	public PackageManager getPackageManager() {
+		PackageManager pm =  doGetPackageManager();
+//		Log.d(TAG, "pm: " + pm);
+			
+		return pm;
+	}	
+	
+	public PackageManager doGetPackageManager() {
+//		new Exception("stack info").printStackTrace();
 		if (mPackageManager != null) {
-//			return mPackageManager;
+			return mPackageManager;
 		}
 
-		Log.d(TAG, "getPackageManager" + new Exception().fillInStackTrace());
 		return super.getPackageManager();
 	}
 	

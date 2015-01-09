@@ -205,9 +205,9 @@ public abstract class AbsActivityWraper extends FragmentActivity {
 	}
 	@Override
 	public View onCreatePanelView(int featureId) {
-		View view = ActivityReflectUtil.onPreparePonCreatePanelViewanel(mActivityStub, featureId);
+		View view = mActivityStub.onCreatePanelView(featureId);
 		if (LOG_MENU) {
-			_log(TAG, "call stub onPreparePonCreatePanelViewanel(). return: " + view + " featureId: " + featureId);
+			_log(TAG, "call stub onCreatePanelView(). return: " + view + " featureId: " + featureId);
 		}
 		
 		return view;

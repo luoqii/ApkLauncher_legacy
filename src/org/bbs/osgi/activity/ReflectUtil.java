@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 
 public class ReflectUtil {
 		private static final String TAG = ReflectUtil.class.getSimpleName();
@@ -689,6 +690,38 @@ public class ReflectUtil {
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("error in setApplictivity.", e);
+				}
+			}
+			public static void setBaseContext(Activity mTargetActivity,
+					Context baseContext) {
+				try {
+					Field field = ContextWrapper.class.getDeclaredField("mBase");
+					ReflectUtil.ActivityReflectUtil.setField(mTargetActivity, field, baseContext);
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in setBaseContext.", e);
+				}
+			}
+
+			public static void setResource(Activity mTargetActivity,
+					ResourcesMerger mResourceMerger) {
+				try {
+					Field field = ContextThemeWrapper.class.getDeclaredField("mResources");
+					ReflectUtil.ActivityReflectUtil.setField(mTargetActivity, field, mResourceMerger);
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in setBaseContext.", e);
+				}
+			}
+			
+			public static void setWindowContext(Window window,
+					Context baseContext) {
+				try {
+					Field field = window.getClass().getDeclaredField("Window");
+					ReflectUtil.ActivityReflectUtil.setField(window, field, baseContext);
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in setWindowContext.", e);
 				}
 			}
 

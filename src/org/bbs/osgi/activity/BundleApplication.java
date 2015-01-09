@@ -34,7 +34,7 @@ public class BundleApplication extends AbsApplication
 			if (mLazyContext == null) {
 				mLazyContext = new LazyContext(baseContext);
 			}
-			LazyContext.bundleReady(mLazyContext, bundle, res);
+			LazyContext.bundleReady(mLazyContext, bundle, res, null);
 		}
 		if (agent instanceof EmbeddedApplictionAgent) {
 			Application app = ((EmbeddedApplictionAgent)agent).mBundelApp;

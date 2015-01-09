@@ -16,6 +16,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Environment;
@@ -25,7 +26,6 @@ import android.util.Log;
 public class ApkLauncherApplication extends ApplicationWrapper {
 	private static final String TAG = ApkLauncherApplication.class.getSimpleName();
 	public static final String APK_LAUNCHER_DIR = "apklauncher";
-	protected LazyContext mLazyContext;
 	
 	@Override
 	public void onCreate() {
@@ -39,17 +39,7 @@ public class ApkLauncherApplication extends ApplicationWrapper {
 		apks.init(this, apkDir);
 	}
 	
-	public void attachBundleAplication(Application app, Resources res, Context baseContext){
-		if (null != res) {
-			if (mLazyContext == null) {
-				mLazyContext = new LazyContext(baseContext);
-			}
-			mLazyContext.resReady(res);
-		}
-		
-		// we become target appliction's base. 
-//		baseContext = this;
-		
+	public void attachBundleAplication(Application app, Context baseContext){
 		ReflectUtil.ApplicationUtil.callAttach(app, baseContext);
 		
 		callStubOnCreate(app);
@@ -57,24 +47,23 @@ public class ApkLauncherApplication extends ApplicationWrapper {
 		mAgents.add(app);
 	}
 	
-	@Override
-	public PackageManager getPackageManager() {
-		Log.d(TAG, "getPackageManager" + new Exception());
-		return super.getPackageManager();
-	}
+//	@Override
+//	public PackageManager getPackageManager() {
+//		if (null != mLazyContext) {
+//			return mLazyContext.getPackageManager();
+//		}
+//		return super.getPackageManager();
+//	}
 
-	@Override 
-    protected void attachBaseContext(Context newBase) {
-		if (mLazyContext == null) {
-			mLazyContext = new LazyContext(newBase);
-		}
-    	mLazyContext = new LazyContext(newBase);
-        super.attachBaseContext(mLazyContext);
-    }
-
-	public Resources getResources() {
-		return mLazyContext.getResources();
-	}
+//	@Override 
+//    protected void attachBaseContext(Context newBase) {
+//		if (mLazyContext == null) {
+//			mLazyContext = new LazyContext(newBase);
+//		}
+//		
+//    	mLazyContext = new LazyContext(newBase);
+//        super.attachBaseContext(mLazyContext);
+//    }
 	
 	private void attachExceptionHandler() {
 		final UncaughtExceptionHandler defaultUncaughtExceptionHandler = Thread

@@ -66,9 +66,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         
-        <!--  netease news. -->
-       <!--  <meta-data android:name="com.crashlytics.ApiKey" android:value="21fd70a77bd3052381b7e6fc5b8b2116b963531c"/>
-        --> 
         <activity
             android:name="org.bbs.felix.activity.bundlemanager.BundleListActivity"  
             android:label="@string/app_name" >

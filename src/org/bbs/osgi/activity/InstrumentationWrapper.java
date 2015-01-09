@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import android.view.MotionEvent;
 public class InstrumentationWrapper extends Instrumentation {
 		private Instrumentation mBase;
 		private InstrumentationWrapper.CallBack mCallback;
+		private Handler mUiHandler;
 		
 		public static interface CallBack {
 			public void processIntent(Intent intent);
@@ -149,8 +151,9 @@ public class InstrumentationWrapper extends Instrumentation {
 						
 					}
 
-		public InstrumentationWrapper(Instrumentation base){
+		public InstrumentationWrapper(Instrumentation base, Handler uiHandler){
 			mBase = base;
+			mUiHandler = uiHandler;
 		}
 		
 		public void setCallBack(InstrumentationWrapper.CallBack callback) {
@@ -166,7 +169,7 @@ public class InstrumentationWrapper extends Instrumentation {
 		public static void injectInstrumentation(Activity activity, InstrumentationWrapper.CallBack callback) {
 			Instrumentation i = (Instrumentation) ActivityReflectUtil.getFiledValue(Activity.class, activity, "mInstrumentation");
 			Field f = ActivityReflectUtil.getFiled(Activity.class, activity, "mInstrumentation");
-			InstrumentationWrapper wrapper = new InstrumentationWrapper(i);
+			InstrumentationWrapper wrapper = new InstrumentationWrapper(i, new Handler());
 			wrapper.setCallBack(callback);
 			ActivityReflectUtil.setField(activity, f, wrapper);
 		}
@@ -178,12 +181,24 @@ public class InstrumentationWrapper extends Instrumentation {
 	    	
 	    	ActivityResult r = ReflectUtil.execStartActivity(mBase, who, contextThread, token, target,
 					intent, requestCode, options);
-
+	    	
+	    	disableActivityTransition(target);
 	    	// FIXME activity transition
 //			((Activity)who).overridePendingTransition(0, 0);
 			
 			return r;
 		}
+		
+		public void disableActivityTransition(final Activity target) {
+			mUiHandler.post(new Runnable() {
+				
+				@Override
+				public void run() {
+					target.overridePendingTransition(0, 0);
+				}
+			});
+		}
+		
 	    public void execStartActivities(Context who, IBinder contextThread,
 	            IBinder token, Activity target, Intent[] intents, Bundle options) {
 	    	for (Intent intent: intents) {
@@ -191,6 +206,8 @@ public class InstrumentationWrapper extends Instrumentation {
 	    	}
 	        
 	    	ReflectUtil.execStartActivities(mBase, who, contextThread, token, target, intents, options, myUseId());
+
+	    	disableActivityTransition(target);
 	    }
 	    
 	    private int myUseId() {
@@ -214,13 +231,19 @@ public class InstrumentationWrapper extends Instrumentation {
 	    	
 	    	ReflectUtil.execStartActivitiesAsUser(mBase, who, contextThread, token, target,
 	    			intents, options, userId);
+
+	    	disableActivityTransition(target);
 	    }
 	    public ActivityResult execStartActivity(
 	            Context who, IBinder contextThread, IBinder token, Fragment target,
 	            Intent intent, int requestCode, Bundle options) {
 	    	processIntent(intent);
-	    	return ReflectUtil.execStartActivity(mBase, who, contextThread, token, target, 
+	    	ActivityResult result = ReflectUtil.execStartActivity(mBase, who, contextThread, token, target, 
 	    			intent, requestCode, options);
+
+	    	disableActivityTransition(target.getActivity());
+	    	
+	    	return result;
 	    }
 
 		// call base method instead.

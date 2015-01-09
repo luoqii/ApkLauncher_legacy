@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.bbs.felix.util.AndroidUtil;
 import org.bbs.felix.util.PackageParser;
-import org.bbs.felix.util.PackageParser.ManifestInfoX;
-import org.bbs.felix.util.PackageParser.ManifestInfoX.ActivityInfoX;
+import org.bbs.felix.util.PackageParser.PackageInfoX;
+import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felixonandroid.R;
 
 import android.annotation.SuppressLint;
@@ -109,7 +109,7 @@ public class BackUpActivity extends Activity {
 		
 	}
 
-	public static  void putExtra(ManifestInfoX.ActivityInfoX a,
+	public static  void putExtra(PackageInfoX.ActivityInfoX a,
 			Intent launcher) {
 //		launcher.putExtra(StubActivity.EXTRA_APK_PATH, a.mApkPath);
 //		launcher.putExtra(StubActivity.EXTRA_APPLICATION_CLASS_NAME, a.mPackageClassName);

@@ -37,6 +37,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -163,45 +164,6 @@ implements InstrumentationWrapper.CallBack
 		}
 	}
 
-	// keyevent
-//	@Override
-//	public boolean dispatchKeyEvent(KeyEvent event) {
-//		if (mActivityAgent.dispatchKeyEvent(event)) {
-//			return true;
-//		}
-//		return super.dispatchKeyEvent(event);
-//	}
-//	@Override
-//	public boolean dispatchKeyShortcutEvent(KeyEvent event) {
-//		if (mActivityAgent.dispatchKeyEvent(event)) {
-//			return true;
-//		}
-//		return super.dispatchKeyShortcutEvent(event);
-//	}
-//	@Override
-//	public boolean dispatchTouchEvent(MotionEvent ev) {
-//		if (mActivityAgent.dispatchTouchEvent(ev)) {
-//			return true;
-//		}
-//		return super.dispatchTouchEvent(ev);
-//	}
-//	@Override
-//	public boolean dispatchTrackballEvent(MotionEvent ev) {
-//		if (mActivityAgent.dispatchTrackballEvent(ev)) {
-//			return true;
-//		}
-//		return super.dispatchTrackballEvent(ev);
-//	}
-//	@Override
-//	public boolean dispatchGenericMotionEvent(MotionEvent ev) {
-//		if (mActivityAgent.dispatchGenericMotionEvent(ev)) {
-//			return true;
-//		}
-//		return super.dispatchGenericMotionEvent(ev);
-//	}
-	
-	
-
 	// private method.
 	protected ActivityAgent onPrepareActivityStub() {
 		ActivityAgent agent = null;
@@ -225,13 +187,13 @@ implements InstrumentationWrapper.CallBack
 			WeakReference<Resources> r = sBundle2ResMap.get(mBundle);
 			if (null != r) {
 				mSourceMerger = r.get();
-				LazyContext.bundleReady(mLazyContext, mBundle, mSourceMerger);
+				LazyContext.bundleReady(mLazyContext, mBundle, mSourceMerger, null);
 			} 
 			if (null == mSourceMerger) {
 				Resources bundleRes = getBundleResources(mBundle);
 				if (bundleRes != null) {
 					mSourceMerger = new ResourcesMerger(bundleRes, super.getResources());
-					mLazyContext.bundleReady(mLazyContext,mBundle, mSourceMerger);
+					mLazyContext.bundleReady(mLazyContext,mBundle, mSourceMerger, null);
 
 					sBundle2ResMap.put(new WeakReference(mBundle), new WeakReference(mSourceMerger));
 				}
@@ -285,13 +247,13 @@ implements InstrumentationWrapper.CallBack
 				WeakReference<Resources> r = sBundle2ResMap.get(mBundle);
 				if (null != r) {
 					mSourceMerger = r.get();
-					mLazyContext.bundleReady(mLazyContext, mBundle, mSourceMerger);
+					mLazyContext.bundleReady(mLazyContext, mBundle, mSourceMerger, null);
 				} 
 				if (null == mSourceMerger) {
 					Resources bundleRes = getBundleResources(s.getBundle());
 					if (bundleRes != null) {
 						mSourceMerger = new ResourcesMerger(bundleRes, super.getResources());
-						mLazyContext.bundleReady(mLazyContext,mBundle, mSourceMerger);
+						mLazyContext.bundleReady(mLazyContext,mBundle, mSourceMerger, null);
 
 						sBundle2ResMap.put(new WeakReference(mBundle), new WeakReference(mSourceMerger));
 					}
@@ -321,59 +283,6 @@ implements InstrumentationWrapper.CallBack
 		return agent;
 	}
 
-	//	@Override
-	//	public void onCreateContextMenu(ContextMenu menu, View v,
-	//			ContextMenuInfo menuInfo) {
-	//		mActivityAgent.onCreateContextMenu(menu, v, menuInfo);
-	//	}
-	//	@Override
-	//	public boolean onContextItemSelected(MenuItem item) {
-	//		return mActivityAgent.onContextItemSelected(item);
-	//	}
-	//	@Override
-	//	public void onContextMenuClosed(Menu menu) {
-	//		mActivityAgent.onContextMenuClosed(menu);
-	//	}
-	
-		// keyevent
-	//	@Override
-	//	public boolean dispatchKeyEvent(KeyEvent event) {
-	//		if (mActivityAgent.dispatchKeyEvent(event)) {
-	//			return true;
-	//		}
-	//		return super.dispatchKeyEvent(event);
-	//	}
-	//	@Override
-	//	public boolean dispatchKeyShortcutEvent(KeyEvent event) {
-	//		if (mActivityAgent.dispatchKeyEvent(event)) {
-	//			return true;
-	//		}
-	//		return super.dispatchKeyShortcutEvent(event);
-	//	}
-	//	@Override
-	//	public boolean dispatchTouchEvent(MotionEvent ev) {
-	//		if (mActivityAgent.dispatchTouchEvent(ev)) {
-	//			return true;
-	//		}
-	//		return super.dispatchTouchEvent(ev);
-	//	}
-	//	@Override
-	//	public boolean dispatchTrackballEvent(MotionEvent ev) {
-	//		if (mActivityAgent.dispatchTrackballEvent(ev)) {
-	//			return true;
-	//		}
-	//		return super.dispatchTrackballEvent(ev);
-	//	}
-	//	@Override
-	//	public boolean dispatchGenericMotionEvent(MotionEvent ev) {
-	//		if (mActivityAgent.dispatchGenericMotionEvent(ev)) {
-	//			return true;
-	//		}
-	//		return super.dispatchGenericMotionEvent(ev);
-	//	}
-		
-		
-	
 	protected String getDefaultLauncherServiceName() {
 		return DEFAULT_LAUNCHER_SERVICE_NAME;
 	}
@@ -502,21 +411,6 @@ implements InstrumentationWrapper.CallBack
 		}
 		return null;
 	}
-	
-	//	    public void execStartActivities(Context who, IBinder contextThread,
-	//	            IBinder token, Activity target, Intent[] intents, Bundle options) {
-	//	        execStartActivitiesAsUser(who, contextThread, token, target, intents, options,
-	//	                UserHandle.myUserId());
-	//	    }
-	//	    public void execStartActivitiesAsUser(Context who, IBinder contextThread,
-	//	            IBinder token, Activity target, Intent[] intents, Bundle options,
-	//	            int userId) {
-	//	    }
-	//	    public ActivityResult execStartActivity(
-	//	            Context who, IBinder contextThread, IBinder token, Fragment target,
-	//	            Intent intent, int requestCode, Bundle options) {
-	//	    	
-	//	    }
 
 	public void processIntent(Intent intent) {
 		Log.d(TAG, "processIntent. intent: " + intent);

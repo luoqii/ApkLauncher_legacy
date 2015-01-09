@@ -271,4 +271,8 @@ public class ActivityAgent extends ComponentAgent {
 		// TODO Auto-generated method stub
 		
 	}
+	public View onCreatePanelView(int featureId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

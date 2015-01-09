@@ -1,23 +1,19 @@
 package org.bbs.apklauncher;
 import java.io.File;
-import java.io.PrintStream;
-import java.lang.Thread.UncaughtExceptionHandler;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.zip.ZipFile;
 
+import org.bbs.felix.util.AndroidUtil;
 import org.bbs.felix.util.PackageParser;
-import org.bbs.felix.util.PackageParser.ManifestInfoX;
-import org.bbs.felix.util.PackageParser.ManifestInfoX.ActivityInfoX;
+import org.bbs.felix.util.PackageParser.PackageInfoX;
+import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felixonandroid.R;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -50,13 +46,13 @@ public class ApkLuncherActivity extends Activity {
 	
 	
 
-	private List<ManifestInfoX.ActivityInfoX> parseLauncher(List<ManifestInfoX> ms) {
-		List<ManifestInfoX.ActivityInfoX> launchers = new ArrayList<PackageParser.ManifestInfoX.ActivityInfoX>();
-		for (ManifestInfoX m : ms) {
-			if (m.mApplictionInfo.mActivities != null) {
-				for (ManifestInfoX.ActivityInfoX a : m.mApplictionInfo.mActivities) {
+	private List<PackageInfoX.ActivityInfoX> parseLauncher(List<PackageInfoX> ms) {
+		List<PackageInfoX.ActivityInfoX> launchers = new ArrayList<PackageParser.PackageInfoX.ActivityInfoX>();
+		for (PackageInfoX m : ms) {
+			if (m.mApplicationInfo.mActivities != null) {
+				for (PackageInfoX.ActivityInfoX a : m.mApplicationInfo.mActivities) {
 					if (a.mIntents != null) {
-						for (ManifestInfoX.IntentInfoX i : a.mIntents) {
+						for (PackageInfoX.IntentInfoX i : a.mIntents) {
 							if (i.hasAction(Intent.ACTION_MAIN) && i.hasCategory(Intent.CATEGORY_LAUNCHER)) {
 								launchers.add(a);
 								break;
@@ -80,10 +76,10 @@ public class ApkLuncherActivity extends Activity {
 	}
 	class ApkAdapter extends RecyclerView.Adapter<VH> {
 
-		private List<ManifestInfoX.ActivityInfoX> mApks;
+		private List<PackageInfoX.ActivityInfoX> mApks;
 
 		public ApkAdapter(ApkLuncherActivity apkLuncherActivity,
-				List<ManifestInfoX.ActivityInfoX> scanApks) {
+				List<PackageInfoX.ActivityInfoX> scanApks) {
 			mApks = scanApks;
 		}
 
@@ -94,7 +90,7 @@ public class ApkLuncherActivity extends Activity {
 
 		@Override
 		public void onBindViewHolder(VH arg0, int arg1) {
-			ManifestInfoX.ActivityInfoX a = mApks.get(arg1);
+			PackageInfoX.ActivityInfoX a = mApks.get(arg1);
 			
 			arg0.title.setText(a.name);
 			
@@ -110,13 +106,24 @@ public class ApkLuncherActivity extends Activity {
 				
 				@Override
 				public void onClick(View v) {
-					ManifestInfoX.ActivityInfoX a = (ActivityInfoX) v.getTag();
+					PackageInfoX.ActivityInfoX a = (ActivityInfoX) v.getTag();
 					
 					Log.d(TAG, "onClick. activity: " + a);
+					File destDir = null;
+					try {
+						File dataDir = getDir("plugin", 0);
+						destDir = new File(dataDir, a.packageName + "/lib");
+						AndroidUtil.extractZipEntry(new ZipFile(a.mApkPath), "lib/armeabi", destDir);
+						AndroidUtil.extractZipEntry(new ZipFile(a.mApkPath), "lib/armeabi-v7a", destDir);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					};
 					
 					Intent launcher = new Intent(ApkLuncherActivity.this, StubActivity.class);
 					
 					putExtra(a, launcher);
+					launcher.putExtra(StubActivity.EXTRA_LIB_PATH, destDir.getPath());
 					
 					startActivity(launcher);
 				}
@@ -126,7 +133,7 @@ public class ApkLuncherActivity extends Activity {
 		
 	}
 
-	public static  void putExtra(ManifestInfoX.ActivityInfoX a,
+	public static  void putExtra(PackageInfoX.ActivityInfoX a,
 			Intent launcher) {
 //		launcher.putExtra(StubActivity.EXTRA_APK_PATH, a.mApkPath);
 //		launcher.putExtra(StubActivity.EXTRA_APPLICATION_CLASS_NAME, a.mPackageClassName);
