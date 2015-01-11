@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
 
 /**
  * if android call us we call through to {@link #mActivityStub};
@@ -282,6 +283,76 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		}
 	}
 	
+	@Override
+	public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		
+		mActivityStub.onAttachedToWindow();
+		if (LOG_CONTENT) {
+		    _log(TAG, "call stub onAttachedToWindow(). ");
+		}
+	}
+
+	@Override
+	public void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		
+		mActivityStub.onDetachedFromWindow();
+		if (LOG_CONTENT) {
+		    _log(TAG, "call stub onDetachedFromWindow(). ");
+		}
+	}
+
+	@Override
+	protected void onTitleChanged(CharSequence title, int color) {
+		super.onTitleChanged(title, color);
+		
+		mActivityStub.onTitleChanged(title, color);
+		if (LOG_CONTENT) {
+		    _log(TAG, "call stub onTitleChanged(). title: " + title + " color: " + color);
+		}
+	}
+
+	@Override
+	public void onUserInteraction() {
+		super.onUserInteraction();
+
+		mActivityStub.onUserInteraction();
+		if (LOG_CONTENT) {
+		    _log(TAG, "call stub onUserInteraction(). ");
+		}
+	}
+
+	@Override
+	protected void onUserLeaveHint() {
+		super.onUserLeaveHint();
+		
+		mActivityStub.onUserLeaveHint();
+		if (LOG_CONTENT) {
+		    _log(TAG, "call stub onUserLeaveHint(). ");
+		}
+	}
+
+	@Override
+	public void onWindowAttributesChanged(LayoutParams params) {
+		super.onWindowAttributesChanged(params);
+		
+		mActivityStub.onWindowAttributesChanged(params);
+		if (LOG_CONTENT) {
+		    _log(TAG, "call stub onWindowAttributesChanged(). params: " + params);
+		}
+	}
+
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		
+		mActivityStub.onWindowFocusChanged(hasFocus);
+		if (LOG_CONTENT) {
+		    _log(TAG, "call stub onWindowFocusChanged(). hasFocus: " + hasFocus);
+		}
+	}
+	
 	
 	// dialog
 	@Override
@@ -408,7 +479,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 	private void _log(String tag, String message) {
 	   logD(tag, message);
 	   if (LOG_stub) {
-	       logD(tag, "call stub:" + mActivityStub);
+	       logD(tag, "sssssstub:" + mActivityStub);
 	   }
     }
     protected void logD(String tag, String message) {

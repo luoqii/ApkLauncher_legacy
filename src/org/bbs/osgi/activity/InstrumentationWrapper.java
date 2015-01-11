@@ -3,6 +3,7 @@ package org.bbs.osgi.activity;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.bbs.apklauncher.StubActivity;
 import org.bbs.osgi.activity.ReflectUtil.ActivityReflectUtil;
 
 import android.R.array;
@@ -20,10 +21,12 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 public class InstrumentationWrapper extends Instrumentation {
+		private static final String TAG = InstrumentationWrapper.class.getSimpleName();
 		private Instrumentation mBase;
 		private InstrumentationWrapper.CallBack mCallback;
 		private Handler mUiHandler;
@@ -503,27 +506,28 @@ public class InstrumentationWrapper extends Instrumentation {
 
 		@Override
 		public void callActivityOnCreate(Activity activity, Bundle icicle) {
-			// TODO Auto-generated method stub
+			Log.d(TAG, "callActivityOnCreate(). activity: " + activity + " icicle: " + icicle);
 			mBase.callActivityOnCreate(activity, icicle);
 		}
 
 		@Override
 		public void callActivityOnCreate(Activity activity, Bundle icicle,
 				PersistableBundle persistentState) {
-			// TODO Auto-generated method stub
+			Log.d(TAG, "callActivityOnCreate(). activity: " + activity + " icicle: " + icicle
+					+ " persistentState: " + persistentState);
 			mBase.callActivityOnCreate(activity, icicle, persistentState);
 		}
 
 		@Override
 		public void callActivityOnDestroy(Activity activity) {
-			// TODO Auto-generated method stub
+			Log.d(TAG, "callActivityOnDestroy(). activity: " + activity);
 			mBase.callActivityOnDestroy(activity);
 		}
 
 		@Override
 		public void callActivityOnRestoreInstanceState(Activity activity,
 				Bundle savedInstanceState) {
-			// TODO Auto-generated method stub
+			Log.d(TAG, "callActivityOnRestoreInstanceState(). activity: " + activity + " savedInstanceState: " + savedInstanceState) ;
 			mBase.callActivityOnRestoreInstanceState(activity, savedInstanceState);
 		}
 
@@ -537,14 +541,15 @@ public class InstrumentationWrapper extends Instrumentation {
 
 		@Override
 		public void callActivityOnPostCreate(Activity activity, Bundle icicle) {
-			// TODO Auto-generated method stub
+			Log.d(TAG, "callActivityOnPostCreate(). activity: " + activity + " icicle: " + icicle);
 			mBase.callActivityOnPostCreate(activity, icicle);
 		}
 
 		@Override
 		public void callActivityOnPostCreate(Activity activity, Bundle icicle,
 				PersistableBundle persistentState) {
-			// TODO Auto-generated method stub
+			Log.d(TAG, "callActivityOnPostCreate(). activity: " + activity + " icicle: " + icicle
+					+ " persistentState: " + persistentState);
 			mBase.callActivityOnPostCreate(activity, icicle, persistentState);
 		}
 
@@ -556,19 +561,22 @@ public class InstrumentationWrapper extends Instrumentation {
 
 		@Override
 		public void callActivityOnStart(Activity activity) {
-			// TODO Auto-generated method stub
+			Log.d(TAG, "callActivityOnStart(). activity: " + activity);
+			if (activity instanceof StubActivity) {
+				StubActivity stub = (StubActivity) activity;
+			}
 			mBase.callActivityOnStart(activity);
 		}
 
 		@Override
 		public void callActivityOnRestart(Activity activity) {
-			// TODO Auto-generated method stub
+			Log.d(TAG, "callActivityOnRestart(). activity: " + activity);
 			mBase.callActivityOnRestart(activity);
 		}
 
 		@Override
 		public void callActivityOnResume(Activity activity) {
-			// TODO Auto-generated method stub
+			Log.d(TAG, "callActivityOnResume(). activity: " + activity);
 			mBase.callActivityOnResume(activity);
 		}
 

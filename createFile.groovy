@@ -46,6 +46,9 @@ def genActivityFile(File templateFile, File file, String newBaseClassName, Strin
            it = it.replaceAll(/mActivityStub.onStop\(/, 'ActivityReflectUtil.onStop(mActivityStub');
            it = it.replaceAll(/mActivityStub.onDestroy\(/, 'ActivityReflectUtil.onDestroy(mActivityStub');
 
+           it = it.replaceAll(/mActivityStub.onTitleChanged\(/, 'ActivityReflectUtil.onTitleChanged(mActivityStub, ');
+           it = it.replaceAll(/mActivityStub.onUserLeaveHint\(/, 'ActivityReflectUtil.onUserLeaveHint(mActivityStub');
+
            it = it.replaceAll(/mActivityStub.onCreateDialog\(/, 'ActivityReflectUtil.onCreateDialog(mActivityStub, ');
            it = it.replaceAll(/mActivityStub.onPrepareDialog\(/, 'ActivityReflectUtil.onPrepareDialog(mActivityStub, ');
 

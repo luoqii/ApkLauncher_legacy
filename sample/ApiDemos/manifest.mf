@@ -1,1 +1,52 @@
-bundle.mf
+Bundle-Name: api demo by osgi
+Bundle-Description: A bundle that wrap android api demo
+Bundle-Vendor: bysongxxx
+Bundle-Version: 1.0.0
+Bundle-Activator: com.example.android.apis.Activator
+Export-Package: com.example.android.apis,
+ org.bbs.osgi.activity,org.bbs.osgi.activity.embed,
+ org.bbs.felix.activity.ActivityAgent,
+Import-Package: org.osgi.framework,
+ org.bbs.osgi.activity,org.bbs.osgi.activity.embed,
+ org.bbs.felix.activity.ActivityAgent,
+ android, android.app,android.animation,
+ android.content,android.content.res,
+ android.content.pm,android.database,android.database.sqlite,android.graphics, 
+ android.graphics.drawable, android.graphics.drawable.shapes,android.graphics.pdf,android.hardware, 
+ android.hardware.camera2, android.hardware.camera2.params, android.hardware.display, android.hardware.usb, 
+ android.inputmethodservice, android.location, android.media, android.media.audiofx, android.media.browse, 
+ android.media.effect, android.media.projection, android.media.session, android.media.tv, android.mtp, 
+ android.net, android.net.http, android.net.nsd, android.net.rtp, android.net.sip, android.net.wifi, 
+ android.net.wifi.p2p, android.net.wifi.psp.nsd, android.nfc, android.nfc.cardemulation, 
+ android.nfc.tech, android.opengl, android.os, android.os.storage, android.preference, 
+ android.print, android.print.pdf, android.printservice, android.provider, android.renderscript, 
+ android.sax, android.security, android.service.dreams, android.service.notification, 
+ android.service.restriction, android.service.textservice, android.service.voice, 
+ android.service.wallpaper, android.speech, android.speech.tss, android.system, android.tellecom, 
+ android.telephony, android.telephony.cdma, android.telephony.gsm, android.test, android.test.mock, 
+ android.test.suitebuilder, android.test.suitebuilder.annotation, android.text, 
+ android.text.format, android.text.method, android.text.style, android.text.util, 
+ android.transition, android.util, android.view, android.view.accessibility, 
+ android.view.animation, android.view.inputmethod, android.view.textservice, android.webkit, 
+ android.widget, com.android.internal.backup, com.android.internal.os, com.android.internal.statusbar, 
+ com.android.internal.widget, com.android.test.runner, dalvik.annotation, dalvik.bytecode, 
+ dalvik.system, javax.crypto, javax.crypto.interfaces, javax.crypto.spec, javax.microedition.khronos.egl, 
+ javax.microedition.khronos.opengles, javax.net, javax.net.ssl, javax.security.auth, 
+ javax.security.auth.callback, javax.security.auth.login, javax.security.auth.x500, javax.security.cert, 
+ javax.sql, javax.xml, javax.xml.datatype, javax.xml.namespace, javax.xml.parsers, 
+ javax.xml.transfrom, javax.xml.transfrom.dom, javax.xml.transfrom.sax, javax.xml.transfrom.stream, 
+ javax.xml.validation, javax.xml.xpath, junit.framework, junit.runner, 
+ org.apache.http, org.apache.http.auth, org.apache.http.auth.params, org.apache.http.client, 
+ org.apache.http.client.entity, org.apache.http.client.methods, org.apache.http.client.params, 
+ org.apache.http.client.protocol, org.apache.http.client.utils, org.apache.http.conn, 
+ org.apache.http.conn.params, org.apache.http.conn.routing, org.apache.http.conn.scheme, 
+ org.apache.http.conn.ssl, org.apache.http.conn.util, org.apache.http.cookie, 
+ org.apache.http.cookie.params, org.apache.http.entity, org.apache.http.impl, 
+ org.apache.http.impl.auth, org.apache.http.impl.client, org.apache.http.impl.conn, 
+ org.apache.http.impl.conn.tsccm, org.apache.http.impl.cookie, org.apache.http.impl.entity, 
+ org.apache.http.impl.io, org.apache.http.io, org.apache.http.message, org.apache.http.params, 
+ org.apache.http.protocol, org.apache.http.util, org.json, org.w3c.dom, 
+ org.w3c.dom.ls, org.xml.sax, 
+ org.xml.sax.extv, org.xml.sax.helpers, org.xmlpull.v1, org.xmlpull.v1.sax2
+X-forHeader: bbbbb
+ 

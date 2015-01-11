@@ -13,6 +13,7 @@ import org.bbs.felixonandroid.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,12 +50,14 @@ public class ApkLuncherActivity extends Activity {
 	private List<PackageInfoX.ActivityInfoX> parseLauncher(List<PackageInfoX> ms) {
 		List<PackageInfoX.ActivityInfoX> launchers = new ArrayList<PackageParser.PackageInfoX.ActivityInfoX>();
 		for (PackageInfoX m : ms) {
-			if (m.mApplicationInfo.mActivities != null) {
-				for (PackageInfoX.ActivityInfoX a : m.mApplicationInfo.mActivities) {
-					if (a.mIntents != null) {
-						for (PackageInfoX.IntentInfoX i : a.mIntents) {
+			
+			if (m.activities != null) {
+				for (ActivityInfo a : m.activities) {
+					PackageInfoX.ActivityInfoX aX = (ActivityInfoX) a;
+					if (aX.mIntents != null) {
+						for (PackageInfoX.IntentInfoX i : aX.mIntents) {
 							if (i.hasAction(Intent.ACTION_MAIN) && i.hasCategory(Intent.CATEGORY_LAUNCHER)) {
-								launchers.add(a);
+								launchers.add(aX);
 								break;
 							}
 						}
@@ -92,7 +95,7 @@ public class ApkLuncherActivity extends Activity {
 		public void onBindViewHolder(VH arg0, int arg1) {
 			PackageInfoX.ActivityInfoX a = mApks.get(arg1);
 			
-			arg0.title.setText(a.name);
+			arg0.title.setText(a.packageName + "/" + a.name);
 			
 			arg0.itemView.setTag(a);
 		}

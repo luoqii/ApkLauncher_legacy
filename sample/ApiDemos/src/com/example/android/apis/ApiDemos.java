@@ -16,15 +16,6 @@
 
 package com.example.android.apis;
 
-import android.app.ListActivity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +24,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ApiDemos extends ListActivity {
+import org.bbs.apklauncher.embed.ApkBase_ListActivitytivity;
+
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+public class ApiDemos extends 
+//ListActivity 
+ApkBase_ListActivity
+{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,7 @@ public class ApiDemos extends ListActivity {
         getListView().setTextFilterEnabled(true);
     }
 
-    protected List<Map<String, Object>> getData(String prefix) {
+	protected List<Map<String, Object>> getData(String prefix) {
         List<Map<String, Object>> myData = new ArrayList<Map<String, Object>>();
 
         Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);

@@ -8,7 +8,7 @@ import java.util.Iterator;
 import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felix.util.PackageParser.PackageInfoX.ApplicationInfoX;
 import org.bbs.felix.util.PackageParser.PackageInfoX.IntentInfoX;
-import org.bbs.felix.util.PackageParser.PackageInfoX.UseSDkX;
+import org.bbs.felix.util.PackageParser.PackageInfoX.UsesSdkX;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -17,6 +17,7 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageItemInfo;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
@@ -29,20 +30,16 @@ import android.util.Log;
 import android.view.WindowManager;
 
 public class PackageParser {
-	private static final String TAG_USES_SDK = "uses-sdk";
-
-	private static final String ATTR_RESOURCE = "resource";
-
-	private static final String ATTR_VALUE = "value";
-
-	private static final String ATTR_ICON = "icon";
-
-	private static final String ATTR_THEME = "theme";
-
-	private static final String ATTR_LABEL = "label";
-
+	private static final String ATTR_META_DATA = "meta-data";
+	private static final String ATTR_BANNER = "banner";
+	private static final String ATTR_LOGO = "logo";
 	private static final String TAG = PackageParser.class.getSimpleName();
-
+	private static final String TAG_USES_SDK = "uses-sdk";
+	private static final String ATTR_RESOURCE = "resource";
+	private static final String ATTR_VALUE = "value";
+	private static final String ATTR_ICON = "icon";
+	private static final String ATTR_THEME = "theme";
+	private static final String ATTR_LABEL = "label";
 	private static final String TAG_CATEGORY = "category";
 	private static final String TAG_INTENT_FILTER = "intent-filter";
 	private static final String TAG_ACTION = "action";
@@ -57,53 +54,22 @@ public class PackageParser {
 
 	public static PackageInfoX parseAPk(Context context, String apkFile) {
 		PackageInfoX info = new PackageInfoX();
-		info.mApkLocation = apkFile;
-
-		DisplayMetrics metrics = new DisplayMetrics();
-		// metrics.setToDefaults();
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
-		wm.getDefaultDisplay().getMetrics(metrics);
-
-		Resources res = null;
+		info.mApkPath = apkFile;
+		
 		AssetManager assets;
 		XmlResourceParser parser = null;
 		try {
-			// Class<?> apkParser =
-			// Class.forName("android.content.pm.PackageParser");
-			// String methodName = "parsePackage";
-			// EmbeddedActivityAgent.ReflectUtil.dumpMethod(apkParser,
-			// methodName);
-			// Method m = apkParser.getDeclaredMethod(methodName, new
-			// Class[]{File.class, int.class});
-			// Object apkPackage = m.invoke(apkParser.newInstance(), new
-			// Object[]{new File(apkFile), 0});
-			// Log.d(TAG, "apkPackage: " + apkPackage);
-
-			// System.setProperty("java.boot.class.path",
-			// System.getProperty("java.boot.class.path") +
-			// ":/system/framework/framework-res.apk");
-			// Method m =
-			// Class.forName("com.android.packageinstaller.PackageUtil").getDeclaredMethod("getPackageInfo",
-			// new Class[]{String.class});
-			// Method m =
-			// Class.forName("com.android.internal.R.styleable").getDeclaredMethod("getPackageInfo",
-			// new Class[]{String.class});
-			// Object apkParser = m.invoke(null, new Object[]{apkFile});
-			// Log.d(TAG, "apkParser: " + apkParser);
 			assets = AssetManager.class.getConstructor(null).newInstance(null);
 			Method method = assets.getClass().getMethod("addAssetPath",
 					new Class[] { String.class });
-			res = new Resources(assets, metrics, null);
 			int cookie = (Integer) method.invoke(assets, apkFile);
 			parser = assets
 					.openXmlResourceParser(cookie, "AndroidManifest.xml");
 			parseApk(parser, info);
-			doPostParseAPk(info);
+			resolveParsedApk(info);
 			
 //			parser = assets.openXmlResourceParser(cookie, "AndroidManifest.xml");
 //			dumpParser(parser);
-//			
 //			info.dump();
 
 			return info;
@@ -133,13 +99,37 @@ public class PackageParser {
 		return null;
 	}
 
-	private static void doPostParseAPk(PackageInfoX info) {
-		if (info.mUseSdk != null) {
-			UseSDkX sdk = info.mUseSdk;
+	private static void resolveParsedApk(PackageInfoX info) {
+		ApplicationInfo appInfo = info.applicationInfo;
+		
+		appInfo.packageName = info.packageName;
+		
+		if (info.mUsesSdk != null) {
+			UsesSdkX sdk = info.mUsesSdk;
 			if (sdk.mMaxSdkVersion > 0) {
-				ApplicationInfoX app = info.mApplicationInfo;
-				app.targetSdkVersion = sdk.mTargetSdkVersion;
+				appInfo.targetSdkVersion = sdk.mTargetSdkVersion;
 			}
+		}
+		
+		if (info.activities != null && info.activities.length > 0) {
+			for (ActivityInfo a : info.activities) {
+				ActivityInfoX aX = (ActivityInfoX) a;
+				if (aX.theme == 0 && appInfo.theme > 0) {
+					aX.theme = appInfo.theme;
+				}
+
+				aX.mApkPath = info.mApkPath;
+				aX.labelRes = aX.labelRes != 0 ? aX.labelRes : appInfo.labelRes;
+				aX.nonLocalizedLabel = !TextUtils.isEmpty(aX.nonLocalizedLabel) ? aX.nonLocalizedLabel : appInfo.nonLocalizedLabel;
+				aX.packageName = appInfo.packageName;
+				
+				if (!TextUtils.isEmpty(aX.name) && 
+						(aX.name.startsWith(".") || !aX.name.contains("."))) {
+					String D = !aX.name.contains(".") ? "." : "";
+					aX.name = appInfo.packageName + D + aX.name;
+				}
+			}
+			
 		}
 	}
 
@@ -152,7 +142,7 @@ public class PackageParser {
 				if (eventType == XmlPullParser.START_DOCUMENT) {
 				} else if (eventType == XmlPullParser.START_TAG) {
 					if (TAG_MANIFEST.equals(tag)) {
-						parserManifest(parser, info);
+						parserPackage(parser, info);
 					} 
 				} else if (eventType == XmlPullParser.END_TAG) {
 				} else if (eventType == XmlPullParser.TEXT) {
@@ -175,17 +165,8 @@ public class PackageParser {
 		}
 	}
 
-	private static void parserManifest(XmlResourceParser parser,
+	private static void parserPackage(XmlResourceParser parser,
 			PackageInfoX info) throws XmlPullParserException, IOException {
-		// do NOT work ???
-		// info.mPackage = parser.getAttributeValue("", ATTR_PACKAGE);
-		// info.mVersionName = parser.getAttributeValue(ANDROID_NS,
-		// ATTR_VERSION_NAME);
-		// info.mVersionName = parser.getAttributeValue("android",
-		// ATTR_VERSION_NAME);
-		// info.mVersionCode = parser.getAttributeIntValue(ANDROID_NS,
-		// ATTR_VERSION_CODE, -1);
-
 		// parse attr
 		final int attCount = parser.getAttributeCount();
 		for (int i = 0; i < attCount; i++) {
@@ -221,7 +202,7 @@ public class PackageParser {
 
 	private static void parserUsesSdk(XmlResourceParser parser,
 			PackageInfoX info) {// parse attr
-		UseSDkX sdk = new UseSDkX();
+		UsesSdkX sdk = new UsesSdkX();
 		final int attCount = parser.getAttributeCount();
 		for (int i = 0; i < attCount; i++) {
 			String attName = parser.getAttributeName(i);
@@ -238,43 +219,23 @@ public class PackageParser {
 			sdk.mMaxSdkVersion = sdk.mTargetSdkVersion;
 		}
 		
-		info.mUseSdk = sdk;
-		
+		info.mUsesSdk = sdk;
 	}
 
 	private static void parserApplication(XmlResourceParser parser,
 			PackageInfoX info) throws XmlPullParserException, IOException {
-		info.mApplicationInfo = new ApplicationInfoX();
-		ApplicationInfoX app = info.mApplicationInfo;
+		info.applicationInfo = new ApplicationInfoX();
+		ApplicationInfoX app = (ApplicationInfoX) info.applicationInfo;
 		// parse attr
 		final int attCount = parser.getAttributeCount();
 		for (int i = 0; i < attCount; i++) {
 			String attName = parser.getAttributeName(i);
 			String attValue = parser.getAttributeValue(i);
-			if (ATTR_NAME.equals(attName)) {
-				String cName = attValue;
-				app.className = cName;
-				if (!TextUtils.isEmpty(cName) && 
-						!cName.contains(".")) {
-					app.className = info.packageName + "." + cName;
-				}
-				if (!TextUtils.isEmpty(cName) && cName.startsWith(".")) {
-					app.className = info.packageName + cName;
-				}
-			} else if (ATTR_LABEL.equals(attName)) {
-				if (attValue.startsWith("@")) {
-					app.labelRes = Integer.parseInt(attValue.substring(1));
-				} else {
-					app.nonLocalizedLabel = attValue;
-				}
-			} else if (ATTR_ICON.equals(attName)) {
-				if (attValue.startsWith("@")) {
-					app.icon = Integer.parseInt(attValue.substring(1));
-				}
-			} else if (ATTR_THEME.equals(attName)) {
-				info.mApplicationInfo.theme = Integer.parseInt(attValue.substring(1));
+			if (ATTR_THEME.equals(attName)) {
+				app.theme = Integer.parseInt(attValue.substring(1));
 			}
 		}
+		parsePackageItem(parser, app);
 		
 		// parse sub-element
 		int type;
@@ -289,17 +250,49 @@ public class PackageParser {
 
 			if (TAG_ACTIVITY.equals(tagName)) {
 				parserActivity(parser, info);
-			} else if ("meta-data".equals(tagName)) {
-				if (info.mApplicationInfo == null){
-					info.mApplicationInfo = new ApplicationInfoX();
+			} else if (ATTR_META_DATA.equals(tagName)) {
+				if (info.applicationInfo == null){
+					info.applicationInfo = new ApplicationInfoX();
 				}
-				if (info.mApplicationInfo.metaData == null) {
-					info.mApplicationInfo.metaData = new Bundle();
+				if (info.applicationInfo.metaData == null) {
+					info.applicationInfo.metaData = new Bundle();
 				}
-				parserMetaData(parser, info.mApplicationInfo.metaData);
+				parserMetaData(parser, info.applicationInfo.metaData);
 			}
 		}
 
+	}
+	
+	private static void parsePackageItem(XmlResourceParser parser, PackageItemInfo info) {
+		boolean hasLabel = false;
+		final int attCount = parser.getAttributeCount();
+		for (int i = 0; i < attCount; i++) {
+			String attName = parser.getAttributeName(i);
+			String attValue = parser.getAttributeValue(i);
+			if (ATTR_NAME.equals(attName)) {
+				String cName = attValue;
+				info.name = cName;
+			} else if (ATTR_LABEL.equals(attName)) {
+				hasLabel = true;
+				if (attValue.startsWith("@")) {
+					info.labelRes = Integer.parseInt(attValue.substring(1));
+				} else {
+					info.nonLocalizedLabel = attValue;
+				}
+			} else if (ATTR_ICON.equals(attName)) {
+				if (attValue.startsWith("@")) {
+					info.icon = Integer.parseInt(attValue.substring(1));
+				}
+			} else if (ATTR_LOGO.equals(attName)) {
+				if (attValue.startsWith("@")) {
+					info.logo = Integer.parseInt(attValue.substring(1));
+				}
+			}else if (ATTR_BANNER.equals(attName)) {
+				if (attValue.startsWith("@")) {
+					info.logo = Integer.parseInt(attValue.substring(1));
+				}
+			}   
+		}
 	}
 
 	private static void parserMetaData(XmlResourceParser parser, Bundle metaData) {
@@ -326,49 +319,26 @@ public class PackageParser {
 	private static void parserActivity(XmlResourceParser parser,
 			PackageInfoX info) throws XmlPullParserException, IOException {
 		ActivityInfoX a = new ActivityInfoX();
-		a.mApkPath = info.mApkLocation;
-		a.mApplication = info.mApplicationInfo;
+		a.mApkPath = info.mApkPath;
+		a.applicationInfo = info.applicationInfo;
 		// parse attr
 		final int attCount = parser.getAttributeCount();
 		boolean hasLabel = false;
 		for (int i = 0; i < attCount; i++) {
 			String attName = parser.getAttributeName(i);
 			String attValue = parser.getAttributeValue(i);
-			if (ATTR_NAME.equals(attName)) {
-				String cName = attValue;
-				a.name = cName;
-				if (!TextUtils.isEmpty(cName)) {
-					if (cName.startsWith(".")) {
-						a.name = info.packageName + cName;
-					} else if (!cName.contains(".")) {
-						a.name = info.packageName + "." + cName;
-					}
-				}
-			} else if (ATTR_LABEL.equals(attName)) {
-				if (attValue.startsWith("@")) {
-					a.labelRes = Integer.parseInt(attValue.substring(1));
-				} else {
-					a.nonLocalizedLabel = attValue;
-				}
-				
-				hasLabel = true;
-			} else if (ATTR_THEME.equals(attName)) {
+			if (ATTR_THEME.equals(attName)) {
 				a.theme = Integer.parseInt(attValue.substring(1));
 			} 
 		}
+		parsePackageItem(parser, a);		
 		
-		
-		if (!hasLabel) {
-			a.labelRes = info.mApplicationInfo.labelRes;
-			a.nonLocalizedLabel = info.mApplicationInfo.nonLocalizedLabel;
-		}
-		a.packageName = info.packageName;
-		a.mPackageClassName = info.mApplicationInfo != null ? info.mApplicationInfo.className : "";
-		a.mPackageInfo = info;
-		
-		if (a.theme == 0) {
-			a.theme = info.mApplicationInfo.theme;
-		}
+//		a.mPackageClassName = info.applicationInfo != null ? info.applicationInfo.className : "";
+//		a.applicationInfo = info.applicationInfo;
+//		
+//		if (a.theme == 0) {
+//			a.theme = info.applicationInfo.theme;
+//		}
 
 		// parse sub-element
 		int type;
@@ -383,20 +353,26 @@ public class PackageParser {
 
 			if (TAG_INTENT_FILTER.equals(tagName)) {
 				parserIntentFilter(parser, info, a);
+			} else if (ATTR_META_DATA.equals(tagName)) {
+				if (a.metaData == null) {
+					a.metaData = new Bundle();
+				}
+				parserMetaData(parser, a.metaData);
 			}
+			
 		}
 
-		if (info.mApplicationInfo.mActivities == null) {
-			info.mApplicationInfo.mActivities = new ActivityInfoX[1];
+		if (info.activities == null) {
+			info.activities = new ActivityInfoX[1];
 
-			info.mApplicationInfo.mActivities[0] = a;
+			info.activities[0] = a;
 		} else {
-			int len = info.mApplicationInfo.mActivities.length;
+			int len = info.activities.length;
 			ActivityInfoX[] as = new ActivityInfoX[len + 1];
-			System.arraycopy(info.mApplicationInfo.mActivities, 0, as, 0, len);
+			System.arraycopy(info.activities, 0, as, 0, len);
 			as[len] = a;
 
-			info.mApplicationInfo.mActivities = as;
+			info.activities = as;
 		}
 	}
 
@@ -525,11 +501,10 @@ public class PackageParser {
 		
 		public static final int DUMP_ALL = 0xFFFF;
 		
-		public ApplicationInfoX mApplicationInfo;
-		public String mApkLocation;
-		public UseSDkX mUseSdk;
+		public String mApkPath;
+		public UsesSdkX mUsesSdk;
 
-		public static void toString(int level, Bundle metaData) {
+		public static void dump(int level, Bundle metaData) {
 			if (metaData != null) {
 				Log.d(TAG, makePrefix(level) + "metaData: ");
 				level++;
@@ -542,31 +517,19 @@ public class PackageParser {
 		}
 
 		public static class ApplicationInfoX extends ApplicationInfo {
-			public ActivityInfoX[] mActivities;
 
 			public void dump(int level) {	
-				Log.d(TAG, makePrefix(level) + "mAppliction: ");
+				Log.d(TAG, makePrefix(level) + "appliction: ");
 				level++;
 				Log.d(TAG, makePrefix(level) + "packageName: " + packageName);
 				Log.d(TAG, makePrefix(level) + "theme      : " + theme);
 
-				PackageInfoX.toString(level, metaData);
-				
-				Log.d(TAG, makePrefix(level) + "mActivities: ");
-				level++;
-				if (mActivities != null) {
-					for (ActivityInfoX a : mActivities) {
-						a.dump(level);
-					}
-				}
+				PackageInfoX.dump(level, metaData);
 			}
 		}
 
 		public static class ActivityInfoX extends ActivityInfo implements
 				Parcelable {
-			public PackageInfoX mPackageInfo;
-			public ApplicationInfoX mApplication;
-			public String mPackageClassName;
 			public IntentInfoX[] mIntents;
 			public String mApkPath;
 
@@ -580,7 +543,7 @@ public class PackageParser {
 				Log.d(TAG, makePrefix(level + 1) + "icon : " + icon);
 				Log.d(TAG, makePrefix(level + 1) + "theme: " + theme);
 				
-				PackageInfoX.toString(level + 1, metaData);
+				PackageInfoX.dump(level + 1, metaData);
 			}
 			
 			public void writeToParcel(Parcel out, int flags) {
@@ -613,10 +576,11 @@ public class PackageParser {
 			public String[] mActions;
 		}
 		
-		public static class UseSDkX {
+		public static class UsesSdkX {
 			public int mMinSdkVersion;
 			public int mTargetSdkVersion;
 			public int mMaxSdkVersion;
+			
 			public void dump(int level) {		
 				Log.d(TAG, makePrefix(level) + "mUseSdk: ");
 				Log.d(TAG, makePrefix(level++) + "mMinSdkVersion: " + mMinSdkVersion);
@@ -631,14 +595,21 @@ public class PackageParser {
 		}
 		
 		public void dump(int level) {
-			Log.d(TAG, makePrefix(level) + "mApkLocation: " + mApkLocation);
+			Log.d(TAG, makePrefix(level) + "mApkLocation: " + mApkPath);
 			
-			if (mUseSdk != null) {
-				mUseSdk.dump(level++);
+			if (mUsesSdk != null) {
+				mUsesSdk.dump(level + 1);
 			}
 			
-			if (mApplicationInfo != null) {
-				mApplicationInfo.dump(level++);
+			if (applicationInfo != null) {
+				((ApplicationInfoX)applicationInfo).dump(level + 1);
+			}
+			
+			if (activities != null && activities.length > 0) {
+				Log.d(TAG, makePrefix(level) + "activities: ");
+				for (ActivityInfo a : activities) {
+					((ActivityInfoX)a).dump(level + 1);
+				}
 			}
 		}
 	}

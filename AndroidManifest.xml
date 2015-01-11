@@ -51,6 +51,17 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     
+    
+    
+<!--    
+cheniu apk
+ getui.permission.GetuiService
+D/PackageParser(28077):     uses-permission
+D/PackageParser(28077):     permission
+D/PackageParser(28077):       0 name : getui.permission.GetuiService -->
+    <uses-permission android:name="getui.permission.GetuiService" />
+    <uses-permission android:name="getui.permission.GetuiService" />
+    
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="21" />
@@ -59,6 +70,8 @@
         android:name="org.bbs.felix.App" 
         android:name="org.bbs.apklauncher.ApkLauncherApplication"
         -->
+    <instrumentation android:name="org.bbs.apklauncher.TargetInstrumentation" 
+        android:targetPackage="org.bbs.felixonandroid"></instrumentation>
     <application
         android:allowBackup="true"
         android:name="org.bbs.apklauncher.ApkLauncherApplication"

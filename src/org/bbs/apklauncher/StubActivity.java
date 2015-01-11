@@ -21,20 +21,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import dalvik.system.DexClassLoader;
 
 public class StubActivity extends 
 AbsActivityWraper 
-//Activity
 implements CallBack {
 	
 	/**
@@ -71,11 +68,15 @@ implements CallBack {
 	private String mLibPath;
 	private PackageManager mSysPm;
 	private Context mRealBaseContext;
+	private String mPackageName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 //		mThemeResource = (Integer) ReflectUtil.getFiledValue(ContextThemeWrapper.class, this, "mThemeResource");
+//		getThemeResId();
 		super.onCreate(savedInstanceState);
+		
+		updateTitle();
 	}
 
 	private ClassLoader onCreateClassLoader(String apkPath, String libPath) {
@@ -108,15 +109,17 @@ implements CallBack {
 		mLibPath = intent.getStringExtra(EXTRA_LIB_PATH);
 		
 		mActInfo = InstalledAPks.getInstance().getActivityInfo(mActivityClassName);
-		mApplicationClassName = mActInfo.mPackageClassName;
+		mApplicationClassName = mActInfo.applicationInfo.className;
 		mTargetThemeId = mActInfo.theme;
 		mApkPath = mActInfo.mApkPath;
 		if (TextUtils.isEmpty(mApplicationClassName)){
 			mApplicationClassName = Application.class.getCanonicalName();
 			Log.d(TAG, "no packageName, user default.");
 		}
+		mPackageName = mActInfo.packageName;
 
 		Log.d(TAG, "mApplicationClassName: " + mApplicationClassName);
+		Log.d(TAG, "mPackageName         : " + mPackageName);
 		Log.d(TAG, "mActivityClassName   : " + mActivityClassName);
 		Log.d(TAG, "mThemeId             : " + mTargetThemeId);
 		Log.d(TAG, "mApkPath             : " + mApkPath);
@@ -132,16 +135,17 @@ implements CallBack {
 		sLastClassLoader = mClassLoader;
 		mTargetContext.classLoaderReady(mClassLoader);
 		mTargetContext.packageManagerReady(new PakcageMangerPolicy(mSysPm));
-		mTargetContext.packageNameReady(mActInfo.mPackageInfo.packageName);
+		mTargetContext.packageNameReady(mActInfo.packageName);
 		
 		// do appliction init. must before activity init.
+		Application app = null;
 		WeakReference<Application> rp = sApk2ApplicationtMap.get(mApkPath);
 		if (rp != null && rp.get() != null) {
-			
+			app = rp.get();
 		} else {
 			if (!TextUtils.isEmpty(mApplicationClassName)) {
 				try {
-					Application app = ((Application) mClassLoader.loadClass(mApplicationClassName).newInstance());
+					app = ((Application) mClassLoader.loadClass(mApplicationClassName).newInstance());
 					sApk2ApplicationtMap.put(mApkPath, new WeakReference<Application>(app));
 					
 					LazyContext appBaseContext = new LazyContext(getApplication());
@@ -149,16 +153,16 @@ implements CallBack {
 					Resources appRes = BundleActivity.loadApkResource(mApkPath);
 					appRes = new ResourcesMerger(appRes, getResources());
 					appBaseContext.resReady(appRes);
-					int appTheme = mActInfo.mApplication.theme;
+					int appTheme = mActInfo.applicationInfo.theme;
 					if (appTheme  > 0) {
 					} else {
 					}
-					appTheme = ReflectUtil.ResourceUtil.selectDefaultTheme(appRes, appTheme, mActInfo.mApplication.targetSdkVersion);
+					appTheme = ReflectUtil.ResourceUtil.selectDefaultTheme(appRes, appTheme, mActInfo.applicationInfo.targetSdkVersion);
 					Log.d(TAG, "resolved application theme: " + appTheme);
 					appBaseContext.themeReady(appTheme);
 
 					appBaseContext.packageManagerReady(new PakcageMangerPolicy(mSysPm));
-					appBaseContext.packageNameReady(mActInfo.mPackageInfo.packageName);
+					appBaseContext.packageNameReady(mPackageName);
 					
 					((ApkLauncherApplication)getApplication()).attachBundleAplication(app, appBaseContext);
 					
@@ -174,6 +178,7 @@ implements CallBack {
 		InstrumentationWrapper.injectInstrumentation(this, this);
 		try {
 			mTargetActivity =  (Activity) mClassLoader.loadClass(mActivityClassName).newInstance();
+			dumpActivityType(mTargetActivity);
 			WeakReference<ResourcesMerger> rr = sApk2ResourceMap.get(mApkPath);
 			if (rr != null && rr.get() != null) {
 				mResourceMerger = rr.get();
@@ -187,44 +192,67 @@ implements CallBack {
 			if (mTargetThemeId  > 0) {
 			} else {
 			}
-			mTargetThemeId = ReflectUtil.ResourceUtil.selectDefaultTheme(mResourceMerger, mTargetThemeId, mActInfo.mApplication.targetSdkVersion);
+			mTargetThemeId = ReflectUtil.ResourceUtil.selectDefaultTheme(mResourceMerger, mTargetThemeId, mActInfo.applicationInfo.targetSdkVersion);
 			Log.d(TAG, "resolved activity theme: " + mTargetThemeId);
 			mTargetContext.setTheme(mTargetThemeId);
 			mTargetContext.themeReady(mTargetThemeId);
 			
+			
+			mTargetContext.packageManagerReady(new PakcageMangerPolicy(mSysPm));
+			mTargetContext.packageNameReady(mPackageName);
+			
 			mTargetContext.resReady(mResourceMerger);
+			
 			EmbeddedActivityAgent.copyContext(this, mTargetActivity, mResourceMerger);
-
-			ReflectUtil.ActivityReflectUtil.setApplication(mTargetActivity, sApk2ApplicationtMap.get(mApkPath).get());
+			if (null == app) {
+				throw new IllegalStateException("target apk app is null.");
+			}
+			ReflectUtil.ActivityReflectUtil.setApplication(mTargetActivity, app);
 			ReflectUtil.ActivityReflectUtil.setResource(this, mResourceMerger);
 			ReflectUtil.ActivityReflectUtil.setResource(mTargetActivity, mResourceMerger);
 			ReflectUtil.ActivityReflectUtil.setBaseContext(mTargetActivity, mTargetContext);
 //			ReflectUtil.ActivityReflectUtil.setWindowContext(getWindow(), mTargetContext);
+			mTargetActivity.setTheme(mTargetThemeId);
 			
-			CharSequence title = "";
-			if (mActInfo.labelRes  > 0) {
-				title = mResourceMerger.getString(mActInfo.labelRes);
-			}
-			if (TextUtils.isEmpty(title)) {
-				title = mActInfo.nonLocalizedLabel;
-			}
-			if (!TextUtils.isEmpty(title)) {
-				
-				//mTargetActivity.onCreate() is not called.
-				try {
-					mTargetActivity.setTitle(title);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				setTitle(title);
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("error in create activity: " + mActivityClassName , e);
 		}
 		
 		return mTargetActivity;
+	}
+
+	private void dumpActivityType(Activity activity) {
+		Class clazz = activity.getClass();
+		//==========+++++++++++
+		Log.d(TAG, "class      : " + clazz + " name: " + clazz.getName());
+		while (!clazz.getName().equals(Object.class.getName())) {
+			clazz = clazz.getSuperclass();
+
+			//==========+++++++++++
+			Log.d(TAG, "super class: " + clazz);
+		}
+	}
+
+	private void updateTitle() {
+		CharSequence title = "";
+		if (mActInfo.labelRes  > 0) {
+			title = mResourceMerger.getString(mActInfo.labelRes);
+		}
+		if (TextUtils.isEmpty(title)) {
+			title = mActInfo.nonLocalizedLabel;
+		}
+		if (!TextUtils.isEmpty(title)) {
+			
+			//mTargetActivity.onCreate() is not called.
+			try {
+				mTargetActivity.setTitle(title);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			setTitle(title);
+		}
 	}
 	
 	@Override

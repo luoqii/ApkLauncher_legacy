@@ -29,6 +29,7 @@ import android.util.Log;
 
 public class PakcageMangerPolicy extends PackageManager {
 	
+	private static final String TAG = PakcageMangerPolicy.class.getSimpleName();
 	private PackageManager mPolicy;
 
 	public PakcageMangerPolicy(PackageManager policy) {
@@ -93,13 +94,13 @@ public class PakcageMangerPolicy extends PackageManager {
 	@Override
 	public ApplicationInfo getApplicationInfo(String packageName, int flags)
 			throws NameNotFoundException {
-		Log.d(StubActivity.TAG, "getApplicationInfo(). packageName: " + packageName + " flags: " + flags);
+		Log.d(TAG, "getApplicationInfo(). packageName: " + packageName + " flags: " + flags);
 		InstalledAPks apks = InstalledAPks.getInstance();
 		if (apks.hasApplication(packageName)
 				&& (flags | PackageManager.GET_META_DATA) != 0) {
 			ApplicationInfoX aInfo = apks.getApplication(packageName);
 
-			Log.d(StubActivity.TAG, "use pased ApplicationInfoX: " + aInfo);
+			Log.d(TAG, "use pased ApplicationInfoX: " + aInfo);
 			return aInfo;
 		}
 		

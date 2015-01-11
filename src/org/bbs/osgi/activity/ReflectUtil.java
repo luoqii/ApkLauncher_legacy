@@ -725,6 +725,40 @@ public class ReflectUtil {
 				}
 			}
 
+			public static void onTitleChanged(Activity activity,
+					CharSequence title, int color) {
+				try {
+					Method m = Activity.class.getDeclaredMethod("onTitleChanged", new Class[]{CharSequence.class, int.class});
+					m.setAccessible(true);
+					m.invoke(activity, new Object[]{title, color});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in onTitleChanged", e);
+				}
+			}
+
+			public static void onUserLeaveHint(Activity activity) {
+				try {
+					Method m = Activity.class.getDeclaredMethod("onUserLeaveHint", new Class[]{});
+					m.setAccessible(true);
+					m.invoke(activity, new Object[]{});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in onUserLeaveHint", e);
+				}
+			}
+			
+			public static void performCreate(Activity activity, Bundle icicle) {
+				try {
+					Method m = Activity.class.getDeclaredMethod("performCreate", new Class[]{Bundle.class});
+					m.setAccessible(true);
+					m.invoke(activity, new Object[]{icicle});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in performCreate", e);
+				}
+			}
+
 		}
 		
 		public static class ResourceUtil {

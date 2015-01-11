@@ -37,6 +37,7 @@ Activity.showContextMenu()
 Fragment.startActvity()
 notification
 native lib
+start activity by custom action.
 
 TRICK
 =====

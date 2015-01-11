@@ -9,6 +9,7 @@ import org.osgi.framework.wiring.BundleWiring;
 import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
@@ -178,6 +179,16 @@ ContextWrapper
 		return super.getApplicationContext();
 	}
 	
+	@Override
+	public SharedPreferences getSharedPreferences(String name, int mode) {
+		SharedPreferences pref =  super.getSharedPreferences(name, mode);
+		
+		Log.d(TAG, "SharedPreferences(). name: " + name + " pref: " + pref);
+		return pref;
+	}
+
+
+
 	class MergedAssetManager 
 //	extends AssetManager 
 	{
