@@ -16,7 +16,7 @@ def genActivityFile(File templateFile, File file, String newBaseClassName, Strin
     baseClassName = 'BASE_CLAZZ_NAME'
     stub = 'STUB'
 //    println 'className: ' + className
- //   println 'baseClassName: ' + baseClassName
+//    println 'baseClassName: ' + baseClassName
 
     newClassName = file.getName()
     newClassName = newClassName.substring(0, newClassName.length() - 5)
@@ -109,5 +109,7 @@ def stubIsActivity(String className) {
 genApplicationFile appBaseFile, new File("src/org/bbs/osgi/activity/AbsApplication.java"), 'ApplicationAgent'
 genApplicationFile appBaseFile, new File("src/org/bbs/osgi/activity/ApplicationWrapper.java"), 'Application'
 
-genActivityFile activityBaseFile, new File("src/org/bbs/osgi/activity/AbsBundleActivity.java"), 'FragmentActivity', 'ActivityAgent'
+genActivityFile activityBaseFile, new File("src/org/bbs/apklauncher/embed/StubBase_ListActivity.java"), 'ListActivity', 'IActivityAgent'
+
+genActivityFile activityBaseFile, new File("src/org/bbs/osgi/activity/AbsBundleActivity.java"), 'FragmentActivity', 'IActivityAgent'
 genActivityFile activityBaseFile, new File("src/org/bbs/osgi/activity/AbsActivityWraper.java"), 'FragmentActivity', 'Activity'

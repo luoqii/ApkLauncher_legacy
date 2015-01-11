@@ -275,10 +275,10 @@ implements InstrumentationWrapper.CallBack
 			}
 		}
 		
-		agent.mHostActivity = this;
-		if (null != mSourceMerger) {
-			agent.onBundleResourceReady(mSourceMerger);
-		}
+//		agent.mHostActivity = this;
+//		if (null != mSourceMerger) {
+//			agent.onBundleResourceReady(mSourceMerger);
+//		}
 
 		return agent;
 	}
@@ -443,7 +443,4 @@ implements InstrumentationWrapper.CallBack
 //		super.overridePendingTransition(enterAnim, exitAnim);
 	}
 	
-	public void onClick(View view){
-		mActivityStub.onClick(view);
-	}
 }

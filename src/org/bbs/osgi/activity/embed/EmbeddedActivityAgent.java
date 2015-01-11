@@ -34,18 +34,18 @@ public abstract class EmbeddedActivityAgent extends ActivityAgent {
 	
 	public abstract Activity getTargetActivity();
 	
-	protected void onCreate(Bundle savedInstanceState) {
-		mTargetActivity = getTargetActivity();
-		
-		if (null == mTargetActivity) {
-			throw new IllegalStateException("target activity is null");
-		}
-		
-		copyContext(mHostActivity, mTargetActivity, mBundleResource);
-		
-		ActivityReflectUtil.onCreate(mTargetActivity, savedInstanceState);
-
-	}
+//	protected void onCreate(Bundle savedInstanceState) {
+//		mTargetActivity = getTargetActivity();
+//		
+//		if (null == mTargetActivity) {
+//			throw new IllegalStateException("target activity is null");
+//		}
+//		
+//		copyContext(mHostActivity, mTargetActivity, mBundleResource);
+//		
+//		ActivityReflectUtil.onCreate(mTargetActivity, savedInstanceState);
+//
+//	}
 
 	public static void copyContext(Activity hostActivity, Activity targetActivity, Resources newResource) {
 		// we become target's base context.
@@ -65,17 +65,17 @@ public abstract class EmbeddedActivityAgent extends ActivityAgent {
 		}
 	}
 	
-	protected void onResume() {
-		ActivityReflectUtil.onResume(mTargetActivity);
-	}
-
-	protected void onPause() {
-		ActivityReflectUtil.onPause(mTargetActivity);
-	}
-	
-	protected void onDestroy() {
-		ActivityReflectUtil.onDestroy(mTargetActivity);
-	}
+//	protected void onResume() {
+//		ActivityReflectUtil.onResume(mTargetActivity);
+//	}
+//
+//	protected void onPause() {
+//		ActivityReflectUtil.onPause(mTargetActivity);
+//	}
+//	
+//	protected void onDestroy() {
+//		ActivityReflectUtil.onDestroy(mTargetActivity);
+//	}
 	
 	@Override
 	public void onBundleResourceReady(Resources source) {

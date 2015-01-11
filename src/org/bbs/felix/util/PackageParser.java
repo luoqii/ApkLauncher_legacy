@@ -12,6 +12,7 @@ import org.bbs.felix.util.PackageParser.PackageInfoX.UsesSdkX;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
@@ -29,6 +30,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
+@SuppressLint("NewApi")
 public class PackageParser {
 	private static final String ATTR_META_DATA = "meta-data";
 	private static final String ATTR_BANNER = "banner";
@@ -103,6 +105,14 @@ public class PackageParser {
 		ApplicationInfo appInfo = info.applicationInfo;
 		
 		appInfo.packageName = info.packageName;
+		if (!TextUtils.isEmpty(appInfo.name)) {
+			if (!appInfo.name.contains(".")) {
+				appInfo.name = appInfo.packageName + "." + appInfo.name;
+			} else if (appInfo.name.startsWith(".")) {
+				appInfo.name = appInfo.packageName + "" + appInfo.name;
+			}
+		}
+		appInfo.className = appInfo.name;
 		
 		if (info.mUsesSdk != null) {
 			UsesSdkX sdk = info.mUsesSdk;

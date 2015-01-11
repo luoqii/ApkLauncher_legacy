@@ -69,7 +69,8 @@ public class Activator implements BundleActivator {
 //			return new AutoComplete1();
 
 			
-			return new ApiDemos();
+//			return new ApiDemos(null);
+			return null;
 		}
 		
 	}

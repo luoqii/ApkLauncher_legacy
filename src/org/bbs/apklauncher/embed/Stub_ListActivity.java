@@ -1,17 +1,17 @@
 package org.bbs.apklauncher.embed;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bbs.apklauncher.ApkLauncherApplication;
 import org.bbs.apklauncher.ApkLuncherActivity;
 import org.bbs.apklauncher.InstalledAPks;
 import org.bbs.apklauncher.PakcageMangerPolicy;
 import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
-import org.bbs.osgi.activity.AbsBundleActivity;
 import org.bbs.osgi.activity.ActivityAgent;
 import org.bbs.osgi.activity.BundleActivity;
+import org.bbs.osgi.activity.IActivityAgent;
 import org.bbs.osgi.activity.InstrumentationWrapper;
 import org.bbs.osgi.activity.InstrumentationWrapper.CallBack;
 import org.bbs.osgi.activity.LazyContext;
@@ -32,8 +32,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import dalvik.system.DexClassLoader;
 
-public class StubActivity extends 
-AbsBundleActivity
+public class Stub_ListActivity extends 
+//AbsBundleActivity
+StubBase_ListActivity
 implements CallBack {
 	
 	/**
@@ -45,17 +46,17 @@ implements CallBack {
 	 */
 	public static final String EXTRA_LIB_PATH = "EXTRA_LIB_PATH";
 	
-	static final String TAG = StubActivity.class.getSimpleName();
+	static final String TAG = Stub_ListActivity.class.getSimpleName();
 	
 	public static Map<String, WeakReference<ClassLoader>> sApk2ClassLoaderMap = new HashMap<String, WeakReference<ClassLoader>>();
 	public static Map<String, WeakReference<ResourcesMerger>> sApk2ResourceMap = new HashMap<String, WeakReference<ResourcesMerger>>();
 	public static Map<String, WeakReference<Context>> sApk2ContextMap = new HashMap<String, WeakReference<Context>>();	
-	public static Map<String, WeakReference<Application>> sApk2ApplicationtMap = new HashMap<String, WeakReference<Application>>();
+	public static Map<String, WeakReference<ApkBase_Application>> sApk2ApplicationtMap = new HashMap<String, WeakReference<ApkBase_Application>>();
 	private ClassLoader mClassLoader;
 	private String mApplicationClassName;
 	private String mActivityClassName;
 	private String mApkPath;
-	private Activity mTargetActivity;
+//	private Activity mTargetActivity;
 	private ResourcesMerger mResourceMerger;
 	private LazyContext mTargetContext;
 	private int mTargetThemeId;
@@ -97,7 +98,7 @@ implements CallBack {
 		mSysPm = getPackageManager();
 	}
 
-	protected ActivityAgent onPrepareActivityStub() {
+	protected IActivityAgent onPrepareActivityStub() {
 		
 		Intent intent = getIntent();
 		
@@ -141,18 +142,15 @@ implements CallBack {
 //		mTargetContext.packageNameReady(mActInfo.packageName);
 		
 		// do appliction init. must before activity init.
-		Application app = null;
-		WeakReference<Application> rp = sApk2ApplicationtMap.get(mApkPath);
+		ApkBase_Application app = null;
+		WeakReference<ApkBase_Application> rp = sApk2ApplicationtMap.get(mApkPath);
 		if (rp != null && rp.get() != null) {
 			app = rp.get();
 		} else {
 			if (!TextUtils.isEmpty(mApplicationClassName)) {
 				try {
-					app = ((Application) mClassLoader.loadClass(mApplicationClassName).newInstance());
-					sApk2ApplicationtMap.put(mApkPath, new WeakReference<Application>(app));
 					
 					LazyContext appBaseContext = new LazyContext(getApplication());
-					appBaseContext.applicationReady(app);
 					Resources appRes = BundleActivity.loadApkResource(mApkPath);
 					appRes = new ResourcesMerger(appRes, getResources());
 					appBaseContext.resReady(appRes);
@@ -166,10 +164,17 @@ implements CallBack {
 
 					appBaseContext.packageManagerReady(new PakcageMangerPolicy(mSysPm));
 					appBaseContext.packageNameReady(mPackageName);
+
+
+					Class clazz = mClassLoader.loadClass(mApplicationClassName);
+					Constructor c = clazz.getConstructor(new Class[]{Context.class});
+
+//					app = (Application) c.newInstance(new Object[]{appBaseContext});
+					app = (ApkBase_Application) c.newInstance(new Object[]{getApplication()});
+					sApk2ApplicationtMap.put(mApkPath, new WeakReference<ApkBase_Application>(app));
+//					((ApkLauncherApplication)getApplication()).attachBundleAplication(app, appBaseContext);
 					
-					((ApkLauncherApplication)getApplication()).attachBundleAplication(app, appBaseContext);
-					
-					sApk2ApplicationtMap.put(mApkPath, new WeakReference<Application>(app));
+					sApk2ApplicationtMap.put(mApkPath, new WeakReference<ApkBase_Application>(app));
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("error in create application: " + mApplicationClassName , e);
@@ -178,13 +183,9 @@ implements CallBack {
 		}
 		
 		// do activity init
-		ActivityAgent agent = null;
+		IActivityAgent agent = null;
 		InstrumentationWrapper.injectInstrumentation(this, this);
 		try {
-			Object instance = mClassLoader.loadClass(mActivityClassName).newInstance();
-			agent = (ActivityAgent) instance;
-			mTargetActivity =  (Activity) instance;
-			dumpActivityType(mTargetActivity);
 			WeakReference<ResourcesMerger> rr = sApk2ResourceMap.get(mApkPath);
 			if (rr != null && rr.get() != null) {
 				mResourceMerger = rr.get();
@@ -218,7 +219,21 @@ implements CallBack {
 //			ReflectUtil.ActivityReflectUtil.setResource(mTargetActivity, mResourceMerger);
 //			ReflectUtil.ActivityReflectUtil.setBaseContext(mTargetActivity, mTargetContext);
 //			ReflectUtil.ActivityReflectUtil.setWindowContext(getWindow(), mTargetContext);
-			mTargetActivity.setTheme(mTargetThemeId);
+
+//			Object instance = mClassLoader.loadClass(mActivityClassName).newInstance();
+//			agent = (ActivityAgent) instance;
+//			mTargetActivity =  (Activity) instance;
+			Class clazz = mClassLoader.loadClass(mActivityClassName);
+			Constructor c = clazz.getConstructor(new Class[]{Context.class});
+//			app = ((Application) clazz.newInstance());
+			
+//			Object o = c.newInstance(new Object[]{mTargetContext});
+			Object o = c.newInstance(new Object[]{this});
+			
+			agent = (IActivityAgent) o;
+			agent.setTheme(mTargetThemeId);
+
+			dumpActivityType(agent);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("error in create activity: " + mActivityClassName , e);
@@ -227,8 +242,8 @@ implements CallBack {
 		return agent;
 	}
 
-	private void dumpActivityType(Activity activity) {
-		Class clazz = activity.getClass();
+	private void dumpActivityType(Object obj) {
+		Class clazz = obj.getClass();
 		//==========+++++++++++
 		Log.d(TAG, "class      : " + clazz + " name: " + clazz.getName());
 		while (!clazz.getName().equals(Object.class.getName())) {
@@ -248,14 +263,6 @@ implements CallBack {
 			title = mActInfo.nonLocalizedLabel;
 		}
 		if (!TextUtils.isEmpty(title)) {
-			
-			//mTargetActivity.onCreate() is not called.
-			try {
-				mTargetActivity.setTitle(title);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
 			setTitle(title);
 		}
 	}
@@ -278,8 +285,8 @@ implements CallBack {
 			String c = com.getClassName();
 			intent.putExtra(EXTRA_ACTIVITY_CLASS_NAME, c);
 			if (!TextUtils.isEmpty(c)) {
-				intent.setComponent(new ComponentName(mRealBaseContext.getPackageName(), StubActivity.class.getCanonicalName()));
-				intent.putExtra(StubActivity.EXTRA_LIB_PATH, mLibPath);
+				intent.setComponent(new ComponentName(mRealBaseContext.getPackageName(), Stub_ListActivity.class.getCanonicalName()));
+				intent.putExtra(Stub_ListActivity.EXTRA_LIB_PATH, mLibPath);
 				ActivityInfoX a = InstalledAPks.getInstance().getActivityInfo(c);
 				if (a != null) {
 					ApkLuncherActivity.putExtra(a, intent);

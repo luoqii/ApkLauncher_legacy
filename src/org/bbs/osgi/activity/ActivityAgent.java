@@ -36,13 +36,13 @@ public class ActivityAgent extends ComponentAgent implements IActivityAgent {
 	protected FragmentActivity mHostActivity;
 
 	// life-cycle
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 	}
-	protected void onResume() {
+	public void onResume() {
 	}
-	protected void onPause() {
+	public void onPause() {
 	}
-	protected void onDestroy() {
+	public void onDestroy() {
 		mHostActivity = null;
 	}
 	/* (non-Javadoc)
@@ -558,6 +558,43 @@ public class ActivityAgent extends ComponentAgent implements IActivityAgent {
 	public void onWindowAttributesChanged(
 			android.view.WindowManager.LayoutParams params) {
 		// TODO Auto-generated method stub
+		
+	}
+	public void finish() {
+		// TODO Auto-generated method stub
+		
+	}
+	public void finishAffinity() {
+		// TODO Auto-generated method stub
+		
+	}
+	public void finishFromChild(Activity child) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void finishAfterTransition() {
+		// TODO Auto-generated method stub
+		
+	}
+	public void finishActivity(int requestCode) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void finishActivityFromChild(Activity child, int requestCode) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void finishAndRemoveTask() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Intent getIntent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void setTheme(int theme) {
 		
 	}
 }

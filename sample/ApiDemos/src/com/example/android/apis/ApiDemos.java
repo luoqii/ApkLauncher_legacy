@@ -24,14 +24,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bbs.apklauncher.embed.ApkBase_ListActivitytivity;
+import org.bbs.apklauncher.embed.ApkBase_ListActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -40,7 +40,11 @@ public class ApiDemos extends
 ApkBase_ListActivity
 {
 
-    @Override
+    public ApiDemos(Context base) {
+		super(base);
+	}
+
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         

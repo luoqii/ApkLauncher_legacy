@@ -163,6 +163,15 @@ D/PackageParser(28077):       0 name : getui.permission.GetuiService -->
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="org.bbs.apklauncher.embed.Stub_ListActivity"  
+            android:label="StubActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

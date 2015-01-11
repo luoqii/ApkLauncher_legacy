@@ -47,23 +47,6 @@ public class ApkLauncherApplication extends ApplicationWrapper {
 		mAgents.add(app);
 	}
 	
-//	@Override
-//	public PackageManager getPackageManager() {
-//		if (null != mLazyContext) {
-//			return mLazyContext.getPackageManager();
-//		}
-//		return super.getPackageManager();
-//	}
-
-//	@Override 
-//    protected void attachBaseContext(Context newBase) {
-//		if (mLazyContext == null) {
-//			mLazyContext = new LazyContext(newBase);
-//		}
-//		
-//    	mLazyContext = new LazyContext(newBase);
-//        super.attachBaseContext(mLazyContext);
-//    }
 	
 	private void attachExceptionHandler() {
 		final UncaughtExceptionHandler defaultUncaughtExceptionHandler = Thread

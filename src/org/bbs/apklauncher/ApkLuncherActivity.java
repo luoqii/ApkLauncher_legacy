@@ -122,8 +122,9 @@ public class ApkLuncherActivity extends Activity {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					};
-					
-					Intent launcher = new Intent(ApkLuncherActivity.this, StubActivity.class);
+
+//					Intent launcher = new Intent(ApkLuncherActivity.this, StubActivity.class);
+					Intent launcher = new Intent(ApkLuncherActivity.this, org.bbs.apklauncher.embed.Stub_ListActivity.class);
 					
 					putExtra(a, launcher);
 					launcher.putExtra(StubActivity.EXTRA_LIB_PATH, destDir.getPath());

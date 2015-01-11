@@ -17,8 +17,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AbsListView;
+import android.widget.SimpleAdapter;
 
 public interface IActivityAgent {
+	
+	public abstract void setTheme(int theme);
 
 	public abstract void onRestoreInstanceState(Bundle savedInstanceState);
 
@@ -96,6 +100,8 @@ public interface IActivityAgent {
 
 	public abstract void onConfigurationChanged(Configuration newConfig);
 
+	public abstract void onCreate(Bundle savedInstanceState);
+	
 	public abstract void onContentChanged();
 
 	public abstract void onCreateContextMenu(ContextMenu menu, View v,
@@ -173,5 +179,28 @@ public interface IActivityAgent {
 
 	public abstract void onWindowAttributesChanged(
 			android.view.WindowManager.LayoutParams params);
+
+	public abstract void finishActivity(int requestCode);
+
+	public abstract void finishAfterTransition();
+
+	public abstract void finishFromChild(Activity child);
+
+	public abstract void finishAffinity();
+
+	public abstract void finish();
+
+	public abstract void finishAndRemoveTask();
+
+	public abstract void finishActivityFromChild(Activity child, int requestCode);
+
+	public abstract void onDestroy();
+
+	public abstract void onPause();
+
+	public abstract void onResume();
+	
+
+	public abstract Intent getIntent();
 
 }

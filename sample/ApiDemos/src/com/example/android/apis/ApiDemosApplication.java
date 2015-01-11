@@ -16,7 +16,9 @@
 
 package com.example.android.apis;
 
-import android.app.Application;
+import org.bbs.apklauncher.embed.ApkBase_Application;
+
+import android.content.Context;
 
 /**
  * This is an example of a {@link android.app.Application} class.  This can
@@ -29,8 +31,19 @@ import android.app.Application;
  * See samples/ApiDemos/tests/src/com.example.android.apis/ApiDemosApplicationTests for an example
  * of how to perform unit tests on an Application object.
  */
-public class ApiDemosApplication extends Application {
-    @Override
+public class ApiDemosApplication extends 
+//Application 
+ApkBase_Application
+{
+    public ApiDemosApplication(Context base) {
+		super(base);
+		// TODO Auto-generated constructor stub
+	}
+    public ApiDemosApplication() {
+    	super(null);
+	}
+
+	@Override
     public void onCreate() {
     }
 }
