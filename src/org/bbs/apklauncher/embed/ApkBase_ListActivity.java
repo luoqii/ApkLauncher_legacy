@@ -352,4 +352,16 @@ implements IListActivityAgent
 	@Override
 	public void onResume() {
 	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onTrackballEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

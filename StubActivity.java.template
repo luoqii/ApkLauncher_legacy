@@ -4,6 +4,7 @@ import org.bbs.osgi.activity.ReflectUtil.ActivityReflectUtil;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -40,7 +41,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 	protected static boolean LOG_CONTENT = true && LOG;
 	protected static boolean LOG_DIALOG = true && LOG;
 	protected static boolean LOG_KEY_EVENT = true && LOG;
-	protected static boolean LOG_MOTTION_EVENT = false && LOG;
+	protected static boolean LOG_MOTTION_EVENT = true && LOG;
 	
 	protected STUB mActivityStub;
 
@@ -235,6 +236,8 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		}
 		super.onPanelClosed(featureId, menu);
 	}
+	
+	// FragmentActivity
 	@Override
 	protected boolean onPrepareOptionsPanel(View view, Menu menu) {
 		boolean show = mActivityStub.onPrepareOptionsPanel(view, menu);
@@ -243,6 +246,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		}
 		return show || super.onPrepareOptionsPanel(view, menu);
 	}
+	
 	@Override
 	public boolean onPreparePanel(int arg0, View arg1, Menu arg2) {
 		boolean show = mActivityStub.onPreparePanel(arg0, arg1, arg2);
@@ -453,7 +457,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		if (LOG_KEY_EVENT) {
 		    _log(TAG, "call stub onKeyDown(). handled: " + handled + " keyCode: " + keyCode + " event: " + event);
 		}
-		return  handled&& super.onKeyDown(keyCode, event);
+		return  !handled&& super.onKeyDown(keyCode, event);
 	}
 	@Override
 	public boolean onKeyLongPress(int keyCode, KeyEvent event) {
@@ -461,7 +465,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		if (LOG_KEY_EVENT) {
 		    _log(TAG, "call stub onKeyLongPress(). handled: " + handled + " keyCode: " + keyCode + " event: " + event);
 		}
-		return handled && super.onKeyLongPress(keyCode, event);
+		return !handled && super.onKeyLongPress(keyCode, event);
 	}
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -469,7 +473,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		if (LOG_KEY_EVENT) {
 		    _log(TAG, "call stub onKeyUp(). handled: " + handled + " keyCode: " + keyCode + " event: " + event);
 		}
-		return handled && super.onKeyUp(keyCode, event);
+		return !handled && super.onKeyUp(keyCode, event);
 	}
 	@Override
 	public boolean onKeyMultiple(int keyCode, int repeatCount, KeyEvent event) {
@@ -478,7 +482,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		    _log(TAG, "call stub onKeyMultiple(). handled: " + handled + " keyCode: " + keyCode 
 		    								+ " repeatCount: " + repeatCount + " event: " + event);
 		}
-		return handled && super.onKeyMultiple(keyCode, repeatCount, event);
+		return !handled && super.onKeyMultiple(keyCode, repeatCount, event);
 	}
 	@SuppressLint("NewApi")
 	@Override
@@ -487,7 +491,23 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		if (LOG_KEY_EVENT) {
 		    _log(TAG, "call stub onKeyShortcut(). handled: " + handled + " keyCode: " + keyCode + " event: " + event);
 		}
-		return handled && super.onKeyShortcut(keyCode, event);
+		return !handled && super.onKeyShortcut(keyCode, event);
+	}
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		boolean handled = mActivityStub.onTouchEvent(event);
+		if (LOG_KEY_EVENT) {
+		    _log(TAG, "call stub onTouchEvent(). handled: " + handled + " event: " + event);
+		}
+		return !handled && super.onTouchEvent(event);
+	}
+	@Override
+	public boolean onTrackballEvent(MotionEvent event) {
+		boolean handled = mActivityStub.onTrackballEvent(event);
+		if (LOG_KEY_EVENT) {
+		    _log(TAG, "call stub onTrackballEvent(). handled: " + handled + " event: " + event);
+		}
+		return !handled && super.onTrackballEvent(event);
 	}
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
@@ -495,7 +515,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		if (LOG_KEY_EVENT) {
 		    _log(TAG, "call stub dispatchKeyEvent(). handled: " + handled + " event: " + event);
 		}
-		return handled && super.dispatchKeyEvent( event);
+		return !handled && super.dispatchKeyEvent( event);
 	}
 	@SuppressLint("NewApi")
 	@Override
@@ -504,7 +524,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		if (LOG_KEY_EVENT) {
 		    _log(TAG, "call stub dispatchKeyShortcutEvent(). handled: " + handled + " event: " + event);
 		}
-		return handled && super.dispatchKeyShortcutEvent( event);
+		return !handled && super.dispatchKeyShortcutEvent( event);
 	}
 	@SuppressLint("NewApi")
 	@Override
@@ -513,7 +533,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		if (LOG_MOTTION_EVENT) {
 		    _log(TAG, "call stub dispatchTouchEvent(). handled: " + handled + " event: " + event);
 		}
-		return handled && super.dispatchTouchEvent(event);
+		return !handled && super.dispatchTouchEvent(event);
 	}
 	@Override
 	public boolean dispatchTrackballEvent(MotionEvent event) {
@@ -521,7 +541,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		if (LOG_MOTTION_EVENT) {
 		    _log(TAG, "call stub dispatchTrackballEvent(). handled: " + handled + " event: " + event);
 		}
-		return handled && super.dispatchTrackballEvent(event);
+		return !handled && super.dispatchTrackballEvent(event);
 	}
 	@SuppressLint("NewApi")
 	@Override
@@ -530,7 +550,7 @@ public abstract class CLASS_NAME extends BASE_CLAZZ_NAME {
 		if (LOG_MOTTION_EVENT) {
 		    _log(TAG, "call stub dispatchGenericMotionEvent(). handled: " + handled + " event: " + event);
 		}
-		return handled && super.dispatchGenericMotionEvent(event);
+		return !handled && super.dispatchGenericMotionEvent(event);
 	}
 	
 	// auxiliary function

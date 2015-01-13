@@ -203,4 +203,8 @@ public interface IActivityAgent {
 
 	public abstract Intent getIntent();
 
+	public abstract boolean onTouchEvent(MotionEvent event);
+
+	public abstract boolean onTrackballEvent(MotionEvent event);
+
 }

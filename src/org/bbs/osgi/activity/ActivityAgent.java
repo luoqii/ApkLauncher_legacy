@@ -597,4 +597,14 @@ public class ActivityAgent extends ComponentAgent implements IActivityAgent {
 	public void setTheme(int theme) {
 		
 	}
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean onTrackballEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
