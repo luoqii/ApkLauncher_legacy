@@ -132,6 +132,7 @@ public class PackageParser {
 				aX.labelRes = aX.labelRes != 0 ? aX.labelRes : appInfo.labelRes;
 				aX.nonLocalizedLabel = !TextUtils.isEmpty(aX.nonLocalizedLabel) ? aX.nonLocalizedLabel : appInfo.nonLocalizedLabel;
 				aX.packageName = appInfo.packageName;
+				aX.mPackageInfo = info;
 				
 				if (!TextUtils.isEmpty(aX.name) && 
 						(aX.name.startsWith(".") || !aX.name.contains("."))) {
@@ -227,6 +228,9 @@ public class PackageParser {
 		}
 		if (sdk.mMaxSdkVersion == 0) {
 			sdk.mMaxSdkVersion = sdk.mTargetSdkVersion;
+		}
+		if (sdk.mTargetSdkVersion == 0) {
+			sdk.mTargetSdkVersion = sdk.mMaxSdkVersion;
 		}
 		
 		info.mUsesSdk = sdk;
@@ -513,6 +517,9 @@ public class PackageParser {
 		
 		public String mApkPath;
 		public UsesSdkX mUsesSdk;
+		
+		// evaluate by application.
+		public String mLibPath;
 
 		public static void dump(int level, Bundle metaData) {
 			if (metaData != null) {
@@ -542,6 +549,7 @@ public class PackageParser {
 				Parcelable {
 			public IntentInfoX[] mIntents;
 			public String mApkPath;
+			public PackageInfoX mPackageInfo;
 
 			public int describeContents() {
 				return 0;

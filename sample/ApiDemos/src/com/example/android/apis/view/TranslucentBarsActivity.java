@@ -24,7 +24,7 @@ import com.example.android.apis.R;
  * This activity demonstrates a simple implementation of displaying
  * content with translucent system UI bars.
  */
-public class TranslucentBarsActivity extends Activity {
+public class TranslucentBarsActivity extends com.example.android.apis.Base_Activity {
     public TranslucentBarsActivity() {
     }
 

@@ -16,8 +16,7 @@
 
 package com.example.android.apis;
 
-import org.bbs.apklauncher.embed.ApkBase_Application;
-
+import android.app.Application;
 import android.content.Context;
 
 /**
@@ -32,16 +31,16 @@ import android.content.Context;
  * of how to perform unit tests on an Application object.
  */
 public class ApiDemosApplication extends 
-//Application 
-ApkBase_Application
+Application 
+//Target_Application
 {
-    public ApiDemosApplication(Context base) {
-		super(base);
-		// TODO Auto-generated constructor stub
-	}
-    public ApiDemosApplication() {
-    	super(null);
-	}
+//    public ApiDemosApplication(Context base) {
+//		super(base);
+//		// TODO Auto-generated constructor stub
+//	}
+//    public ApiDemosApplication() {
+//    	super(null);
+//	}
 
 	@Override
     public void onCreate() {

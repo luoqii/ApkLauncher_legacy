@@ -33,7 +33,7 @@ import android.widget.Toast;
  * @see Toast#LENGTH_SHORT
  * @see Toast#LENGTH_LONG
  */
-public class NotifyWithText extends Activity {
+public class NotifyWithText extends com.example.android.apis.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

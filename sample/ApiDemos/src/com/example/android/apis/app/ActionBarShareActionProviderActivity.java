@@ -38,7 +38,7 @@ import java.io.InputStream;
  * a menu item with ShareActionProvider as its action provider. The
  * ShareActionProvider is responsible for managing the UI for sharing actions.
  */
-public class ActionBarShareActionProviderActivity extends Activity {
+public class ActionBarShareActionProviderActivity extends com.example.android.apis.Base_Activity {
 
     private static final String SHARED_FILE_NAME = "shared.png";
 

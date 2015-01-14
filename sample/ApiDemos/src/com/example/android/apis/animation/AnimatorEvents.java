@@ -45,7 +45,7 @@ import android.widget.LinearLayout;
 /**
  * This demo shows how the AnimatorListener events work.
  */
-public class AnimatorEvents extends Activity {
+public class AnimatorEvents extends com.example.android.apis.Base_Activity {
 
     TextView startText, repeatText, cancelText, endText;
     TextView startTextAnimator, repeatTextAnimator, cancelTextAnimator, endTextAnimator;

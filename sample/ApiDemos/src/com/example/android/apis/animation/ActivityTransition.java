@@ -16,7 +16,7 @@
 package com.example.android.apis.animation;
 
 import com.example.android.apis.R;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.SharedElementCallback;
@@ -25,14 +25,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-
 import java.util.List;
 import java.util.Map;
 
 /**
  *
  */
-public class ActivityTransition extends Activity {
+@SuppressLint("NewApi")
+public class ActivityTransition extends com.example.android.apis.Base_Activity {
 
     private static final String TAG = "ActivityTransition";
 
@@ -119,7 +119,7 @@ public class ActivityTransition extends Activity {
         Intent intent = new Intent(this, ActivityTransitionDetails.class);
         intent.putExtra(KEY_ID, v.getTransitionName());
         ActivityOptions activityOptions
-                = ActivityOptions.makeSceneTransitionAnimation(this, mHero, "hero");
+                = ActivityOptions.makeSceneTransitionAnimation(mHostActivity, mHero, "hero");
         startActivity(intent, activityOptions.toBundle());
     }
 

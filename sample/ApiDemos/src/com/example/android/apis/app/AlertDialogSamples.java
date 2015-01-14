@@ -55,7 +55,7 @@ App/Dialog/Alert Dialog
  *         </tr>
  * </table> 
  */
-public class AlertDialogSamples extends Activity {
+public class AlertDialogSamples extends com.example.android.apis.Base_Activity {
     private static final int DIALOG_YES_NO_MESSAGE = 1;
     private static final int DIALOG_YES_NO_LONG_MESSAGE = 2;
     private static final int DIALOG_LIST = 3;
@@ -82,7 +82,7 @@ public class AlertDialogSamples extends Activity {
     protected Dialog onCreateDialog(int id) {
         switch (id) {
         case DIALOG_YES_NO_MESSAGE:
-            return new AlertDialog.Builder(AlertDialogSamples.this)
+            return new AlertDialog.Builder(AlertDialogSamples.this.getActivity())
                 .setTitle(R.string.alert_dialog_two_buttons_title)
                 .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -98,7 +98,7 @@ public class AlertDialogSamples extends Activity {
                 })
                 .create();
         case DIALOG_YES_NO_OLD_SCHOOL_MESSAGE:
-            return new AlertDialog.Builder(AlertDialogSamples.this, AlertDialog.THEME_TRADITIONAL)
+            return new AlertDialog.Builder(AlertDialogSamples.this.getActivity(), AlertDialog.THEME_TRADITIONAL)
                 .setIconAttribute(android.R.attr.alertDialogIcon)
                 .setTitle(R.string.alert_dialog_two_buttons_title)
                 .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {

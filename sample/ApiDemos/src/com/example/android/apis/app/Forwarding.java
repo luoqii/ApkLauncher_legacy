@@ -54,7 +54,7 @@ App/Activity/Receive Result
         </tr>
 </table>
  */
-public class Forwarding extends Activity
+public class Forwarding extends com.example.android.apis.Base_Activity
 {
     @Override
 	protected void onCreate(Bundle savedInstanceState)

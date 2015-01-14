@@ -35,13 +35,9 @@ AbsActivityWraper
 implements CallBack {
 	
 	/**
-	 * type {@link String}
+	 * type {@link ComponentName}
 	 */
-	public static final String EXTRA_ACTIVITY_CLASS_NAME = "EXTRA_ACTIVITY_CLASS_NAME";
-	/**
-	 * type {@link String}
-	 */
-	public static final String EXTRA_LIB_PATH = "EXTRA_LIB_PATH";
+	public static final String EXTRA_COMPONENT = "EXTRA_COMPONENT";
 	
 	static final String TAG = StubActivity.class.getSimpleName();
 	
@@ -105,8 +101,8 @@ implements CallBack {
 			intent.setExtrasClassLoader(sLastClassLoader);
 		}
 		
-		mActivityClassName = intent.getStringExtra(EXTRA_ACTIVITY_CLASS_NAME);
-		mLibPath = intent.getStringExtra(EXTRA_LIB_PATH);
+//		mActivityClassName = intent.getStringExtra(EXTRA_ACTIVITY_CLASS_NAME);
+//		mLibPath = intent.getStringExtra(EXTRA_LIB_PATH);
 		
 		mActInfo = InstalledAPks.getInstance().getActivityInfo(mActivityClassName);
 		mApplicationClassName = mActInfo.applicationInfo.className;
@@ -149,7 +145,7 @@ implements CallBack {
 					sApk2ApplicationtMap.put(mApkPath, new WeakReference<Application>(app));
 					
 					LazyContext appBaseContext = new LazyContext(getApplication());
-					appBaseContext.applicationReady(app);
+					appBaseContext.applicationContextReady(app);
 					Resources appRes = BundleActivity.loadApkResource(mApkPath);
 					appRes = new ResourcesMerger(appRes, getResources());
 					appBaseContext.resReady(appRes);
@@ -164,7 +160,7 @@ implements CallBack {
 					appBaseContext.packageManagerReady(new PakcageMangerPolicy(mSysPm));
 					appBaseContext.packageNameReady(mPackageName);
 					
-					((ApkLauncherApplication)getApplication()).attachBundleAplication(app, appBaseContext);
+//					((ApkLauncherApplication)getApplication()).attachBundleAplication(app, appBaseContext);
 					
 					sApk2ApplicationtMap.put(mApkPath, new WeakReference<Application>(app));
 				} catch (Exception e) {
@@ -270,16 +266,16 @@ implements CallBack {
 		Log.d(TAG, "processIntent. intent: " + intent);
 		ComponentName com = intent.getComponent();
 		if (null != com) {
-			String c = com.getClassName();
-			intent.putExtra(EXTRA_ACTIVITY_CLASS_NAME, c);
-			if (!TextUtils.isEmpty(c)) {
-				intent.setComponent(new ComponentName(mRealBaseContext.getPackageName(), StubActivity.class.getCanonicalName()));
-				intent.putExtra(StubActivity.EXTRA_LIB_PATH, mLibPath);
-				ActivityInfoX a = InstalledAPks.getInstance().getActivityInfo(c);
-				if (a != null) {
-					ApkLuncherActivity.putExtra(a, intent);
-				}
-			} 
+//			String c = com.getClassName();
+//			intent.putExtra(EXTRA_ACTIVITY_CLASS_NAME, c);
+//			if (!TextUtils.isEmpty(c)) {
+//				intent.setComponent(new ComponentName(mRealBaseContext.getPackageName(), StubActivity.class.getCanonicalName()));
+//				intent.putExtra(StubActivity.EXTRA_LIB_PATH, mLibPath);
+//				ActivityInfoX a = InstalledAPks.getInstance().getActivityInfo(c);
+//				if (a != null) {
+//					ApkLuncherActivity.putExtra(a, intent);
+//				}
+//			} 
 		} else {
 			ResolveInfo a = getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
 			Log.d(TAG, "ResolveInfo a: " + a);

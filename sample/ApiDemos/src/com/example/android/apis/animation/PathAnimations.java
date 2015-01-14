@@ -18,6 +18,7 @@ package com.example.android.apis.animation;
 import android.animation.ObjectAnimator;
 import android.animation.TypeConverter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -37,11 +38,11 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
-
 import com.example.android.apis.R;
 
 /** This application demonstrates the use of Path animation. */
-public class PathAnimations extends Activity implements
+@SuppressLint("NewApi")
+public class PathAnimations extends com.example.android.apis.Base_Activity implements
         RadioGroup.OnCheckedChangeListener, View.OnLayoutChangeListener {
 
     final static Path sTraversalPath = new Path();

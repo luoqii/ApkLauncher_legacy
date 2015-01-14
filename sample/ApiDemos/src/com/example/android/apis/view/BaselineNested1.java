@@ -25,7 +25,7 @@ import android.os.Bundle;
  * Baseline alignment includes elements within nested vertical
  * {@link android.widget.LinearLayout}s.
  */
-public class BaselineNested1 extends Activity {
+public class BaselineNested1 extends com.example.android.apis.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

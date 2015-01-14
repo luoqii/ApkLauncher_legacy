@@ -23,7 +23,7 @@ import android.view.View;
 import com.example.android.apis.R;
 
 
-public class ScrollBar3 extends Activity {
+public class ScrollBar3 extends com.example.android.apis.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

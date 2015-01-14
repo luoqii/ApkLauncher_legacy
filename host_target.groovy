@@ -20,14 +20,27 @@ def genActivityFile(File templateFile, File file, String superClassName, String 
  	ignoreTags = new ArrayList<String>();
 	tags = new ArrayList<String>();
        	if ("Activity".equals(superClassName)) {
- 		ignoreTags.add "ListActivity"
- 		ignoreTags.add "FragmentActivity"
+ 			ignoreTags.add "ListActivity"
+ 			ignoreTags.add "FragmentActivity"
+        	ignoreTags.add "ActivityGroup"
+        	ignoreTags.add "PreferenceActivity"
        	} else if ("ListActivity".equals(superClassName)) {
-		ignoreTags.add "FragmentActivity"
+			ignoreTags.add "FragmentActivity"
+           	ignoreTags.add "ActivityGroup"
+        	ignoreTags.add "PreferenceActivity"
         } else if ("FragmentActivity".equals(superClassName)) {
-   		ignoreTags.add "ListActivity"
- 		ignoreTags.add "No_FragmentActivity"
-	}
+   			ignoreTags.add "ListActivity"
+ 			ignoreTags.add "No_FragmentActivity"
+			ignoreTags.add "ActivityGroup"
+        	ignoreTags.add "PreferenceActivity"
+		} else if ("ActivityGroup".equals(superClassName)) {
+ 			ignoreTags.add "ListActivity"
+ 			ignoreTags.add "FragmentActivity"
+        	ignoreTags.add "PreferenceActivity"
+        } else if ("PreferenceActivity".equals(superClassName)) {
+ 			ignoreTags.add "FragmentActivity"
+        	ignoreTags.add "ActivityGroup"
+        }
 
     templateFile.eachLine {
         updateTag(it)
@@ -39,6 +52,8 @@ def genActivityFile(File templateFile, File file, String superClassName, String 
         if (it.contains(REPLACE)) {
             it = it.replaceAll(REPLACE, superClassName)
         } 
+        
+           it = it.replaceAll(/mHostActivity.isValidFragment\(/, 'ActivityReflectUtil.isValidFragment(mHostActivity, ');
 
         file.append(it)
         file.append("\n")
@@ -75,6 +90,8 @@ def updateTag(String it) {
 }
 
 def shouldIgnore(String it){
+	if (it.contains("tag_start:")) return false;
+	
 	for (String i : ignoreTags) {
 		for (String t : tags ) {
  			if (i.equals(t)){
@@ -93,6 +110,8 @@ def genHostTargetActivityFile(String dir, String superClassName) {
 }
 
 
-genHostTargetActivityFile "src/org/bbs/apklauncher/emb", 'Activity'
-genHostTargetActivityFile "src/org/bbs/apklauncher/emb", 'ListActivity'
-genHostTargetActivityFile "src/org/bbs/apklauncher/emb", 'FragmentActivity'
+genHostTargetActivityFile "src/org/bbs/apklauncher/emb/gen", 'Activity'
+genHostTargetActivityFile "src/org/bbs/apklauncher/emb/gen", 'ListActivity'
+genHostTargetActivityFile "src/org/bbs/apklauncher/emb/gen", 'ActivityGroup'
+genHostTargetActivityFile "src/org/bbs/apklauncher/emb/gen", 'FragmentActivity'
+genHostTargetActivityFile "src/org/bbs/apklauncher/emb/gen", 'PreferenceActivity'

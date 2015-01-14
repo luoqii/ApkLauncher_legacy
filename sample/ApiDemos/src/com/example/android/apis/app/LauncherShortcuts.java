@@ -49,7 +49,7 @@ import com.example.android.apis.R;
  * In a real application, you would probably use the shortcut intent to display specific content
  * or start a particular operation.
  */
-public class LauncherShortcuts extends Activity {
+public class LauncherShortcuts extends com.example.android.apis.Base_Activity {
 
     private static final String EXTRA_KEY = "com.example.android.apis.app.LauncherShortcuts";
 

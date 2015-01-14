@@ -27,7 +27,7 @@ import android.widget.SimpleCursorAdapter;
  * A list view example where the
  * data comes from a cursor.
  */
-public class List2 extends ListActivity {
+public class List2 extends com.example.android.apis.Base_ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

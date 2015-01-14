@@ -30,7 +30,7 @@ import android.os.Bundle;
  * SDK/src/com/example/android/apis/view/LabelView.java.
  * 
  */
-public class CustomView1 extends Activity {
+public class CustomView1 extends com.example.android.apis.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -44,7 +44,7 @@ import android.widget.LinearLayout;
 /**
  * This application demonstrates loading Animator objects from XML resources.
  */
-public class AnimationLoading extends Activity {
+public class AnimationLoading extends com.example.android.apis.Base_Activity {
 
     private static final int DURATION = 1500;
 

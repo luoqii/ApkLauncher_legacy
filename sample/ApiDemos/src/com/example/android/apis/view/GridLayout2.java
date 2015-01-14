@@ -24,7 +24,7 @@ import android.os.Bundle;
 /**
  * A form, showing use of the GridLayout API from XML.
  */
-public class GridLayout2 extends Activity {
+public class GridLayout2 extends com.example.android.apis.Base_Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.grid_layout_2);

@@ -27,7 +27,7 @@ import com.example.android.apis.R;
 /**
  * Demonstrates how to use a seek bar
  */
-public class SeekBar1 extends Activity implements SeekBar.OnSeekBarChangeListener {
+public class SeekBar1 extends com.example.android.apis.Base_Activity implements SeekBar.OnSeekBarChangeListener {
     
     SeekBar mSeekBar;
     TextView mProgressText;

@@ -28,7 +28,7 @@ import android.widget.Button;
  * to which text is appended.
  *
  */
-public class LogTextBox1 extends Activity {
+public class LogTextBox1 extends com.example.android.apis.Base_Activity {
     
     private LogTextBox mText;
     

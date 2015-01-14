@@ -39,7 +39,7 @@ import android.widget.Button;
  * This application demonstrates how to use LayoutTransition to automate transition animations
  * as items are removed from or added to a container.
  */
-public class LayoutAnimations extends Activity {
+public class LayoutAnimations extends com.example.android.apis.Base_Activity {
 
     private int numButtons = 1;
     ViewGroup container = null;

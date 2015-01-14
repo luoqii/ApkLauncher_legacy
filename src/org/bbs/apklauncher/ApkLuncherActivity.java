@@ -12,6 +12,7 @@ import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felixonandroid.R;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -112,22 +113,12 @@ public class ApkLuncherActivity extends Activity {
 					PackageInfoX.ActivityInfoX a = (ActivityInfoX) v.getTag();
 					
 					Log.d(TAG, "onClick. activity: " + a);
-					File destDir = null;
-					try {
-						File dataDir = getDir("plugin", 0);
-						destDir = new File(dataDir, a.packageName + "/lib");
-						AndroidUtil.extractZipEntry(new ZipFile(a.mApkPath), "lib/armeabi", destDir);
-						AndroidUtil.extractZipEntry(new ZipFile(a.mApkPath), "lib/armeabi-v7a", destDir);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					};
 
 //					Intent launcher = new Intent(ApkLuncherActivity.this, StubActivity.class);
-					Intent launcher = new Intent(ApkLuncherActivity.this, org.bbs.apklauncher.embed.Stub_ListActivity.class);
-					
+//					Intent launcher = new Intent(ApkLuncherActivity.this, org.bbs.apklauncher.emb.Stub_Activity.class);
+					Intent launcher = new Intent(ApkLuncherActivity.this, org.bbs.apklauncher.emb.Stub_ListActivity.class);
+									
 					putExtra(a, launcher);
-					launcher.putExtra(StubActivity.EXTRA_LIB_PATH, destDir.getPath());
 					
 					startActivity(launcher);
 				}
@@ -139,10 +130,7 @@ public class ApkLuncherActivity extends Activity {
 
 	public static  void putExtra(PackageInfoX.ActivityInfoX a,
 			Intent launcher) {
-//		launcher.putExtra(StubActivity.EXTRA_APK_PATH, a.mApkPath);
-//		launcher.putExtra(StubActivity.EXTRA_APPLICATION_CLASS_NAME, a.mPackageClassName);
-		launcher.putExtra(StubActivity.EXTRA_ACTIVITY_CLASS_NAME, a.name);
-//		launcher.putExtra(StubActivity.EXTRA_ACTIVITY_THEME, a.theme);
+		launcher.putExtra(StubActivity.EXTRA_COMPONENT, new ComponentName(a.packageName, a.name));
 	}
 	
 }

@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * This demo illustrates the use of CHOICE_MODE_MULTIPLE_MODAL, a.k.a. selection mode on GridView.
  */
-public class Grid3 extends Activity {
+public class Grid3 extends com.example.android.apis.Base_Activity {
 
     GridView mGrid;
 

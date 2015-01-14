@@ -28,7 +28,7 @@ import android.view.Gravity;
 import android.view.View;
 
 
-public class TableLayout8 extends Activity {
+public class TableLayout8 extends com.example.android.apis.Base_Activity {
     private boolean mStretch;
 
     @Override
