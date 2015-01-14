@@ -28,7 +28,7 @@ import android.os.Bundle;
  * Demonstrates wrapping a layout in a ScrollView.
  *
  */
-public class ScrollView1 extends Activity {
+public class ScrollView1 extends com.example.android.apis.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

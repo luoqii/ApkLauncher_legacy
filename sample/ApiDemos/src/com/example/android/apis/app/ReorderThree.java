@@ -25,7 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class ReorderThree extends Activity {
+public class ReorderThree extends com.example.android.apis.Base_Activity {
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);

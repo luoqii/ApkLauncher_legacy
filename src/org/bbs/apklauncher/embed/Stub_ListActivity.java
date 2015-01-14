@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.bbs.apklauncher.ApkLuncherActivity;
 import org.bbs.apklauncher.InstalledAPks;
-import org.bbs.apklauncher.PakcageMangerPolicy;
+import org.bbs.apklauncher.PackageManagerProxy;
 import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
 import org.bbs.osgi.activity.ActivityAgent;
 import org.bbs.osgi.activity.BundleActivity;
@@ -162,7 +162,7 @@ implements CallBack {
 					Log.d(TAG, "resolved application theme: " + appTheme);
 					appBaseContext.themeReady(appTheme);
 
-					appBaseContext.packageManagerReady(new PakcageMangerPolicy(mSysPm));
+					appBaseContext.packageManagerReady(new PackageManagerProxy(mSysPm));
 					appBaseContext.packageNameReady(mPackageName);
 
 

@@ -28,7 +28,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Chronometer;
 
-public class ChronometerDemo extends Activity {
+public class ChronometerDemo extends com.example.android.apis.Base_Activity {
     Chronometer mChronometer;
 
     @Override

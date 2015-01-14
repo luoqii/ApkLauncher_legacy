@@ -25,7 +25,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract.Contacts;
 import android.widget.AutoCompleteTextView;
 
-public class AutoComplete5 extends Activity {
+public class AutoComplete5 extends com.example.android.apis.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

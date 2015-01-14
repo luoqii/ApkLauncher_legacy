@@ -493,14 +493,23 @@ extends Resources
 
 	public DisplayMetrics getDisplayMetrics() {
 		
+//		try {
+//			return mFirst.getDisplayMetrics();
+//		} catch (NotFoundException e) {
+//			if (DEBUG) {
+//				e.printStackTrace();
+//			}
+//		}
+//		return mSecond.getDisplayMetrics();		
 		try {
-			return mFirst.getDisplayMetrics();
+			return mSecond.getDisplayMetrics();
 		} catch (NotFoundException e) {
 			if (DEBUG) {
 				e.printStackTrace();
 			}
 		}
-		return mSecond.getDisplayMetrics();
+		throw new RuntimeException("error in getDisplayMetrics().");
+//		return mSecond.getDisplayMetrics();
 	}
 
 

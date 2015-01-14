@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.os.Bundle;
 
-public class DateWidgets2 extends Activity {
+public class DateWidgets2 extends com.example.android.apis.Base_Activity {
 
     // where we display the selected date and time
     private TextView mTimeDisplay;

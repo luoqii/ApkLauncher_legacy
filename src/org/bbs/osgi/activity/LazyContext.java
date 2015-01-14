@@ -7,8 +7,11 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
@@ -34,7 +37,7 @@ ContextWrapper
 	private ClassLoader mClassLoader;
 	private ClassLoader mMergedClassLoader;
 	private PackageManager mPackageManager;
-	private Application mApp;
+	private Context mApp;
 	private Theme mTargetTheme;
 	private int mTargetThemeId;
 	
@@ -57,8 +60,8 @@ ContextWrapper
 		mPackageManager = pm;
 	}
 	
-	public void applicationReady(Application app){
-		mApp = app;
+	public void applicationContextReady(Context appContext){
+		mApp = appContext;
 	}
 	
 	public void packageNameReady(String packageName) {
@@ -186,7 +189,21 @@ ContextWrapper
 		Log.d(TAG, "SharedPreferences(). name: " + name + " pref: " + pref);
 		return pref;
 	}
+	
+	@Override
+	public ComponentName startService(Intent service) {
+//		return super.startService(service);
+		Log.w(TAG, "startService not implemented.");
+		return null;
+	}
 
+	@Override
+	public boolean bindService(Intent service, ServiceConnection conn, int flags) {
+//		return super.bindService(service, conn, flags);
+
+		Log.w(TAG, "bindService not implemented.");
+		return false;
+	}
 
 
 	class MergedAssetManager 

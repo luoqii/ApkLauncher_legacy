@@ -31,7 +31,7 @@ import android.widget.Spinner;
  * A gallery of basic controls: Button, EditText, RadioButton, Checkbox,
  * Spinner. This example uses the light theme.
  */
-public class Controls1 extends Activity {
+public class Controls1 extends com.example.android.apis.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

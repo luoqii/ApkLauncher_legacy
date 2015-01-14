@@ -1,7 +1,10 @@
-package org.bbs.apklauncher.emb;
+package org.bbs.apklauncher.emb.auto_gen;
+
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityGroup;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ListActivity;
@@ -15,6 +18,10 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ActionMode;
@@ -32,7 +39,9 @@ import android.support.v4.app.FragmentActivity;
 
 @SuppressLint("NewApi")
 public class Host_SUPER_CLASS extends SUPER_CLASS {
-	Target_SUPER_CLASS mTargetActivity;
+	private static final String TAG = Host_SUPER_CLASS.class.getSimpleName();
+	
+	protected  Target_SUPER_CLASS mTargetActivity;
 	
 
 
@@ -319,153 +328,158 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 
 	@Override
 	public View onCreatePanelView(int featureId) {
-		return super.onCreatePanelView(featureId);
-//		return super.onCreatePanelView(featureId);
+		View view =  mTargetActivity.onCreatePanelView(featureId);
+		return view != null ? view : super.onCreatePanelView(featureId);
 	}
 
 	@Override
 	public boolean onCreatePanelMenu(int featureId, Menu menu) {
-		return super.onCreatePanelMenu(featureId, menu);
-//		return super.onCreatePanelMenu(featureId, menu);
+		boolean show =  mTargetActivity.onCreatePanelMenu(featureId, menu);
+		return show ? true : super.onCreatePanelMenu(featureId, menu);
 	}
 
 	@Override
 	public boolean onPreparePanel(int featureId, View view, Menu menu) {
-		return super.onPreparePanel(featureId, view, menu);
-//		return super.onPreparePanel(featureId, view, menu);
+		boolean show =  mTargetActivity.onPreparePanel(featureId, view, menu);
+		return show ? true : super.onPreparePanel(featureId, view, menu);
 	}
 
 	@Override
 	public boolean onMenuOpened(int featureId, Menu menu) {
-		return super.onMenuOpened(featureId, menu);
-//		return super.onMenuOpened(featureId, menu);
+		boolean show = mTargetActivity.onMenuOpened(featureId, menu);
+		return show ? true : super.onMenuOpened(featureId, menu);
 	}
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		// TODO Auto-generated method stub
-		return super.onMenuItemSelected(featureId, item);
+		boolean finish = mTargetActivity.onMenuItemSelected(featureId, item);
+		return finish ? true : super.onMenuItemSelected(featureId, item);
 	}
 
 	@Override
 	public void onPanelClosed(int featureId, Menu menu) {
-		// TODO Auto-generated method stub
-		super.onPanelClosed(featureId, menu);
+		mTargetActivity.onPanelClosed(featureId, menu);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-		return super.onCreateOptionsMenu(menu);
+		boolean show =  mTargetActivity.onCreateOptionsMenu(menu);
+		return show ? true : super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-		return super.onPrepareOptionsMenu(menu);
+		boolean show = mTargetActivity.onPrepareOptionsMenu(menu);
+		return show ? true : super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		return super.onOptionsItemSelected(item);
+		return mTargetActivity.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public boolean onNavigateUp() {
-		return super.onNavigateUp();
+		boolean todo = mTargetActivity.onNavigateUp();
+		return todo ? true : super.onNavigateUp();
 	}
 
 	@Override
 	public boolean onNavigateUpFromChild(Activity child) {
-		return super.onNavigateUpFromChild(child);
+		boolean todo = mTargetActivity.onNavigateUpFromChild(child);
+		return todo ? true : super.onNavigateUpFromChild(child);
 	}
 
 	@Override
 	public void onCreateNavigateUpTaskStack(TaskStackBuilder builder) {
+		mTargetActivity.onCreateNavigateUpTaskStack(builder);
 		super.onCreateNavigateUpTaskStack(builder);
 	}
 
 	@Override
 	public void onPrepareNavigateUpTaskStack(TaskStackBuilder builder) {
+		mTargetActivity.onPrepareNavigateUpTaskStack(builder);
 		super.onPrepareNavigateUpTaskStack(builder);
 	}
 
 	@Override
 	public void onOptionsMenuClosed(Menu menu) {
+		mTargetActivity.onOptionsMenuClosed(menu);
 		super.onOptionsMenuClosed(menu);
 	}
 
 	@Override
 	public void openOptionsMenu() {
+		mTargetActivity.openOptionsMenu();
 		super.openOptionsMenu();
 	}
 
 	@Override
 	public void closeOptionsMenu() {
-		// TODO Auto-generated method stub
+		mTargetActivity.closeOptionsMenu();
 		super.closeOptionsMenu();
 	}
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		// TODO Auto-generated method stub
+		mTargetActivity.onCreateContextMenu(menu, v, menuInfo);
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		return super.onContextItemSelected(item);
+		boolean consumed =  mTargetActivity.onContextItemSelected(item);
+		return consumed ? true : super.onContextItemSelected(item);
 	}
 
 	@Override
 	public void onContextMenuClosed(Menu menu) {
-		// TODO Auto-generated method stub
+		mTargetActivity.onContextMenuClosed(menu);
 		super.onContextMenuClosed(menu);
 	}
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		// TODO Auto-generated method stub
-		return super.onCreateDialog(id);
+		Dialog dia =  mTargetActivity.onCreateDialog(id);
+		return dia != null ? dia : super.onCreateDialog(id);
 	}
 
 	@Override
 	protected Dialog onCreateDialog(int id, Bundle args) {
-		// TODO Auto-generated method stub
-		return super.onCreateDialog(id, args);
+		Dialog dia = mTargetActivity.onCreateDialog(id, args);
+		return dia != null ? dia : super.onCreateDialog(id, args);
 	}
 
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
-		// TODO Auto-generated method stub
 		super.onPrepareDialog(id, dialog);
+		mTargetActivity.onPrepareDialog(id, dialog);
 	}
 
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog, Bundle args) {
-		// TODO Auto-generated method stub
 		super.onPrepareDialog(id, dialog, args);
+//		mTargetActivity.onPrepareDialog(id, dialog, args);
 	}
 
 	@Override
 	public boolean onSearchRequested() {
-		// TODO Auto-generated method stub
-		return super.onSearchRequested();
+		boolean launched =  mTargetActivity.onSearchRequested();
+		return launched ? true : super.onSearchRequested();
 	}
 
 	@Override
 	protected void onApplyThemeResource(Theme theme, int resid, boolean first) {
-		super.onApplyThemeResource(theme, resid, first);
-		mTargetActivity.onApplyThemeResource(theme, resid, first);
+		super.onApplyThemeResource(theme, resid, first);		
+		if (null != mTargetActivity) {
+			mTargetActivity.onApplyThemeResource(theme, resid, first);
+		}
 	}
 
 	@Override
 	public void overridePendingTransition(int enterAnim, int exitAnim) {
 		super.overridePendingTransition(enterAnim, exitAnim);
-		mTargetActivity.overridePendingTransition(enterAnim, exitAnim);
 	}
 
 	@Override
@@ -495,15 +509,15 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 
 	@Override
 	public View onCreateView(String name, Context context, AttributeSet attrs) {
-//		return super.onCreateView(name, context, attrs);
-		return mTargetActivity.onCreateView(name, context, attrs);
+		View view = mTargetActivity.onCreateView(name, context, attrs);
+		return view != null ? view : super.onCreateView(name, context, attrs);
 	}
 
 	@Override
 	public View onCreateView(View parent, String name, Context context,
 			AttributeSet attrs) {
-//		return super.onCreateView(parent, name, context, attrs);
-		return mTargetActivity.onCreateView(parent, name, context, attrs);
+		View view = mTargetActivity.onCreateView(parent, name, context, attrs);
+		return view != null ? view : super.onCreateView(parent, name, context, attrs);
 	}
 
 	@Override
@@ -532,7 +546,6 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 	public void onActionModeFinished(ActionMode mode) {
 		super.onActionModeFinished(mode);
 	}
-	
 		
 	// tag_start:ListActivity
 	@Override
@@ -560,4 +573,65 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 		return o != null ? o : super.onRetainCustomNonConfigurationInstance();
 	}
 	// tag_end:FragmentActivity
+
+	// tag_start:PreferenceActivity
+	@Override
+	public boolean onIsMultiPane() {
+//		return super.onIsMultiPane();
+		return mTargetActivity.onIsMultiPane();
+	}
+
+	@Override
+	public boolean onIsHidingHeaders() {
+//		return super.onIsHidingHeaders();
+		return mTargetActivity.onIsHidingHeaders();
+	}
+
+	@Override
+	public Header onGetInitialHeader() {
+//		return super.onGetInitialHeader();
+		return mTargetActivity.onGetInitialHeader();
+	}
+
+	@Override
+	public Header onGetNewHeader() {
+//		return super.onGetNewHeader();
+		return mTargetActivity.onGetNewHeader();
+	}
+
+	@Override
+	public void onBuildHeaders(List<Header> target) {
+//		super.onBuildHeaders(target);
+		super.onBuildHeaders(target);
+	}
+
+	@Override
+	public void onHeaderClick(Header header, int position) {
+//		super.onHeaderClick(header, position);
+		mTargetActivity.onHeaderClick(header, position);
+	}
+
+	@Override
+	public Intent onBuildStartFragmentIntent(String fragmentName, Bundle args,
+			int titleRes, int shortTitleRes) {
+//		return super.onBuildStartFragmentIntent(fragmentName, args, titleRes,
+//				shortTitleRes);
+		return mTargetActivity.onBuildStartFragmentIntent(fragmentName, args, titleRes,
+				shortTitleRes);
+	}
+
+	@Override
+	public boolean onPreferenceStartFragment(PreferenceFragment caller,
+			Preference pref) {
+//		return super.onPreferenceStartFragment(caller, pref);
+		return mTargetActivity.onPreferenceStartFragment(caller, pref);
+	}
+
+	@Override
+	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
+			Preference preference) {
+//		return super.onPreferenceTreeClick(preferenceScreen, preference);
+		return mTargetActivity.onPreferenceTreeClick(preferenceScreen, preference);
+	}
+	// tag_end:PreferenceActivity
 }

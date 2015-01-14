@@ -22,7 +22,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 
-public class TableLayout2 extends Activity {
+public class TableLayout2 extends com.example.android.apis.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

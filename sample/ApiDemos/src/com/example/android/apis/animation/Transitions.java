@@ -15,6 +15,7 @@
  */
 package com.example.android.apis.animation;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -30,20 +31,21 @@ import com.example.android.apis.R;
  * are loaded from resource files and transitions are run between those scenes
  * as well as a dynamically-configured scene.
  */
-public class Transitions extends Activity {
+@SuppressLint("NewApi")
+public class Transitions extends com.example.android.apis.Base_Activity {
 
     Scene mScene1, mScene2, mScene3;
     ViewGroup mSceneRoot;
     TransitionManager mTransitionManager;
 
-    @Override
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transition);
 
         mSceneRoot = (ViewGroup) findViewById(R.id.sceneRoot);
 
-        TransitionInflater inflater = TransitionInflater.from(this);
+        TransitionInflater inflater = TransitionInflater.from(this.getActivity());
 
         // Note that this is not the only way to create a Scene object, but that
         // loading them from layout resources cooperates with the

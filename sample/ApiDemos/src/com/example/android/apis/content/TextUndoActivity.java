@@ -29,7 +29,7 @@ import android.widget.TextView;
 /**
  * Simple example of using an UndoManager for editing text in a TextView.
  */
-public class TextUndoActivity extends Activity {
+public class TextUndoActivity extends com.example.android.apis.Base_Activity {
     //UndoManager mUndoManager;
 
     @Override

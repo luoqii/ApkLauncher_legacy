@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Date;
 
+import org.bbs.apklauncher.emb.Host_Application;
 import org.bbs.osgi.activity.ApplicationAgent;
 import org.bbs.osgi.activity.ApplicationWrapper;
 import org.bbs.osgi.activity.LazyContext;
@@ -23,7 +24,7 @@ import android.os.Environment;
 import android.provider.CallLog.Calls;
 import android.util.Log;
 
-public class ApkLauncherApplication extends ApplicationWrapper {
+public class ApkLauncherApplication extends Host_Application {
 	private static final String TAG = ApkLauncherApplication.class.getSimpleName();
 	public static final String APK_LAUNCHER_DIR = "apklauncher";
 	
@@ -32,19 +33,27 @@ public class ApkLauncherApplication extends ApplicationWrapper {
 		super.onCreate();
 		
 		attachExceptionHandler();
+		
 		File apkDir = getDir(APK_LAUNCHER_DIR, 0);
 		apkDir = new File(Environment.getExternalStorageDirectory(), "apk");
+		
 		Log.d(TAG, "apkDir: " + apkDir);
 		InstalledAPks apks = InstalledAPks.getInstance();
 		apks.init(this, apkDir);
 	}
 	
-	public void attachBundleAplication(Application app, Context baseContext){
-		ReflectUtil.ApplicationUtil.callAttach(app, baseContext);
-		
-		callStubOnCreate(app);
-		
-		mAgents.add(app);
+//	public void attachBundleAplication(Application app, Context baseContext){
+//		ReflectUtil.ApplicationUtil.callAttach(app, baseContext);
+//		
+//		callStubOnCreate(app);
+//		
+//		mAgents.add(app);
+//	}
+	
+	@Override
+	public Context getApplicationContext() {
+		// TODO Auto-generated method stub
+		return super.getApplicationContext();
 	}
 	
 	

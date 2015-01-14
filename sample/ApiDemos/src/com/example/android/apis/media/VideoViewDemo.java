@@ -24,7 +24,7 @@ import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-public class VideoViewDemo extends Activity {
+public class VideoViewDemo extends com.example.android.apis.Base_Activity {
 
     /**
      * TODO: Set the path variable to a streaming video URL or a local media

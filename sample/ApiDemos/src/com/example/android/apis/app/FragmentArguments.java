@@ -33,7 +33,7 @@ import android.widget.TextView;
  * Demonstrates a fragment that can be configured through both Bundle arguments
  * and layout attributes.
  */
-public class FragmentArguments extends Activity {
+public class FragmentArguments extends com.example.android.apis.Base_Activity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -30,7 +30,7 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 
-public class PreferencesFromCode extends PreferenceActivity {
+public class PreferencesFromCode extends com.example.android.apis.Base_PreferenceActivity {
 
     private static final String PARENT_CHECKBOX_PREFERENCE = "parent_checkbox_preference";
 

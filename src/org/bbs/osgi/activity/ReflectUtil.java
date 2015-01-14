@@ -333,6 +333,17 @@ public class ReflectUtil {
 					throw new RuntimeException("error in onStop", e);
 				}
 			}
+			public static boolean isValidFragment(Activity activity, String fragmentName) {
+				try {
+					Method m = Activity.class.getDeclaredMethod("isValidFragment", new Class[]{String.class});
+					m.setAccessible(true);
+					return (boolean) m.invoke(activity, new Object[]{fragmentName});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in isValidFragment", e);
+				}
+			}
+			
 			public static void onDestroy(Activity activity){
 				try {
 					Method m = Activity.class.getDeclaredMethod("onDestroy", (Class[])null);
@@ -573,12 +584,12 @@ public class ReflectUtil {
 				
 			}
 
-			public static void attachBaseContext(Activity activity,
-					Application application) {
+			public static void attachBaseContext(Object Object,
+					Context context) {
 				try {
 					Method m = ContextWrapper.class.getDeclaredMethod("attachBaseContext", new Class[]{Context.class});
 					m.setAccessible(true);
-					m.invoke(activity, new Object[]{application});
+					m.invoke(Object, new Object[]{context});
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("error in attachBaseContext", e);

@@ -108,13 +108,5 @@ public class BackUpActivity extends Activity {
 		}
 		
 	}
-
-	public static  void putExtra(PackageInfoX.ActivityInfoX a,
-			Intent launcher) {
-//		launcher.putExtra(StubActivity.EXTRA_APK_PATH, a.mApkPath);
-//		launcher.putExtra(StubActivity.EXTRA_APPLICATION_CLASS_NAME, a.mPackageClassName);
-		launcher.putExtra(StubActivity.EXTRA_ACTIVITY_CLASS_NAME, a.name);
-//		launcher.putExtra(StubActivity.EXTRA_ACTIVITY_THEME, a.theme);
-	}
 	
 }

@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipFile;
 
+import org.bbs.apklauncher.emb.LoadApk;
 import org.bbs.felix.util.AndroidUtil;
 import org.bbs.felix.util.PackageParser;
 import org.bbs.felix.util.PackageParser.PackageInfoX;
 import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felixonandroid.R;
 
+import dalvik.system.DexClassLoader;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -112,22 +115,13 @@ public class ApkLuncherActivity extends Activity {
 					PackageInfoX.ActivityInfoX a = (ActivityInfoX) v.getTag();
 					
 					Log.d(TAG, "onClick. activity: " + a);
-					File destDir = null;
-					try {
-						File dataDir = getDir("plugin", 0);
-						destDir = new File(dataDir, a.packageName + "/lib");
-						AndroidUtil.extractZipEntry(new ZipFile(a.mApkPath), "lib/armeabi", destDir);
-						AndroidUtil.extractZipEntry(new ZipFile(a.mApkPath), "lib/armeabi-v7a", destDir);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					};
 
-//					Intent launcher = new Intent(ApkLuncherActivity.this, StubActivity.class);
-					Intent launcher = new Intent(ApkLuncherActivity.this, org.bbs.apklauncher.embed.Stub_ListActivity.class);
-					
+					ClassLoader cl = new DexClassLoader(a.mApkPath, getDir("tmp", 0).getPath(), null, getClassLoader());
+					String superClassName = LoadApk.getActivitySuperClassName(cl, a.name);
+					Intent launcher = new Intent();
+					ComponentName com= new ComponentName(getPackageName(), superClassName.replace("Target", "Stub"));
+					launcher.setComponent(com);
 					putExtra(a, launcher);
-					launcher.putExtra(StubActivity.EXTRA_LIB_PATH, destDir.getPath());
 					
 					startActivity(launcher);
 				}
@@ -139,10 +133,7 @@ public class ApkLuncherActivity extends Activity {
 
 	public static  void putExtra(PackageInfoX.ActivityInfoX a,
 			Intent launcher) {
-//		launcher.putExtra(StubActivity.EXTRA_APK_PATH, a.mApkPath);
-//		launcher.putExtra(StubActivity.EXTRA_APPLICATION_CLASS_NAME, a.mPackageClassName);
-		launcher.putExtra(StubActivity.EXTRA_ACTIVITY_CLASS_NAME, a.name);
-//		launcher.putExtra(StubActivity.EXTRA_ACTIVITY_THEME, a.theme);
+		launcher.putExtra(StubActivity.EXTRA_COMPONENT, new ComponentName(a.packageName, a.name));
 	}
 	
 }

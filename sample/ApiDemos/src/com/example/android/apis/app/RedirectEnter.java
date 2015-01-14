@@ -31,7 +31,7 @@ import android.widget.Button;
 /**
  * Entry into our redirection example, describing what will happen.
  */
-public class RedirectEnter extends Activity
+public class RedirectEnter extends com.example.android.apis.Base_Activity
 {
     @Override
 	protected void onCreate(Bundle savedInstanceState)

@@ -20,19 +20,16 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageItemInfo;
 import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.WindowManager;
 
 @SuppressLint("NewApi")
 public class PackageParser {
-	private static final String ATTR_META_DATA = "meta-data";
+	private static final String TAG_META_DATA = "meta-data";
 	private static final String ATTR_BANNER = "banner";
 	private static final String ATTR_LOGO = "logo";
 	private static final String TAG = PackageParser.class.getSimpleName();
@@ -116,6 +113,14 @@ public class PackageParser {
 		
 		if (info.mUsesSdk != null) {
 			UsesSdkX sdk = info.mUsesSdk;
+
+			if (sdk.mMaxSdkVersion == 0) {
+				sdk.mMaxSdkVersion = sdk.mTargetSdkVersion;
+			}
+			if (sdk.mTargetSdkVersion == 0) {
+				sdk.mTargetSdkVersion = sdk.mMaxSdkVersion;
+			}
+			
 			if (sdk.mMaxSdkVersion > 0) {
 				appInfo.targetSdkVersion = sdk.mTargetSdkVersion;
 			}
@@ -132,6 +137,7 @@ public class PackageParser {
 				aX.labelRes = aX.labelRes != 0 ? aX.labelRes : appInfo.labelRes;
 				aX.nonLocalizedLabel = !TextUtils.isEmpty(aX.nonLocalizedLabel) ? aX.nonLocalizedLabel : appInfo.nonLocalizedLabel;
 				aX.packageName = appInfo.packageName;
+				aX.mPackageInfo = info;
 				
 				if (!TextUtils.isEmpty(aX.name) && 
 						(aX.name.startsWith(".") || !aX.name.contains("."))) {
@@ -188,6 +194,8 @@ public class PackageParser {
 				info.versionName = attName;
 			} else if (ATTR_VERSION_CODE.equals(attName)) {
 				info.versionCode = Integer.parseInt(attValue);
+			} else {
+				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
 			}
 		}
 
@@ -205,6 +213,8 @@ public class PackageParser {
 				parserApplication(parser, info);
 			} else if (TAG_USES_SDK.equals(tagName)) {
 				parserUsesSdk(parser, info);
+			} else {
+				Log.w(TAG, "un-handled tag: " + tagName);
 			}
 		}
 
@@ -223,10 +233,9 @@ public class PackageParser {
 				sdk.mMaxSdkVersion = Integer.parseInt(attValue);
 			} else if ("targetSdkVersion".equals(attName)) {
 				sdk.mTargetSdkVersion = Integer.parseInt(attValue);
-			} 
-		}
-		if (sdk.mMaxSdkVersion == 0) {
-			sdk.mMaxSdkVersion = sdk.mTargetSdkVersion;
+			} else {
+				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+			}
 		}
 		
 		info.mUsesSdk = sdk;
@@ -243,6 +252,8 @@ public class PackageParser {
 			String attValue = parser.getAttributeValue(i);
 			if (ATTR_THEME.equals(attName)) {
 				app.theme = Integer.parseInt(attValue.substring(1));
+			} else {
+				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
 			}
 		}
 		parsePackageItem(parser, app);
@@ -260,7 +271,7 @@ public class PackageParser {
 
 			if (TAG_ACTIVITY.equals(tagName)) {
 				parserActivity(parser, info);
-			} else if (ATTR_META_DATA.equals(tagName)) {
+			} else if (TAG_META_DATA.equals(tagName)) {
 				if (info.applicationInfo == null){
 					info.applicationInfo = new ApplicationInfoX();
 				}
@@ -268,6 +279,8 @@ public class PackageParser {
 					info.applicationInfo.metaData = new Bundle();
 				}
 				parserMetaData(parser, info.applicationInfo.metaData);
+			} else {
+				Log.w(TAG, "un-handled tag: " + tagName);
 			}
 		}
 
@@ -297,11 +310,13 @@ public class PackageParser {
 				if (attValue.startsWith("@")) {
 					info.logo = Integer.parseInt(attValue.substring(1));
 				}
-			}else if (ATTR_BANNER.equals(attName)) {
+			} else if (ATTR_BANNER.equals(attName)) {
 				if (attValue.startsWith("@")) {
 					info.logo = Integer.parseInt(attValue.substring(1));
 				}
-			}   
+			} else {
+				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+			} 
 		}
 	}
 
@@ -320,6 +335,8 @@ public class PackageParser {
 				if (attValue.startsWith("@")) {
 					value = attValue;
 				}
+			} else {
+				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
 			}
 		}
 		
@@ -339,7 +356,9 @@ public class PackageParser {
 			String attValue = parser.getAttributeValue(i);
 			if (ATTR_THEME.equals(attName)) {
 				a.theme = Integer.parseInt(attValue.substring(1));
-			} 
+			} else {
+				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+			}
 		}
 		parsePackageItem(parser, a);		
 		
@@ -363,11 +382,13 @@ public class PackageParser {
 
 			if (TAG_INTENT_FILTER.equals(tagName)) {
 				parserIntentFilter(parser, info, a);
-			} else if (ATTR_META_DATA.equals(tagName)) {
+			} else if (TAG_META_DATA.equals(tagName)) {
 				if (a.metaData == null) {
 					a.metaData = new Bundle();
 				}
 				parserMetaData(parser, a.metaData);
+			} else {
+				Log.w(TAG, "un-handled tag: " + tagName);
 			}
 			
 		}
@@ -407,6 +428,8 @@ public class PackageParser {
 				parserAction(parser, info, i);
 			} else if (TAG_CATEGORY.equals(tagName)) {
 				parseCategory(parser, info, i);
+			} else {
+				Log.w(TAG, "un-handled tag: " + tagName);
 			}
 		}
 
@@ -435,6 +458,8 @@ public class PackageParser {
 			if (ATTR_NAME.equals(attName)) {
 				String category = attValue;
 				intentInfo.addCategory(category);
+			} else {
+				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
 			}
 		}
 	}
@@ -449,6 +474,8 @@ public class PackageParser {
 			if (ATTR_NAME.equals(attName)) {
 				String action = attValue;
 				intentInfo.addAction(action);
+			} else {
+				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
 			}
 		}
 	}
@@ -513,6 +540,9 @@ public class PackageParser {
 		
 		public String mApkPath;
 		public UsesSdkX mUsesSdk;
+		
+		// evaluate by application.
+		public String mLibPath;
 
 		public static void dump(int level, Bundle metaData) {
 			if (metaData != null) {
@@ -542,6 +572,7 @@ public class PackageParser {
 				Parcelable {
 			public IntentInfoX[] mIntents;
 			public String mApkPath;
+			public PackageInfoX mPackageInfo;
 
 			public int describeContents() {
 				return 0;

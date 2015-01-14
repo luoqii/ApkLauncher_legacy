@@ -24,7 +24,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class ActivityRecreate extends Activity {
+public class ActivityRecreate extends com.example.android.apis.Base_Activity {
     int mCurTheme;
 
     @Override

@@ -172,6 +172,40 @@ D/PackageParser(28077):       0 name : getui.permission.GetuiService -->
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        
+        
+        <activity
+            android:name="org.bbs.apklauncher.emb.auto_gen.Stub_ListActivity"  
+            android:label="StubActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.bbs.apklauncher.emb.auto_gen.Stub_Activity"  
+            android:label="StubActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.bbs.apklauncher.emb.auto_gen.Stub_FragmentActivity"  
+            android:label="StubActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        
+        
+        <!-- youkutv service -->
+        <service android:name="com.youku.tv.settings.service.AreasService" />
     </application>
 
 </manifest>

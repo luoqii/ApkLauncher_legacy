@@ -28,7 +28,7 @@ import android.os.Bundle;
  * Demonstrates a horizontal linear layout with equally sized columns.
  *
  */
-public class LinearLayout4 extends Activity {
+public class LinearLayout4 extends com.example.android.apis.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

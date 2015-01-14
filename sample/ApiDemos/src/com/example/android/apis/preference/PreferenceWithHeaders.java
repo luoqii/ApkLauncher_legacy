@@ -16,23 +16,23 @@
 
 package com.example.android.apis.preference;
 
-import com.example.android.apis.R;
+import java.util.List;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.preference.PreferenceActivity.Header;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Button;
 
-import java.util.List;
+import com.example.android.apis.R;
 
 /**
  * Demonstration of PreferenceActivity to make a top-level preference
  * panel with headers.
  */
 
-public class PreferenceWithHeaders extends PreferenceActivity {
+public class PreferenceWithHeaders extends com.example.android.apis.Base_PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

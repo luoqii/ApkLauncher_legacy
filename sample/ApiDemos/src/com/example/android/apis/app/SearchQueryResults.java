@@ -25,7 +25,7 @@ import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.widget.TextView;
 
-public class SearchQueryResults extends Activity
+public class SearchQueryResults extends com.example.android.apis.Base_Activity
 {  
         // UI elements
     TextView mQueryText;

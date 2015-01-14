@@ -62,7 +62,7 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
-public class KeyStoreUsage extends Activity {
+public class KeyStoreUsage extends com.example.android.apis.Base_Activity {
     private static final String TAG = "AndroidKeyStoreUsage";
 
     /**

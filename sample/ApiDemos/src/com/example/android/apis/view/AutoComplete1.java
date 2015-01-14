@@ -23,7 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.os.Bundle;
 
-public class AutoComplete1 extends Activity {
+public class AutoComplete1 extends com.example.android.apis.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

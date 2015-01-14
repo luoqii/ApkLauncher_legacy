@@ -24,9 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bbs.apklauncher.embed.ApkBase_ListActivity;
+import org.bbs.apklauncher.emb.auto_gen.Target_ListActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -37,12 +36,8 @@ import android.widget.SimpleAdapter;
 
 public class ApiDemos extends 
 //ListActivity 
-ApkBase_ListActivity
+Target_ListActivity
 {
-
-    public ApiDemos(Context base) {
-		super(base);
-	}
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
