@@ -43,7 +43,7 @@ import com.example.android.apis.R;
 
 // ----------------------------------------------------------------------
 
-public class CameraPreview extends Activity {
+public class CameraPreview extends com.example.android.apis.stub.Base_Activity {
     private Preview mPreview;
     Camera mCamera;
     int numberOfCameras;

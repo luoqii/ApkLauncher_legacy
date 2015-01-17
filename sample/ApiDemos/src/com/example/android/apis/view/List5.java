@@ -31,7 +31,7 @@ import android.widget.TextView;
 /**
  * A list view example with separators.
  */
-public class List5 extends com.example.android.apis.Base_ListActivity {
+public class List5 extends com.example.android.apis.stub.Base_ListActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

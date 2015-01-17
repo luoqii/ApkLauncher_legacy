@@ -49,7 +49,7 @@ App/Title/Custom Title
  *         </tr>
  * </table> 
  */
-public class CustomTitle extends com.example.android.apis.Base_Activity {
+public class CustomTitle extends com.example.android.apis.stub.Base_Activity {
     
     /**
      * Initialization of the Activity after it is first created.  Must at least

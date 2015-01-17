@@ -14,10 +14,12 @@ import android.app.ActivityManager.TaskDescription;
 import android.app.Application;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.TaskStackBuilder;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.app.PendingIntent;
 import android.app.SharedElementCallback;
+import android.app.TabActivity;
 import android.app.TaskStackBuilder;
 import android.content.ComponentName;
 import android.content.Context;
@@ -60,8 +62,12 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.Toolbar;
 
 @SuppressLint("NewApi")
@@ -88,7 +94,7 @@ ContextWrapper
 		mHostActivity = (Host_SUPER_CLASS) base;
 	}
 	
-	public Activity getActivity() {
+	public Activity getHostActivity() {
 		return mHostActivity;
 	}
 	
@@ -1119,7 +1125,6 @@ ContextWrapper
 	}
 	// tag_end:FragmentActivity
 	
-	
 	// tag_start:PreferenceActivity
 	public boolean hasHeaders() {
 		return mHostActivity.hasHeaders();
@@ -1258,4 +1263,129 @@ ContextWrapper
 	}	
 	// tag_end:PreferenceActivity
 	
+	// tag_start:ExpandableListActivity
+	public boolean onChildClick(ExpandableListView parent, View v,
+			int groupPosition, int childPosition, long id) {
+			return false;
+	}
+	
+	public void onGroupCollapse(int groupPosition) {
+	}
+	
+	public void onGroupExpand(int groupPosition) {
+	}
+	
+	public void setListAdapter(ExpandableListAdapter adapter) {
+		mHostActivity.setListAdapter(adapter);
+	}
+	
+	public ExpandableListView getExpandableListView() {
+		return	mHostActivity.getExpandableListView();
+	}
+	
+	public ExpandableListAdapter getExpandableListAdapter() {
+		return mHostActivity.getExpandableListAdapter();
+	}
+	
+	public long getSelectedId() {
+		return mHostActivity.getSelectedId();
+	}
+	
+	public long getSelectedPosition() {
+		return mHostActivity.getSelectedPosition();
+	}
+	
+	public boolean setSelectedChild(int groupPosition, int childPosition,
+			boolean shouldExpandGroup) {
+		return mHostActivity.setSelectedChild(groupPosition, childPosition, shouldExpandGroup);
+	}
+	
+	public void setSelectedGroup(int groupPosition) {
+		mHostActivity.setSelectedGroup(groupPosition);
+	}
+	// tag_end:ExpandableListActivity
+	
+	// tag_start:TabActivity
+	public void setDefaultTab(String tag) {
+		mHostActivity.setDefaultTab(tag);
+	}
+
+	public void setDefaultTab(int index) {
+		mHostActivity.setDefaultTab(index);
+	}
+
+	public TabHost getTabHost() {
+		return mHostActivity.getTabHost();
+	}
+
+	public TabWidget getTabWidget() {
+		return mHostActivity.getTabWidget();
+	}
+	// tag_end:TabActivity
+
+	// tag_start:ActionBarActivity
+	public android.support.v7.app.ActionBar getSupportActionBar() {
+		return mHostActivity.getSupportActionBar();
+	}
+
+	public Intent getSupportParentActivityIntent() {
+		return mHostActivity.getSupportParentActivityIntent();
+	}
+
+	public void setSupportProgress(int progress) {
+		mHostActivity.setSupportProgress(progress);
+	}
+
+	public void setSupportProgressBarIndeterminate(boolean indeterminate) {
+		mHostActivity.setSupportProgressBarIndeterminate(indeterminate);
+	}
+
+	public void setSupportProgressBarIndeterminateVisibility(boolean visible) {
+		mHostActivity.setSupportProgressBarIndeterminateVisibility(visible);
+	}
+
+	public void setSupportProgressBarVisibility(boolean visible) {
+		mHostActivity.setSupportProgressBarVisibility(visible);
+	}
+
+	public android.support.v7.view.ActionMode startSupportActionMode(
+			android.support.v7.view.ActionMode.Callback callback) {
+		return mHostActivity.startSupportActionMode(callback);
+	}
+
+	public void supportNavigateUpTo(Intent upIntent) {
+		mHostActivity.supportNavigateUpTo(upIntent);
+	}
+
+	public boolean supportRequestWindowFeature(int featureId) {
+		return mHostActivity.supportRequestWindowFeature(featureId);
+	}
+
+	public boolean supportShouldUpRecreateTask(Intent targetIntent) {
+		return mHostActivity.supportShouldUpRecreateTask(targetIntent);
+	}
+	
+	public void onCreateSupportNavigateUpTaskStack(
+			android.support.v4.app.TaskStackBuilder builder) {
+	}
+
+	public void onPrepareSupportNavigateUpTaskStack(
+			android.support.v4.app.TaskStackBuilder builder) {
+	}
+
+	public void onSupportActionModeFinished(
+			android.support.v7.view.ActionMode mode) {
+	}
+
+	public void onSupportActionModeStarted(
+			android.support.v7.view.ActionMode mode) {
+	}
+
+	public void onSupportContentChanged() {
+	}
+
+	public boolean onSupportNavigateUp() {
+		return false;
+	}
+	// tag_end:ActionBarActivity
 }

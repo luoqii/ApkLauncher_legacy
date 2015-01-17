@@ -39,7 +39,7 @@ import android.os.Bundle;
  * @see SensorManager
  * 
  */
-public class RotationVectorDemo extends com.example.android.apis.Base_Activity {
+public class RotationVectorDemo extends com.example.android.apis.stub.Base_Activity {
     private GLSurfaceView mGLSurfaceView;
     private SensorManager mSensorManager;
     private MyRenderer mRenderer;

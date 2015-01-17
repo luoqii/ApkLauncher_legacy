@@ -30,7 +30,7 @@ import com.example.android.apis.R;
 /**
  * This demonstrates implementing common navigation flows with the action bar.
  */
-public class ActionBarNavigation extends com.example.android.apis.Base_Activity {
+public class ActionBarNavigation extends com.example.android.apis.stub.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

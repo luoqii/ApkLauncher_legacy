@@ -63,7 +63,7 @@ App/Service/Alarm Controller
 </table>
 
  */
-public class AlarmController extends com.example.android.apis.Base_Activity {
+public class AlarmController extends com.example.android.apis.stub.Base_Activity {
     Toast mToast;
 
     @Override

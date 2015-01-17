@@ -62,7 +62,7 @@ import android.widget.SearchView.OnQueryTextListener;
 /**
  * Demonstration of the implementation of a custom Loader.
  */
-public class LoaderCustom extends com.example.android.apis.Base_Activity {
+public class LoaderCustom extends com.example.android.apis.stub.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

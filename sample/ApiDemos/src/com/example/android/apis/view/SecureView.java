@@ -66,7 +66,7 @@ import android.widget.Toast;
  *
  * Refer to the comments on {@View} for more information about view security.
  */
-public class SecureView extends com.example.android.apis.Base_Activity {
+public class SecureView extends com.example.android.apis.stub.Base_Activity {
     private int mClickCount;
 
     @Override

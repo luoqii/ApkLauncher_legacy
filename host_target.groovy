@@ -26,23 +26,60 @@ def genActivityFile(File templateFile, File file, String superClassName, String 
  			ignoreTags.add "FragmentActivity"
         	ignoreTags.add "ActivityGroup"
         	ignoreTags.add "PreferenceActivity"
+        	ignoreTags.add "ExpandableListActivity"
+        	ignoreTags.add "TabActivity"
+        	ignoreTags.add "ActionBarActivity"
        	} else if ("ListActivity".equals(superClassName)) {
 			ignoreTags.add "FragmentActivity"
            	ignoreTags.add "ActivityGroup"
         	ignoreTags.add "PreferenceActivity"
+        	ignoreTags.add "ExpandableListActivity"
+        	ignoreTags.add "TabActivity"
+        	ignoreTags.add "ActionBarActivity"
         } else if ("FragmentActivity".equals(superClassName)) {
    			ignoreTags.add "ListActivity"
  			ignoreTags.add "No_FragmentActivity"
 			ignoreTags.add "ActivityGroup"
         	ignoreTags.add "PreferenceActivity"
+        	ignoreTags.add "ExpandableListActivity"
+        	ignoreTags.add "TabActivity"
+        	ignoreTags.add "ActionBarActivity"
 		} else if ("ActivityGroup".equals(superClassName)) {
  			ignoreTags.add "ListActivity"
  			ignoreTags.add "FragmentActivity"
         	ignoreTags.add "PreferenceActivity"
+        	ignoreTags.add "ExpandableListActivity"
+        	ignoreTags.add "TabActivity"
+        	ignoreTags.add "ActionBarActivity"
         } else if ("PreferenceActivity".equals(superClassName)) {
  			ignoreTags.add "FragmentActivity"
         	ignoreTags.add "ActivityGroup"
-        }
+        	ignoreTags.add "ExpandableListActivity"
+        	ignoreTags.add "TabActivity"
+        	ignoreTags.add "ActionBarActivity"
+        } else if ("ExpandableListActivity".equals(superClassName)) {
+ 			ignoreTags.add "FragmentActivity"
+        	ignoreTags.add "ActivityGroup"
+        	ignoreTags.add "ListActivity"
+        	ignoreTags.add "ActivityGroup"
+        	ignoreTags.add "PreferenceActivity"
+        	ignoreTags.add "TabActivity"
+        	ignoreTags.add "ActionBarActivity"
+        } else if ("TabActivity".equals(superClassName)) {
+ 			ignoreTags.add "FragmentActivity"
+        	ignoreTags.add "ActivityGroup"
+        	ignoreTags.add "ListActivity"
+        	ignoreTags.add "PreferenceActivity"
+        	ignoreTags.add "ExpandableListActivity"
+        	ignoreTags.add "ActionBarActivity"
+        } else if ("ActionBarActivity".equals(superClassName)) {
+   			ignoreTags.add "ListActivity"
+ 			ignoreTags.add "No_ActionBarActivity"
+			ignoreTags.add "ActivityGroup"
+        	ignoreTags.add "PreferenceActivity"
+        	ignoreTags.add "ExpandableListActivity"
+        	ignoreTags.add "TabActivity"
+		}
 
     templateFile.eachLine {
         updateTag(it)
@@ -115,6 +152,9 @@ def genHostTargetActivityFile(String dir, String superClassName) {
 
 genHostTargetActivityFile "src/org/bbs/apklauncher/emb/auto_gen", 'Activity'
 genHostTargetActivityFile "src/org/bbs/apklauncher/emb/auto_gen", 'ListActivity'
+genHostTargetActivityFile "src/org/bbs/apklauncher/emb/auto_gen", 'TabActivity'
 genHostTargetActivityFile "src/org/bbs/apklauncher/emb/auto_gen", 'ActivityGroup'
 genHostTargetActivityFile "src/org/bbs/apklauncher/emb/auto_gen", 'FragmentActivity'
+genHostTargetActivityFile "src/org/bbs/apklauncher/emb/auto_gen", 'ActionBarActivity'
 genHostTargetActivityFile "src/org/bbs/apklauncher/emb/auto_gen", 'PreferenceActivity'
+genHostTargetActivityFile "src/org/bbs/apklauncher/emb/auto_gen", 'ExpandableListActivity'

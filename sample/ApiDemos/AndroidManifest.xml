@@ -47,7 +47,7 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
     
-    <uses-sdk android:minSdkVersion="18" android:maxSdkVersion="21"/>
+    <uses-sdk android:minSdkVersion="14" android:maxSdkVersion="21"/>
 
     <application android:name="ApiDemosApplication"
             android:label="@string/activity_sample_code"

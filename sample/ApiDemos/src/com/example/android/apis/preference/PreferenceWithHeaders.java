@@ -32,7 +32,7 @@ import com.example.android.apis.R;
  * panel with headers.
  */
 
-public class PreferenceWithHeaders extends com.example.android.apis.Base_PreferenceActivity {
+public class PreferenceWithHeaders extends com.example.android.apis.stub.Base_PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -6,8 +6,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityGroup;
 import android.app.Dialog;
+import android.app.ExpandableListActivity;
 import android.app.Fragment;
 import android.app.ListActivity;
+import android.app.TabActivity;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
@@ -34,8 +36,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 
 @SuppressLint("NewApi")
 public class Host_PreferenceActivity extends PreferenceActivity {
@@ -174,6 +178,7 @@ public class Host_PreferenceActivity extends PreferenceActivity {
 		super.onConfigurationChanged(newConfig);
 		mTargetActivity.onConfigurationChanged(newConfig);
 	}
+	// tag_start:No_ActionBarActivity
 	// tag_start:No_FragmentActivity
 	@Override
 	public Object onRetainNonConfigurationInstance() {
@@ -181,6 +186,7 @@ public class Host_PreferenceActivity extends PreferenceActivity {
 		return mTargetActivity.onRetainNonConfigurationInstance();
 	}
 	// tag_end:No_FragmentActivity
+	// tag_end:No_ActionBarActivity
 
 	@Override
 	public void onLowMemory() {
@@ -267,11 +273,13 @@ public class Host_PreferenceActivity extends PreferenceActivity {
 		mTargetActivity.onWindowAttributesChanged(params);
 	}
 
+	// tag_start:No_ActionBarActivity
 	@Override
 	public void onContentChanged() {
 		super.onContentChanged();
 		mTargetActivity.onContentChanged();
 	}
+	// tag_end:No_ActionBarActivity
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
@@ -350,11 +358,13 @@ public class Host_PreferenceActivity extends PreferenceActivity {
 		return show ? true : super.onMenuOpened(featureId, menu);
 	}
 
+	// tag_start:No_ActionBarActivity
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		boolean finish = mTargetActivity.onMenuItemSelected(featureId, item);
 		return finish ? true : super.onMenuItemSelected(featureId, item);
-	}
+	}	
+	// tag_end:No_ActionBarActivity
 
 	@Override
 	public void onPanelClosed(int featureId, Menu menu) {
@@ -375,7 +385,8 @@ public class Host_PreferenceActivity extends PreferenceActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		return mTargetActivity.onOptionsItemSelected(item);
+		boolean handled = mTargetActivity.onOptionsItemSelected(item);
+		return handled ? true : super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -617,4 +628,11 @@ public class Host_PreferenceActivity extends PreferenceActivity {
 		return mTargetActivity.onPreferenceTreeClick(preferenceScreen, preference);
 	}
 	// tag_end:PreferenceActivity
+	
+	// tag_start:ExpandableListActivity
+	// tag_end:ExpandableListActivity
+	
+		
+	// tag_start:ActionBarActivity
+	// tag_end:ActionBarActivity
 }

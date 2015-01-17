@@ -4,7 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.osgi.activity.AbsActivityWraper;
 import org.bbs.osgi.activity.BundleActivity;
 import org.bbs.osgi.activity.InstrumentationWrapper;
@@ -107,7 +107,7 @@ implements CallBack {
 		mActInfo = InstalledAPks.getInstance().getActivityInfo(mActivityClassName);
 		mApplicationClassName = mActInfo.applicationInfo.className;
 		mTargetThemeId = mActInfo.theme;
-		mApkPath = mActInfo.mApkPath;
+		mApkPath = mActInfo.applicationInfo.publicSourceDir;
 		if (TextUtils.isEmpty(mApplicationClassName)){
 			mApplicationClassName = Application.class.getCanonicalName();
 			Log.d(TAG, "no packageName, user default.");

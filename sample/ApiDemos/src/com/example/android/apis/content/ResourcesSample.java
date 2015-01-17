@@ -38,7 +38,7 @@ import android.widget.TextView;
  * @see StyledText for more depth about using styled text, both with getString()
  *                 and in the layout xml files.
  */
-public class ResourcesSample extends com.example.android.apis.Base_Activity {
+public class ResourcesSample extends com.example.android.apis.stub.Base_Activity {
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

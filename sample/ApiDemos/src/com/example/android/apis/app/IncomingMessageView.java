@@ -28,7 +28,7 @@ import android.widget.TextView;
  * When it comes up, it also clears the notification, because the "message"
  * has been "read."
  */
-public class IncomingMessageView extends com.example.android.apis.Base_Activity {
+public class IncomingMessageView extends com.example.android.apis.stub.Base_Activity {
     /**
      * Extra that can be supplied to Intent: who the message is from.
      */

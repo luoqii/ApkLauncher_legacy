@@ -55,7 +55,7 @@ import java.util.HashMap;
  * structured data through displaying it in the UI, using throttling to reduce
  * the number of queries done when its data changes.
  */
-public class LoaderThrottle extends com.example.android.apis.Base_Activity {
+public class LoaderThrottle extends com.example.android.apis.stub.Base_Activity {
     // Debugging.
     static final String TAG = "LoaderThrottle";
 

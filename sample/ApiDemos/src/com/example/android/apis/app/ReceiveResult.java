@@ -68,7 +68,7 @@ App/Activity/Receive Result
 </table>
 
  */
-public class ReceiveResult extends com.example.android.apis.Base_Activity {
+public class ReceiveResult extends com.example.android.apis.stub.Base_Activity {
     /**
      * Initialization of the Activity after it is first created.  Must at least
      * call {@link android.app.Activity#setContentView setContentView()} to

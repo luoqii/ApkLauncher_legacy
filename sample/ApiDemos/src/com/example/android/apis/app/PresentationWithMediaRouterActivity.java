@@ -64,7 +64,7 @@ import android.widget.TextView;
  * simultaneous presentations on different displays.
  * </p>
  */
-public class PresentationWithMediaRouterActivity extends com.example.android.apis.Base_Activity {
+public class PresentationWithMediaRouterActivity extends com.example.android.apis.stub.Base_Activity {
     private final String TAG = "PresentationWithMediaRouterActivity";
 
     private MediaRouter mMediaRouter;

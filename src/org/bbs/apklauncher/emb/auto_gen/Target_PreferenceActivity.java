@@ -14,10 +14,12 @@ import android.app.ActivityManager.TaskDescription;
 import android.app.Application;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.TaskStackBuilder;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.app.PendingIntent;
 import android.app.SharedElementCallback;
+import android.app.TabActivity;
 import android.app.TaskStackBuilder;
 import android.content.ComponentName;
 import android.content.Context;
@@ -60,8 +62,12 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.Toolbar;
 
 @SuppressLint("NewApi")
@@ -88,7 +94,7 @@ ContextWrapper
 		mHostActivity = (Host_PreferenceActivity) base;
 	}
 	
-	public Activity getActivity() {
+	public Activity getHostActivity() {
 		return mHostActivity;
 	}
 	
@@ -1068,7 +1074,6 @@ ContextWrapper
 	// tag_start:FragmentActivity
 	// tag_end:FragmentActivity
 	
-	
 	// tag_start:PreferenceActivity
 	public boolean hasHeaders() {
 		return mHostActivity.hasHeaders();
@@ -1207,4 +1212,12 @@ ContextWrapper
 	}	
 	// tag_end:PreferenceActivity
 	
+	// tag_start:ExpandableListActivity
+	// tag_end:ExpandableListActivity
+	
+	// tag_start:TabActivity
+	// tag_end:TabActivity
+
+	// tag_start:ActionBarActivity
+	// tag_end:ActionBarActivity
 }

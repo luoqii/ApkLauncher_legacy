@@ -43,7 +43,7 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MediaProjectionDemo extends com.example.android.apis.Base_Activity {
+public class MediaProjectionDemo extends com.example.android.apis.stub.Base_Activity {
     private static final String TAG = "MediaProjectionDemo";
     private static final int PERMISSION_CODE = 1;
     private static final List<Resolution> RESOLUTIONS = new ArrayList<Resolution>() {{

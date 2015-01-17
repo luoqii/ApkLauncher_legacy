@@ -40,7 +40,7 @@ import android.util.Log;
  * This activity demonstrates various ways density can cause the scaling of
  * bitmaps and drawables.
  */
-public class DensityActivity extends Activity {
+public class DensityActivity extends com.example.android.apis.stub.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

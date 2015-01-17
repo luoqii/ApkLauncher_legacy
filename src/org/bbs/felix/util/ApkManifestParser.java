@@ -5,10 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
-import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
-import org.bbs.felix.util.PackageParser.PackageInfoX.ApplicationInfoX;
-import org.bbs.felix.util.PackageParser.PackageInfoX.IntentInfoX;
-import org.bbs.felix.util.PackageParser.PackageInfoX.UsesSdkX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ApplicationInfoX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.IntentInfoX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.UsesSdkX;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -28,11 +28,15 @@ import android.text.TextUtils;
 import android.util.Log;
 
 @SuppressLint("NewApi")
-public class PackageParser {
+public class ApkManifestParser {
+	private static final String ATTR_BACKUP_AGENT = "backupAgent";
+	private static final String ATTR_ALLOW_TASK_REPARENTING = "allowTaskReparenting";
+	private static final String ATTR_DEBUGGABLE = "debuggable";
+	private static final String ATTR_PROCESS = "process";
 	private static final String TAG_META_DATA = "meta-data";
 	private static final String ATTR_BANNER = "banner";
 	private static final String ATTR_LOGO = "logo";
-	private static final String TAG = PackageParser.class.getSimpleName();
+	private static final String TAG = ApkManifestParser.class.getSimpleName();
 	private static final String TAG_USES_SDK = "uses-sdk";
 	private static final String ATTR_RESOURCE = "resource";
 	private static final String ATTR_VALUE = "value";
@@ -53,7 +57,6 @@ public class PackageParser {
 
 	public static PackageInfoX parseAPk(Context context, String apkFile) {
 		PackageInfoX info = new PackageInfoX();
-		info.mApkPath = apkFile;
 		
 		AssetManager assets;
 		XmlResourceParser parser = null;
@@ -65,10 +68,12 @@ public class PackageParser {
 			parser = assets
 					.openXmlResourceParser(cookie, "AndroidManifest.xml");
 			parseApk(parser, info);
+			info.applicationInfo.publicSourceDir = apkFile;
+			info.applicationInfo.sourceDir = apkFile;
 			resolveParsedApk(info);
 			
-//			parser = assets.openXmlResourceParser(cookie, "AndroidManifest.xml");
-//			dumpParser(parser);
+			parser = assets.openXmlResourceParser(cookie, "AndroidManifest.xml");
+			dumpParser(parser);
 //			info.dump();
 
 			return info;
@@ -133,7 +138,6 @@ public class PackageParser {
 					aX.theme = appInfo.theme;
 				}
 
-				aX.mApkPath = info.mApkPath;
 				aX.labelRes = aX.labelRes != 0 ? aX.labelRes : appInfo.labelRes;
 				aX.nonLocalizedLabel = !TextUtils.isEmpty(aX.nonLocalizedLabel) ? aX.nonLocalizedLabel : appInfo.nonLocalizedLabel;
 				aX.packageName = appInfo.packageName;
@@ -158,7 +162,7 @@ public class PackageParser {
 				if (eventType == XmlPullParser.START_DOCUMENT) {
 				} else if (eventType == XmlPullParser.START_TAG) {
 					if (TAG_MANIFEST.equals(tag)) {
-						parserPackage(parser, info);
+						parserManifest(parser, info);
 					} 
 				} else if (eventType == XmlPullParser.END_TAG) {
 				} else if (eventType == XmlPullParser.TEXT) {
@@ -181,7 +185,7 @@ public class PackageParser {
 		}
 	}
 
-	private static void parserPackage(XmlResourceParser parser,
+	private static void parserManifest(XmlResourceParser parser,
 			PackageInfoX info) throws XmlPullParserException, IOException {
 		// parse attr
 		final int attCount = parser.getAttributeCount();
@@ -194,11 +198,17 @@ public class PackageParser {
 				info.versionName = attName;
 			} else if (ATTR_VERSION_CODE.equals(attName)) {
 				info.versionCode = Integer.parseInt(attValue);
+			} else if ("sharedUserId".equals(attName)) {
+				info.sharedUserId = (attValue);
+			} else if ("sharedUserLabel".equals(attName)) {
+				info.sharedUserLabel = toResId(attValue);
+//			} else if ("installLocation".equals(attName)) {
+//				info.installLocation = toResId(attValue);
 			} else {
 				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
 			}
 		}
-
+		
 		// parse sub-element
 		int type;
 		int outerDepth = parser.getDepth();
@@ -218,6 +228,22 @@ public class PackageParser {
 			}
 		}
 
+	}
+	
+	private static int toResId(String attValue) {
+		if (attValue.startsWith("")) {
+			return Integer.parseInt(attValue.substring(1));
+		}
+		
+		throw new RuntimeException("res attValue must start with @.");
+//		return -1;
+	}
+	
+	private static boolean toBoolean(String attValue) {
+		if ("true".equals(attValue))	 {
+			return true;
+		}
+		return false;
 	}
 
 	private static void parserUsesSdk(XmlResourceParser parser,
@@ -252,6 +278,14 @@ public class PackageParser {
 			String attValue = parser.getAttributeValue(i);
 			if (ATTR_THEME.equals(attName)) {
 				app.theme = Integer.parseInt(attValue.substring(1));
+			} else if (ATTR_BACKUP_AGENT.equals(attName)) {
+				app.backupAgentName = attValue;
+			} else if (ATTR_ALLOW_TASK_REPARENTING.equals(attName)) {
+				app.mAllowTaskReparenting = toBoolean(attValue);
+			} else if (ATTR_DEBUGGABLE.equals(attName)) {
+				app.mDebuggable = toBoolean(attValue);
+			} else if (ATTR_PROCESS.equals(attName)) {
+				app.processName = (attValue);
 			} else {
 				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
 			}
@@ -287,7 +321,6 @@ public class PackageParser {
 	}
 	
 	private static void parsePackageItem(XmlResourceParser parser, PackageItemInfo info) {
-		boolean hasLabel = false;
 		final int attCount = parser.getAttributeCount();
 		for (int i = 0; i < attCount; i++) {
 			String attName = parser.getAttributeName(i);
@@ -296,24 +329,17 @@ public class PackageParser {
 				String cName = attValue;
 				info.name = cName;
 			} else if (ATTR_LABEL.equals(attName)) {
-				hasLabel = true;
 				if (attValue.startsWith("@")) {
 					info.labelRes = Integer.parseInt(attValue.substring(1));
 				} else {
 					info.nonLocalizedLabel = attValue;
 				}
 			} else if (ATTR_ICON.equals(attName)) {
-				if (attValue.startsWith("@")) {
-					info.icon = Integer.parseInt(attValue.substring(1));
-				}
+					info.icon = toResId(attValue);
 			} else if (ATTR_LOGO.equals(attName)) {
-				if (attValue.startsWith("@")) {
-					info.logo = Integer.parseInt(attValue.substring(1));
-				}
+					info.logo = toResId(attValue);
 			} else if (ATTR_BANNER.equals(attName)) {
-				if (attValue.startsWith("@")) {
-					info.logo = Integer.parseInt(attValue.substring(1));
-				}
+					info.logo = toResId(attValue);
 			} else {
 				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
 			} 
@@ -346,7 +372,6 @@ public class PackageParser {
 	private static void parserActivity(XmlResourceParser parser,
 			PackageInfoX info) throws XmlPullParserException, IOException {
 		ActivityInfoX a = new ActivityInfoX();
-		a.mApkPath = info.mApkPath;
 		a.applicationInfo = info.applicationInfo;
 		// parse attr
 		final int attCount = parser.getAttributeCount();
@@ -362,13 +387,6 @@ public class PackageParser {
 		}
 		parsePackageItem(parser, a);		
 		
-//		a.mPackageClassName = info.applicationInfo != null ? info.applicationInfo.className : "";
-//		a.applicationInfo = info.applicationInfo;
-//		
-//		if (a.theme == 0) {
-//			a.theme = info.applicationInfo.theme;
-//		}
-
 		// parse sub-element
 		int type;
 		int outerDepth = parser.getDepth();
@@ -526,7 +544,7 @@ public class PackageParser {
 	}
 
 	/**
-	 * all member MUST has a 'm" prefix.
+	 * all new-added member MUST has a 'm" prefix.
 	 * 
 	 * @author bysong
 	 *
@@ -538,7 +556,6 @@ public class PackageParser {
 		
 		public static final int DUMP_ALL = 0xFFFF;
 		
-		public String mApkPath;
 		public UsesSdkX mUsesSdk;
 		
 		// evaluate by application.
@@ -558,6 +575,9 @@ public class PackageParser {
 
 		public static class ApplicationInfoX extends ApplicationInfo {
 
+			public boolean mDebuggable;
+			public boolean mAllowTaskReparenting;
+
 			public void dump(int level) {	
 				Log.d(TAG, makePrefix(level) + "appliction: ");
 				level++;
@@ -571,7 +591,6 @@ public class PackageParser {
 		public static class ActivityInfoX extends ActivityInfo implements
 				Parcelable {
 			public IntentInfoX[] mIntents;
-			public String mApkPath;
 			public PackageInfoX mPackageInfo;
 
 			public int describeContents() {
@@ -636,8 +655,6 @@ public class PackageParser {
 		}
 		
 		public void dump(int level) {
-			Log.d(TAG, makePrefix(level) + "mApkLocation: " + mApkPath);
-			
 			if (mUsesSdk != null) {
 				mUsesSdk.dump(level + 1);
 			}

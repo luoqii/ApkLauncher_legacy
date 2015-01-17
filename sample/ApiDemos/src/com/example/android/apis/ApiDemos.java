@@ -24,24 +24,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bbs.apklauncher.emb.auto_gen.Target_ListActivity;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.example.android.apis.stub.Base_ListActivity;
+
 public class ApiDemos extends 
 //ListActivity 
-Target_ListActivity
+Base_ListActivity
 {
+
+	private static final String TAG = ApiDemos.class.getSimpleName();
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+
+		Log.d(TAG, "px0: " + getResources().getDimensionPixelOffset(R.dimen.px0));
+		Log.d(TAG, "px10: " + getResources().getDimensionPixelOffset(R.dimen.px1));
+		Log.d(TAG, "px1_1: " + getResources().getDimensionPixelOffset(R.dimen.px1_1));
+		
+		Log.d(TAG, "px0: " + getResources().getDimensionPixelSize(R.dimen.px0));
+		Log.d(TAG, "px10: " + getResources().getDimensionPixelSize(R.dimen.px1));
+		Log.d(TAG, "px1_1: " + getResources().getDimensionPixelSize(R.dimen.px1_1));
         
         Intent intent = getIntent();
         String path = intent.getStringExtra("com.example.android.apis.Path");

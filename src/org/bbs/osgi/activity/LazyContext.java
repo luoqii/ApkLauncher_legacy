@@ -37,7 +37,7 @@ ContextWrapper
 	private ClassLoader mClassLoader;
 	private ClassLoader mMergedClassLoader;
 	private PackageManager mPackageManager;
-	private Context mApp;
+	private Context mAppContext;
 	private Theme mTargetTheme;
 	private int mTargetThemeId;
 	
@@ -61,7 +61,7 @@ ContextWrapper
 	}
 	
 	public void applicationContextReady(Context appContext){
-		mApp = appContext;
+		mAppContext = appContext;
 	}
 	
 	public void packageNameReady(String packageName) {
@@ -176,8 +176,8 @@ ContextWrapper
 	
 	@Override
 	public Context getApplicationContext() {
-		if (mApp != null) {
-			return mApp;
+		if (mAppContext != null) {
+			return mAppContext;
 		}
 		return super.getApplicationContext();
 	}

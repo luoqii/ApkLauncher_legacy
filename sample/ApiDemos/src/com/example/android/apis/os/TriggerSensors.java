@@ -65,7 +65,7 @@ class TriggerListener extends TriggerEventListener {
     }
 }
 
-public class TriggerSensors extends com.example.android.apis.Base_Activity {
+public class TriggerSensors extends com.example.android.apis.stub.Base_Activity {
     private SensorManager mSensorManager;
     private Sensor mSigMotion;
     private TriggerListener mListener;

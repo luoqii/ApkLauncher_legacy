@@ -27,7 +27,7 @@ import android.widget.ArrayAdapter;
 /**
  * Demonstrates the use of non-focusable views.
  */
-public class Focus1 extends com.example.android.apis.Base_Activity {
+public class Focus1 extends com.example.android.apis.stub.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

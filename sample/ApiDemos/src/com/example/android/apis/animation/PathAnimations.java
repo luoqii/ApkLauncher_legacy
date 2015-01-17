@@ -42,7 +42,7 @@ import com.example.android.apis.R;
 
 /** This application demonstrates the use of Path animation. */
 @SuppressLint("NewApi")
-public class PathAnimations extends com.example.android.apis.Base_Activity implements
+public class PathAnimations extends com.example.android.apis.stub.Base_Activity implements
         RadioGroup.OnCheckedChangeListener, View.OnLayoutChangeListener {
 
     final static Path sTraversalPath = new Path();

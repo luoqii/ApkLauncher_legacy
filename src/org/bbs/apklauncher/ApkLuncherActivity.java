@@ -7,9 +7,9 @@ import java.util.zip.ZipFile;
 
 import org.bbs.apklauncher.emb.LoadApk;
 import org.bbs.felix.util.AndroidUtil;
-import org.bbs.felix.util.PackageParser;
-import org.bbs.felix.util.PackageParser.PackageInfoX;
-import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
+import org.bbs.felix.util.ApkManifestParser;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felixonandroid.R;
 
 import dalvik.system.DexClassLoader;
@@ -51,7 +51,7 @@ public class ApkLuncherActivity extends Activity {
 	
 
 	private List<PackageInfoX.ActivityInfoX> parseLauncher(List<PackageInfoX> ms) {
-		List<PackageInfoX.ActivityInfoX> launchers = new ArrayList<PackageParser.PackageInfoX.ActivityInfoX>();
+		List<PackageInfoX.ActivityInfoX> launchers = new ArrayList<ApkManifestParser.PackageInfoX.ActivityInfoX>();
 		for (PackageInfoX m : ms) {
 			
 			if (m.activities != null) {
@@ -116,7 +116,7 @@ public class ApkLuncherActivity extends Activity {
 					
 					Log.d(TAG, "onClick. activity: " + a);
 
-					ClassLoader cl = new DexClassLoader(a.mApkPath, getDir("tmp", 0).getPath(), null, getClassLoader());
+					ClassLoader cl = new DexClassLoader(a.applicationInfo.publicSourceDir, getDir("tmp", 0).getPath(), null, getClassLoader());
 					String superClassName = LoadApk.getActivitySuperClassName(cl, a.name);
 					Intent launcher = new Intent();
 					ComponentName com= new ComponentName(getPackageName(), superClassName.replace("Target", "Stub"));

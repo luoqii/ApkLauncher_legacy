@@ -39,7 +39,7 @@ import java.util.List;
  * This demonstrates the usage of SearchView in an ActionBar as a menu item.
  * It sets a SearchableInfo on the SearchView for suggestions and submitting queries to.
  */
-public class SearchViewActionBar extends com.example.android.apis.Base_Activity implements SearchView.OnQueryTextListener {
+public class SearchViewActionBar extends com.example.android.apis.stub.Base_Activity implements SearchView.OnQueryTextListener {
 
     private SearchView mSearchView;
     private TextView mStatusView;

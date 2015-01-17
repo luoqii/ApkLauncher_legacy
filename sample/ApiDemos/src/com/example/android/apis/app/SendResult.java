@@ -31,7 +31,7 @@ import android.widget.Button;
 /**
  * Example of receiving a result from another activity.
  */
-public class SendResult extends com.example.android.apis.Base_Activity
+public class SendResult extends com.example.android.apis.stub.Base_Activity
 {
     /**
      * Initialization of the Activity after it is first created.  Must at least

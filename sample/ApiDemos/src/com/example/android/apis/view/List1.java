@@ -25,7 +25,7 @@ import android.widget.ArrayAdapter;
  * A list view example where the 
  * data for the list comes from an array of strings.
  */
-public class List1 extends com.example.android.apis.Base_ListActivity {
+public class List1 extends com.example.android.apis.stub.Base_ListActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

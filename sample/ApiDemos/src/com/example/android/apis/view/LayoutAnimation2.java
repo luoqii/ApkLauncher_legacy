@@ -26,7 +26,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class LayoutAnimation2 extends com.example.android.apis.Base_ListActivity {
+public class LayoutAnimation2 extends com.example.android.apis.stub.Base_ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

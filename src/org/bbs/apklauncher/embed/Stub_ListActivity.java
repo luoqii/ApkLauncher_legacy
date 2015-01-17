@@ -8,7 +8,7 @@ import java.util.Map;
 import org.bbs.apklauncher.ApkLuncherActivity;
 import org.bbs.apklauncher.InstalledAPks;
 import org.bbs.apklauncher.PackageManagerProxy;
-import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.osgi.activity.ActivityAgent;
 import org.bbs.osgi.activity.BundleActivity;
 import org.bbs.osgi.activity.IActivityAgent;
@@ -114,7 +114,7 @@ implements CallBack {
 		mActInfo = InstalledAPks.getInstance().getActivityInfo(mActivityClassName);
 		mApplicationClassName = mActInfo.applicationInfo.className;
 		mTargetThemeId = mActInfo.theme;
-		mApkPath = mActInfo.mApkPath;
+//		mApkPath = mActInfo.mApkPath;
 		if (TextUtils.isEmpty(mApplicationClassName)){
 			mApplicationClassName = Application.class.getCanonicalName();
 			Log.d(TAG, "no packageName, user default.");

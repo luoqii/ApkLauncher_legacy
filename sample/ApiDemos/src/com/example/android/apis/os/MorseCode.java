@@ -47,7 +47,7 @@ OS / Morse Code Vibrator
  *         </tr>
  * </table> 
  */
-public class MorseCode extends com.example.android.apis.Base_Activity
+public class MorseCode extends com.example.android.apis.stub.Base_Activity
 {
     /** Our text view */
     private TextView mTextView;

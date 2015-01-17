@@ -48,7 +48,7 @@ import com.example.android.apis.graphics.TouchPaint;
  * This activity demonstrates how to use the system UI flags to
  * implement an immersive game.
  */
-public class GameActivity extends com.example.android.apis.Base_Activity {
+public class GameActivity extends com.example.android.apis.stub.Base_Activity {
 
     /**
      * Implementation of a view for the game, filling the entire screen.
@@ -171,7 +171,7 @@ public class GameActivity extends com.example.android.apis.Base_Activity {
 
         setContentView(R.layout.game);
         mContent = (Content)findViewById(R.id.content);
-        mContent.init(this.getActivity(), (Button)findViewById(R.id.play));
+        mContent.init(this.getHostActivity(), (Button)findViewById(R.id.play));
     }
 
     @Override

@@ -30,7 +30,7 @@ import android.os.Bundle;
  * <p>This demonstrates the how to write an activity that extends into the
  * overscan region.</p>
  */
-public class OverscanActivity extends com.example.android.apis.Base_Activity {
+public class OverscanActivity extends com.example.android.apis.stub.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -18,7 +18,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 /**
  * Demonstrates how the various soft input modes impact window resizing.
  */
-public class SoftInputModes extends com.example.android.apis.Base_Activity {
+public class SoftInputModes extends com.example.android.apis.stub.Base_Activity {
     Spinner mResizeMode;
     final CharSequence[] mResizeModeLabels = new CharSequence[] {
             "Unspecified", "Resize", "Pan", "Nothing"

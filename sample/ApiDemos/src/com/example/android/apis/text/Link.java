@@ -29,7 +29,7 @@ import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.widget.TextView;
 
-public class Link extends com.example.android.apis.Base_Activity {
+public class Link extends com.example.android.apis.stub.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

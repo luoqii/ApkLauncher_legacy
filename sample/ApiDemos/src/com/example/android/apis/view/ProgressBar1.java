@@ -30,7 +30,7 @@ import android.view.Window;
  * Demonstrates how to use progress bars as widgets and in the title bar.  The progress bar
  * in the title will be shown until the progress is complete, at which point it fades away.
  */
-public class ProgressBar1 extends com.example.android.apis.Base_Activity {
+public class ProgressBar1 extends com.example.android.apis.stub.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

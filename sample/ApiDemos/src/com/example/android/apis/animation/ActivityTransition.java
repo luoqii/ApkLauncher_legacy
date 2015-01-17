@@ -32,7 +32,7 @@ import java.util.Map;
  *
  */
 @SuppressLint("NewApi")
-public class ActivityTransition extends com.example.android.apis.Base_Activity {
+public class ActivityTransition extends com.example.android.apis.stub.Base_Activity {
 
     private static final String TAG = "ActivityTransition";
 
@@ -119,7 +119,7 @@ public class ActivityTransition extends com.example.android.apis.Base_Activity {
         Intent intent = new Intent(this, ActivityTransitionDetails.class);
         intent.putExtra(KEY_ID, v.getTransitionName());
         ActivityOptions activityOptions
-                = ActivityOptions.makeSceneTransitionAnimation(mHostActivity, mHero, "hero");
+                = ActivityOptions.makeSceneTransitionAnimation(getHostActivity(), mHero, "hero");
         startActivity(intent, activityOptions.toBundle());
     }
 

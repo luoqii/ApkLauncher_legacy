@@ -31,7 +31,7 @@ import android.widget.ImageView;
  * A grid that displays a set of framed photos.
  *
  */
-public class Grid2 extends com.example.android.apis.Base_Activity {
+public class Grid2 extends com.example.android.apis.stub.Base_Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

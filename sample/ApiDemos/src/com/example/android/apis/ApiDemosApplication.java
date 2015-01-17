@@ -17,7 +17,7 @@
 package com.example.android.apis;
 
 import android.app.Application;
-import android.content.Context;
+import android.util.Log;
 
 /**
  * This is an example of a {@link android.app.Application} class.  This can
@@ -42,7 +42,13 @@ Application
 //    	super(null);
 //	}
 
+	private static final String TAG = ApiDemosApplication.class.getSimpleName();;
+
 	@Override
-    public void onCreate() {
+    public void onCreate()  {
+		Log.d(TAG, "px0: " + getBaseContext().getResources().getDimensionPixelOffset(R.dimen.px0));
+		Log.d(TAG, "px10: " + getBaseContext().getResources().getDimensionPixelOffset(R.dimen.px1));
+		Log.d(TAG, "px1_1: " + getBaseContext().getResources().getDimensionPixelOffset(R.dimen.px1_1));
+//		gets
     }
 }

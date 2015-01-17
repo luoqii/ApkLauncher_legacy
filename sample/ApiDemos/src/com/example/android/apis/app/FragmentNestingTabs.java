@@ -29,7 +29,7 @@ import android.widget.Toast;
  * This demonstrates the use of action bar tabs and how they interact
  * with other action bar features.
  */
-public class FragmentNestingTabs extends com.example.android.apis.Base_Activity {
+public class FragmentNestingTabs extends com.example.android.apis.stub.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FragmentManager.enableDebugLogging(true);
@@ -42,19 +42,19 @@ public class FragmentNestingTabs extends com.example.android.apis.Base_Activity 
         bar.addTab(bar.newTab()
                 .setText("Menus")
                 .setTabListener(new TabListener<FragmentMenuFragment>(
-                        this.getActivity(), "menus", FragmentMenuFragment.class)));
+                        this.getHostActivity(), "menus", FragmentMenuFragment.class)));
         bar.addTab(bar.newTab()
                 .setText("Args")
                 .setTabListener(new TabListener<FragmentArgumentsFragment>(
-                        this.getActivity(), "args", FragmentArgumentsFragment.class)));
+                        this.getHostActivity(), "args", FragmentArgumentsFragment.class)));
         bar.addTab(bar.newTab()
                 .setText("Stack")
                 .setTabListener(new TabListener<FragmentStackFragment>(
-                        this.getActivity(), "stack", FragmentStackFragment.class)));
+                        this.getHostActivity(), "stack", FragmentStackFragment.class)));
         bar.addTab(bar.newTab()
                 .setText("Tabs")
                 .setTabListener(new TabListener<FragmentTabsFragment>(
-                        this.getActivity(), "tabs", FragmentTabsFragment.class)));
+                        this.getHostActivity(), "tabs", FragmentTabsFragment.class)));
 
         if (savedInstanceState != null) {
             bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));

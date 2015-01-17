@@ -31,7 +31,7 @@ import java.io.InputStream;
 /**
  * Demonstration of styled text resources.
  */
-public class ReadAsset extends com.example.android.apis.Base_Activity
+public class ReadAsset extends com.example.android.apis.stub.Base_Activity
 {
     @Override
 	protected void onCreate(Bundle savedInstanceState)

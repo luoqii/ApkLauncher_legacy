@@ -73,7 +73,7 @@ import android.widget.TextView;
  * on which to show content based on the currently selected route.
  * </p>
  */
-public class PresentationActivity extends com.example.android.apis.Base_Activity
+public class PresentationActivity extends com.example.android.apis.stub.Base_Activity
         implements OnCheckedChangeListener, OnClickListener {
     private final String TAG = "PresentationActivity";
 
@@ -336,8 +336,9 @@ public class PresentationActivity extends com.example.android.apis.Base_Activity
         public View getView(int position, View convertView, ViewGroup parent) {
             final View v;
             if (convertView == null) {
-                v = ((Activity) mContext).getLayoutInflater().inflate(
-                        R.layout.presentation_list_item, null);
+//                v = ( mContext).getLayoutInflater().inflate(
+//                        R.layout.presentation_list_item, null);
+                v = View.inflate(mContext,    R.layout.presentation_list_item, null);
             } else {
                 v = convertView;
             }

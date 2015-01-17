@@ -38,7 +38,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class CustomEvaluator extends com.example.android.apis.Base_Activity {
+public class CustomEvaluator extends com.example.android.apis.stub.Base_Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

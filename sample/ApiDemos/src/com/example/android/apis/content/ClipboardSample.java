@@ -34,7 +34,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class ClipboardSample extends com.example.android.apis.Base_Activity {
+public class ClipboardSample extends com.example.android.apis.stub.Base_Activity {
     ClipboardManager mClipboard;
 
     Spinner mSpinner;

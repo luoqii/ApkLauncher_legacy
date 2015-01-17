@@ -30,7 +30,7 @@ import android.widget.Button;
  * that is posted by {@link IncomingMessage}.  It allows the user to switch
  * to the app in its appropriate state if they want.
  */
-public class IncomingMessageInterstitial extends com.example.android.apis.Base_Activity {
+public class IncomingMessageInterstitial extends com.example.android.apis.stub.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

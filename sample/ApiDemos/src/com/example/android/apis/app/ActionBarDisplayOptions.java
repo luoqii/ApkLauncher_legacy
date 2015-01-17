@@ -34,7 +34,7 @@ import android.widget.Spinner;
  * This demo shows how various action bar display option flags can be combined
  * and their effects.
  */
-public class ActionBarDisplayOptions extends com.example.android.apis.Base_Activity implements View.OnClickListener,
+public class ActionBarDisplayOptions extends com.example.android.apis.stub.Base_Activity implements View.OnClickListener,
         ActionBar.TabListener, Spinner.OnItemSelectedListener, ActionBar.OnNavigationListener {
     private View mCustomView;
 

@@ -35,7 +35,7 @@ import android.widget.LinearLayout;
  * <p>This demonstrates the how to write an activity that looks like
  * a pop-up dialog.</p>
  */
-public class DialogActivity extends com.example.android.apis.Base_Activity {
+public class DialogActivity extends com.example.android.apis.stub.Base_Activity {
     /**
      * Initialization of the Activity after it is first created.  Must at least
      * call {@link android.app.Activity#setContentView setContentView()} to

@@ -32,7 +32,7 @@ import android.view.MotionEvent;
  * Shows:
  * + How to redraw in response to user input.
  */
-public class TouchRotateActivity extends Activity {
+public class TouchRotateActivity extends com.example.android.apis.stub.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

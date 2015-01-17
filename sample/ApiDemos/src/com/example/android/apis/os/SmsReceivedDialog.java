@@ -30,7 +30,7 @@ import android.util.Log;
 
 import com.example.android.apis.R;
 
-public class SmsReceivedDialog extends com.example.android.apis.Base_Activity implements OnInitListener {
+public class SmsReceivedDialog extends com.example.android.apis.stub.Base_Activity implements OnInitListener {
     private static final String TAG = "SmsReceivedDialog";
 
     private static final int DIALOG_SHOW_MESSAGE = 1;

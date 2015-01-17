@@ -12,7 +12,7 @@ import org.bbs.apklauncher.emb.LoadApk;
 import org.bbs.apklauncher.emb.ViewCreater;
 import org.bbs.apklauncher.emb.auto_gen.Host_Activity;
 import org.bbs.apklauncher.emb.auto_gen.Target_Activity;
-import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.osgi.activity.BundleActivity;
 import org.bbs.osgi.activity.IActivityAgent;
 import org.bbs.osgi.activity.InstrumentationWrapper;
@@ -111,7 +111,7 @@ implements CallBack {
 		mLibPath = mActInfo.mPackageInfo.mLibPath;
 		mApplicationClassName = mActInfo.applicationInfo.className;
 		mTargetThemeId = mActInfo.theme;
-		mApkPath = mActInfo.mApkPath;
+		mApkPath = mActInfo.applicationInfo.publicSourceDir;
 		if (TextUtils.isEmpty(mApplicationClassName)){
 			mApplicationClassName = Application.class.getCanonicalName();
 			Log.d(TAG, "no packageName, user default.");

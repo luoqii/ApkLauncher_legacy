@@ -49,7 +49,7 @@ import com.example.android.apis.R;
  * a content browser style of UI (such as a book reader) that hides the
  * nav bar as well as the status bar.
  */
-public class ContentBrowserNavActivity extends com.example.android.apis.Base_Activity
+public class ContentBrowserNavActivity extends com.example.android.apis.stub.Base_Activity
         implements OnQueryTextListener, ActionBar.TabListener {
 
     /**

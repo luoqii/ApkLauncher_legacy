@@ -26,7 +26,7 @@ import com.example.android.apis.R;
 /**
  * Demonstrates how to use a rating bar
  */
-public class RatingBar1 extends com.example.android.apis.Base_Activity implements RatingBar.OnRatingBarChangeListener {
+public class RatingBar1 extends com.example.android.apis.stub.Base_Activity implements RatingBar.OnRatingBarChangeListener {
     RatingBar mSmallRatingBar;
     RatingBar mIndicatorRatingBar;
     TextView mRatingText;

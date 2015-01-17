@@ -34,7 +34,7 @@ import com.example.android.apis.R;
 /**
  * The configuration screen for the ExampleAppWidgetProvider widget sample.
  */
-public class ExampleAppWidgetConfigure extends com.example.android.apis.Base_Activity {
+public class ExampleAppWidgetConfigure extends com.example.android.apis.stub.Base_Activity {
     static final String TAG = "ExampleAppWidgetConfigure";
 
     private static final String PREFS_NAME

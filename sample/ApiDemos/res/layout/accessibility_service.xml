@@ -16,15 +16,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px1_1"
     android:orientation="vertical">
 
     <TextView
+        android:layout_margin="@dimen/px400_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/accessibility_service_instructions"
         />
 
     <ImageButton android:id="@+id/button"
+        android:layout_margin="@dimen/px100_1"
         android:background="@drawable/ic_launcher_settings"
         android:layout_width="32dip"
         android:layout_height="32dip"

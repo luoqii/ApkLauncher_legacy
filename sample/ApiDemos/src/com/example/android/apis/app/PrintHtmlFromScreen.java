@@ -39,7 +39,7 @@ import com.example.android.apis.R;
  * @see PrintManager
  * @see WebView
  */
-public class PrintHtmlFromScreen extends com.example.android.apis.Base_Activity {
+public class PrintHtmlFromScreen extends com.example.android.apis.stub.Base_Activity {
 
     private WebView mWebView;
 

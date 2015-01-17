@@ -23,7 +23,7 @@ import com.example.android.apis.R;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class CustomLayoutActivity extends com.example.android.apis.Base_Activity {
+public class CustomLayoutActivity extends com.example.android.apis.stub.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

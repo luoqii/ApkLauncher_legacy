@@ -27,7 +27,7 @@ import android.os.Bundle;
 /**
  * A simple linear layout where the height of the layout is the sum of its children.
  */
-public class LinearLayout1 extends com.example.android.apis.Base_Activity {
+public class LinearLayout1 extends com.example.android.apis.stub.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

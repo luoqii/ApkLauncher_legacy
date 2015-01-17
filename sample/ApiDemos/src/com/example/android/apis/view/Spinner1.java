@@ -30,7 +30,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 
-public class Spinner1 extends com.example.android.apis.Base_Activity {
+public class Spinner1 extends com.example.android.apis.stub.Base_Activity {
 
     void showToast(CharSequence msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

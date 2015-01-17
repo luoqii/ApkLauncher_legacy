@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.bbs.felix.util.AndroidUtil;
-import org.bbs.felix.util.PackageParser;
-import org.bbs.felix.util.PackageParser.PackageInfoX;
+import org.bbs.felix.util.ApkManifestParser;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX;
 import org.bbs.felix.util.OsgiUtil;
 import org.bbs.osgi.activity.embed.EmbeddedActivityAgent;
 import org.knopflerfish.framework.FrameworkFactoryImpl;
@@ -138,7 +138,7 @@ public class FelixWrapper{
 			String apk = AndroidUtil.getInstallApkPath(mContext, p);
 			PackageInfo pInfo = mContext.getPackageManager().getPackageArchiveInfo(apk, PackageManager.GET_ACTIVITIES);
 			Log.d(TAG,  "pInfo: " + pInfo);
-			PackageInfoX info = PackageParser.parseAPk(mContext, apk);
+			PackageInfoX info = ApkManifestParser.parseAPk(mContext, apk);
 			Log.d(TAG, "mInfo: " + info);
 			try {
 				bundleContext.installBundle("file://" + apk).start();

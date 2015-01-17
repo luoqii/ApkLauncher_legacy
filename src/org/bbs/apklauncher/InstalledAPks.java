@@ -11,10 +11,10 @@ import java.util.zip.ZipFile;
 
 import org.bbs.apklauncher.emb.LoadApk;
 import org.bbs.felix.util.AndroidUtil;
-import org.bbs.felix.util.PackageParser;
-import org.bbs.felix.util.PackageParser.PackageInfoX;
-import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
-import org.bbs.felix.util.PackageParser.PackageInfoX.ApplicationInfoX;
+import org.bbs.felix.util.ApkManifestParser;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ApplicationInfoX;
 import org.bbs.osgi.activity.ResourcesMerger;
 
 import android.app.Application;
@@ -51,7 +51,7 @@ public class InstalledAPks {
 	
 	public void init(Application context, File apkDir){
 		mContext = context;
-		mInfos = new ArrayList<PackageParser.PackageInfoX>();
+		mInfos = new ArrayList<ApkManifestParser.PackageInfoX>();
 		
 		scanApkDir(apkDir);
 	}
@@ -64,14 +64,14 @@ public class InstalledAPks {
 		for (String f : files) {
 			File file = new File(apkDir.getAbsolutePath() + "/" + f);
 			if (file.exists() && file.getAbsolutePath().endsWith("apk")){
-				PackageInfoX info = PackageParser.parseAPk(mContext, file.getAbsolutePath());
+				PackageInfoX info = ApkManifestParser.parseAPk(mContext, file.getAbsolutePath());
 				mInfos.add(info);
 				
 				try {
 					File dataDir = mContext.getDir("plugin", 0);
 					File destDir = new File(dataDir, info.packageName + "/lib");
-					AndroidUtil.extractZipEntry(new ZipFile(info.mApkPath), "lib/armeabi", destDir);
-					AndroidUtil.extractZipEntry(new ZipFile(info.mApkPath), "lib/armeabi-v7a", destDir);
+					AndroidUtil.extractZipEntry(new ZipFile(info.applicationInfo.publicSourceDir), "lib/armeabi", destDir);
+					AndroidUtil.extractZipEntry(new ZipFile(info.applicationInfo.publicSourceDir), "lib/armeabi-v7a", destDir);
 					info.mLibPath = destDir.getPath();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

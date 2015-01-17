@@ -484,10 +484,12 @@ extends Resources
 				e.printStackTrace();
 			}
 		}
+
+		throw new RuntimeException("error in getDisplayMetrics().");
 		// this will be called in Constructor,so .
-		if (null != mSecond) {
-			mSecond.updateConfiguration(config, metrics);
-		}
+//		if (null != mSecond) {
+//			mSecond.updateConfiguration(config, metrics);
+//		}
 	}
 
 

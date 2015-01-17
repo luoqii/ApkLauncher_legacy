@@ -7,9 +7,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.bbs.felix.util.AndroidUtil;
-import org.bbs.felix.util.PackageParser;
-import org.bbs.felix.util.PackageParser.PackageInfoX;
-import org.bbs.felix.util.PackageParser.PackageInfoX.ActivityInfoX;
+import org.bbs.felix.util.ApkManifestParser;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felixonandroid.R;
 
 import android.annotation.SuppressLint;

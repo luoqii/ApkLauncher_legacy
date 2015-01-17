@@ -198,7 +198,7 @@ public class ForegroundService extends Service {
      * <p>Note that this is implemented as an inner class only keep the sample
      * all together; typically this code would appear in some separate class.
      */
-    public static class Controller extends com.example.android.apis.Base_Activity {
+    public static class Controller extends com.example.android.apis.stub.Base_Activity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);

@@ -27,7 +27,7 @@ import android.widget.ListView;
  * A list view where the last item the user clicked is placed in
  * the "activated" state, causing its background to highlight.
  */
-public class List17 extends com.example.android.apis.Base_ListActivity {
+public class List17 extends com.example.android.apis.stub.Base_ListActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -30,7 +30,7 @@ import android.widget.ImageView;
  *
  */
 @SuppressLint("NewApi")
-public class ActivityTransitionDetails extends com.example.android.apis.Base_Activity {
+public class ActivityTransitionDetails extends com.example.android.apis.stub.Base_Activity {
 
     private static final String TAG = "ActivityTransitionDetails";
 
@@ -62,7 +62,7 @@ public class ActivityTransitionDetails extends com.example.android.apis.Base_Act
     public void clicked(View v) {
         Intent intent = new Intent(this, ActivityTransition.class);
         intent.putExtra(KEY_ID, mName);
-        ActivityOptions activityOptions = ActivityOptions.makeSceneTransitionAnimation(mHostActivity,
+        ActivityOptions activityOptions = ActivityOptions.makeSceneTransitionAnimation(getHostActivity(),
                 v, "hero");
         startActivity(intent, activityOptions.toBundle());
     }

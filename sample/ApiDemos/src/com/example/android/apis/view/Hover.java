@@ -56,7 +56,7 @@ import java.util.ArrayList;
  * is intercepting events, the button will not change state as the pointer hovers
  * over it because the interceptor itself will grab the events.
  */
-public class Hover extends com.example.android.apis.Base_Activity {
+public class Hover extends com.example.android.apis.stub.Base_Activity {
     private TextView mMessageTextView;
     private CheckBox mInterceptCheckBox;
     private HoverInterceptorView mInterceptor;

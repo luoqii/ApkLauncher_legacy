@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bbs.apklauncher.emb.auto_gen.Target_ActionBarActivity;
 import org.bbs.apklauncher.emb.auto_gen.Target_Activity;
 import org.bbs.apklauncher.emb.auto_gen.Target_ActivityGroup;
+import org.bbs.apklauncher.emb.auto_gen.Target_ExpandableListActivity;
 import org.bbs.apklauncher.emb.auto_gen.Target_FragmentActivity;
 import org.bbs.apklauncher.emb.auto_gen.Target_ListActivity;
 import org.bbs.apklauncher.emb.auto_gen.Target_PreferenceActivity;
-import org.bbs.felix.util.PackageParser.PackageInfoX;
+import org.bbs.apklauncher.emb.auto_gen.Target_TabActivity;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX;
 
 import android.app.Application;
 import android.text.TextUtils;
@@ -37,7 +40,7 @@ public class LoadApk {
 			return mClassLoader;
 		}
 		
-		ClassLoader c = new DexClassLoader(mApkInfo.mApkPath, mDexCacheDir, libPath, parentClassLoader);
+		ClassLoader c = new DexClassLoader(mApkInfo.applicationInfo.publicSourceDir, mDexCacheDir, libPath, parentClassLoader);
 		Log.d(TAG, "new classloader for apk: " + c);
 		mClassLoader = c;
 		return c;
@@ -53,14 +56,20 @@ public class LoadApk {
 				Class<?> clazz = classloader.loadClass(activityClassName);
 				List<String> superClassNames = new ArrayList<String>();
 				dumpActivityType(clazz, superClassNames);
-				if (superClassNames.contains(Target_FragmentActivity.class.getName())) {
+				if (superClassNames.contains(Target_ActionBarActivity.class.getName())) {
+					cName = Target_ActionBarActivity.class.getName();
+				} else if (superClassNames.contains(Target_FragmentActivity.class.getName())) {
 					cName = Target_FragmentActivity.class.getName();
 				} else if (superClassNames.contains(Target_ListActivity.class.getName())) {
 					cName = Target_ListActivity.class.getName();
+				} else if (superClassNames.contains(Target_ExpandableListActivity.class.getName())) {
+					cName = Target_ExpandableListActivity.class.getName();
 				} else if (superClassNames.contains(Target_Activity.class.getName())) {
 					cName = Target_Activity.class.getName();
 				} else if (superClassNames.contains(Target_PreferenceActivity.class.getName())){
 					cName = Target_PreferenceActivity.class.getName();
+				} else if (superClassNames.contains(Target_TabActivity.class.getName())){
+					cName = Target_TabActivity.class.getName();
 				} else if (superClassNames.contains(Target_ActivityGroup.class.getName())){
 					cName = Target_ActivityGroup.class.getName();
 				}

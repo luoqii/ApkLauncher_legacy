@@ -33,7 +33,7 @@ import android.widget.CheckBox;
 /**
  * Demonstrates how fragments can participate in the options menu.
  */
-public class FragmentMenu extends com.example.android.apis.Base_Activity {
+public class FragmentMenu extends com.example.android.apis.stub.Base_Activity {
     Fragment mFragment1;
     Fragment mFragment2;
     CheckBox mCheckBox1;

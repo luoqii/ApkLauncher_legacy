@@ -32,7 +32,7 @@ import com.example.android.apis.R;
  * as well as a dynamically-configured scene.
  */
 @SuppressLint("NewApi")
-public class Transitions extends com.example.android.apis.Base_Activity {
+public class Transitions extends com.example.android.apis.stub.Base_Activity {
 
     Scene mScene1, mScene2, mScene3;
     ViewGroup mSceneRoot;
@@ -45,7 +45,7 @@ public class Transitions extends com.example.android.apis.Base_Activity {
 
         mSceneRoot = (ViewGroup) findViewById(R.id.sceneRoot);
 
-        TransitionInflater inflater = TransitionInflater.from(this.getActivity());
+        TransitionInflater inflater = TransitionInflater.from(this.getHostActivity());
 
         // Note that this is not the only way to create a Scene object, but that
         // loading them from layout resources cooperates with the

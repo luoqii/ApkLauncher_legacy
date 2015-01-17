@@ -28,7 +28,7 @@ import android.os.Bundle;
 /**
  * Variants of {@link TextClock}.
  */
-public class TextClockDemo extends com.example.android.apis.Base_Activity {
+public class TextClockDemo extends com.example.android.apis.stub.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -28,7 +28,7 @@ import android.widget.TextView;
 /**
  * Demonstration of styled text resources.
  */
-public class StyledText extends com.example.android.apis.Base_Activity
+public class StyledText extends com.example.android.apis.stub.Base_Activity
 {
     @Override
 	protected void onCreate(Bundle savedInstanceState)

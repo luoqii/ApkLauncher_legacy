@@ -46,7 +46,7 @@ import java.io.OutputStream;
 /**
 * Demonstration of styled text resources.
 */
-public class ExternalStorage extends com.example.android.apis.Base_Activity {
+public class ExternalStorage extends com.example.android.apis.stub.Base_Activity {
     ViewGroup mLayout;
 
     static class Item {

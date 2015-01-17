@@ -35,7 +35,7 @@ import static android.widget.GridLayout.LayoutParams;
  * This can either be done by separating rows or separating columns - but we don't need
  * to do both and may only have enough space to do one or the other.
  */
-public class GridLayout3 extends com.example.android.apis.Base_Activity {
+public class GridLayout3 extends com.example.android.apis.stub.Base_Activity {
     public static View create(Context context) {
         GridLayout p = new GridLayout(context);
         p.setUseDefaultMargins(true);

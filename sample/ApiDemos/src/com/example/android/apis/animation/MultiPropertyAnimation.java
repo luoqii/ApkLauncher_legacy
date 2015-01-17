@@ -43,7 +43,7 @@ import android.widget.LinearLayout;
  * UI allows you to set the position of the animation. Pressing the Run button will play from
  * the current position of the animation.
  */
-public class MultiPropertyAnimation extends com.example.android.apis.Base_Activity {
+public class MultiPropertyAnimation extends com.example.android.apis.stub.Base_Activity {
 
     private static final int DURATION = 1500;
 

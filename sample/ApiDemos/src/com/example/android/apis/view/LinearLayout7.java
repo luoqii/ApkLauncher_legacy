@@ -28,7 +28,7 @@ import android.os.Bundle;
  * Demonstrates using match_parent within a linear layout whose size is not fixed.
  *
  */
-public class LinearLayout7 extends com.example.android.apis.Base_Activity {
+public class LinearLayout7 extends com.example.android.apis.stub.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

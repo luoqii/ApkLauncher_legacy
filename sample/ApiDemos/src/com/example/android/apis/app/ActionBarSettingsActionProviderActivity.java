@@ -36,7 +36,7 @@ import com.example.android.apis.R;
  * ActionProvider for launching the system settings and adds a menu item with that
  * provider.
  */
-public class ActionBarSettingsActionProviderActivity extends com.example.android.apis.Base_Activity {
+public class ActionBarSettingsActionProviderActivity extends com.example.android.apis.stub.Base_Activity {
 
     /**
      * {@inheritDoc}

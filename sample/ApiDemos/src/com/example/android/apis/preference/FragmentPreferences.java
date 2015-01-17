@@ -26,7 +26,7 @@ import android.preference.PreferenceFragment;
  * Demonstration of PreferenceFragment, showing a single fragment in an
  * activity.
  */
-public class FragmentPreferences extends com.example.android.apis.Base_Activity {
+public class FragmentPreferences extends com.example.android.apis.stub.Base_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
