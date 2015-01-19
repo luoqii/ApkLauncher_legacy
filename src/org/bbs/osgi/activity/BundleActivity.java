@@ -391,6 +391,7 @@ implements InstrumentationWrapper.CallBack
 			Object r = method.invoke(assets, apkFilePath);
 			DisplayMetrics metrics = null;
 			Configuration config = null;
+			// TODO add confic & metrics
 			Resources res = new Resources(assets, metrics, config);
 			return res;
 		} catch (NoSuchMethodException e) {

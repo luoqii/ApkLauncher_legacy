@@ -27,7 +27,7 @@
         />
 
     <ImageButton android:id="@+id/button"
-        android:layout_margin="@dimen/px100_1"
+        android:layout_margin="@dimen/px100_11"
         android:background="@drawable/ic_launcher_settings"
         android:layout_width="32dip"
         android:layout_height="32dip"

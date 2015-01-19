@@ -15,12 +15,10 @@
 -->
 
 <resources>
-    <dimen name="px0">0px</dimen>
-    <dimen name="px1">-1px</dimen>
     <dimen name="px1_1">-1.1px</dimen>
-    <dimen name="px10_1">-10.1px</dimen>
-    <dimen name="px100_1">-100.1px</dimen>
+    <dimen name="px10_11">-10.11px</dimen>
+    <dimen name="px100_11">-100.11px</dimen>
     <dimen name="px400_1">-400.1px</dimen>
-    <dimen name="px1000_1">-1000.1px</dimen>
+    <dimen name="px1000_11">-1000.11px</dimen>
     <dimen name="px10000_1">-10000.1px</dimen>
 </resources>

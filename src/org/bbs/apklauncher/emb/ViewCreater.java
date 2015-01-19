@@ -14,8 +14,11 @@ import android.view.View.OnClickListener;
 public class ViewCreater {
 	private static final String TAG = ViewCreater.class.getSimpleName();
 	// phonelayoutinfaltor
-	private static final String[] sClassPrefixList = { "android.widget.",
-			"android.webkit.", "android.app." };
+	private static final String[] sClassPrefixList = { 
+			"android.view.",
+			"android.widget.",
+			"android.webkit.", 
+			"android.app." };
 
 	public static View onCreateView(String name, Context context,
 			AttributeSet attrs, ClassLoader classLoader, final Object object
@@ -107,24 +110,8 @@ public class ViewCreater {
 					Context.class, AttributeSet.class });
 			return (View) construtor
 					.newInstance(new Object[] { context, attrs });
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			//e.printStackTrace();
 		}
 
 		return null;

@@ -23,21 +23,13 @@ do not denpendent some specific osgi impl, just use stardard osgi feature.
 
 PROBLEM
 =======
-Toast
 do not user Activity.this (directly or indirectly) in embedded activiy.
-MarginLayout px_minus_xxx
 overridePendingTransition(0, 0)
-intent.getStringExtra()
-uninstalled activity's theme
-Activity.onClick()
 asset only one (bundel or host) useable.
-manefestfile's meta data
-Activity.showDialog()
-Activity.showContextMenu() 
 Fragment.startActvity()
-notification
 native lib
 start activity by custom action.
+intent.putSeriable() (less then 5.0) android has bug which will not use classload we support by Intent.getExtr().setClassLoader().
 
 TRICK
 =====
@@ -46,7 +38,7 @@ there is ONE (yes 1 not 2 or 3 ...) BLANK line in manifest.mf
 
 TODO
 ====
-how to buidl felix?
+how to build felix?
 
 SEE
 ===

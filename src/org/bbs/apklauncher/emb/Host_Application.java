@@ -5,6 +5,8 @@ import org.bbs.osgi.activity.ReflectUtil;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.content.res.Resources.Theme;
 
 public class Host_Application extends 
 Application
@@ -46,6 +48,14 @@ Application
 		}
 	}
 	
-	
+	@Override
+	public Theme getTheme() {
+		return getBaseContext().getTheme();
+	}
+
+	// for Window to get target's resource
+	public Resources getResources() {
+		return getBaseContext().getResources();
+	}	
 	
 }

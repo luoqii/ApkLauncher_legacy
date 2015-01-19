@@ -9,26 +9,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipFile;
 
-import org.bbs.apklauncher.emb.LoadApk;
+import org.bbs.apklauncher.emb.ClassLoaderMerge;
+import org.bbs.apklauncher.emb.TargetClassLoader;
+import org.bbs.apklauncher.emb.TargetClassLoader.RestrictClassLoader;
 import org.bbs.felix.util.AndroidUtil;
 import org.bbs.felix.util.ApkManifestParser;
 import org.bbs.felix.util.ApkManifestParser.PackageInfoX;
 import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ApplicationInfoX;
-import org.bbs.osgi.activity.ResourcesMerger;
 
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import dalvik.system.DexClassLoader;
 
 public class InstalledAPks {
 	private static InstalledAPks sInstance;
 	
-	public static Map<ComponentName, WeakReference<ClassLoader>> sApk2ClassLoaderMap = new HashMap<ComponentName, WeakReference<ClassLoader>>();
-	public static Map<ComponentName, WeakReference<ResourcesMerger>> sApk2ResourceMap = new HashMap<ComponentName, WeakReference<ResourcesMerger>>();
-	public static Map<ComponentName, WeakReference<Context>> sApk2ContextMap = new HashMap<ComponentName, WeakReference<Context>>();	
-	public static Map<ComponentName, WeakReference<Application>> sApk2ApplicationtMap = new HashMap<ComponentName, WeakReference<Application>>();
+	public static Map<String, WeakReference<ClassLoader>> sApk2ClassLoaderMap = new HashMap<String, WeakReference<ClassLoader>>();
+	public static Map<String, WeakReference<Application>> sApk2ApplicationtMap = new HashMap<String, WeakReference<Application>>();
+
+	public static ClassLoader sLastClassLoader;
 
 	private ArrayList<PackageInfoX> mInfos;
 	private Application mContext;
@@ -36,17 +38,58 @@ public class InstalledAPks {
 	private InstalledAPks() {
 		
 	}
+
+	public static ClassLoader getClassLoader(String packageName) {
+		WeakReference<ClassLoader> weakReference = sApk2ClassLoaderMap.get(packageName);
+		if (null != weakReference) {
+			ClassLoader c = weakReference.get();
+			return c;
+		}
+		return null;
+	}
 	
-	public static ClassLoader getClassLoader(ComponentName compName) {
-		WeakReference<ClassLoader> weakReference = sApk2ClassLoaderMap.get(compName);
+	public static void putClassLoader(String packageName, ClassLoader classLoader) {
+		sLastClassLoader = classLoader;
+		sApk2ClassLoaderMap.put(packageName, new WeakReference<ClassLoader>(classLoader));
+	}
+	
+	public static Application getApplication(String packageName) {
+		WeakReference<Application> weakReference = sApk2ApplicationtMap.get(packageName);
 		if (null != weakReference) {
 			return weakReference.get();
 		}
 		return null;
 	}
 	
-	public static void putClassLoader(ComponentName compName, ClassLoader classLoader) {
-		sApk2ClassLoaderMap.put(compName, new WeakReference<ClassLoader>(classLoader));
+	public static ClassLoader createClassLoader(String apkPath, String libPath, Context baseContext) {		
+		ClassLoader c = null;	
+		
+		// this classlaoder can work on nexus 4, ???
+		c = new DexClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), 
+				libPath,
+				baseContext.getClassLoader()
+				);		
+		
+//		c = new ClassLoaderMerger(c, mRealBaseContext.getClassLoader());
+		
+//		c = new ApkClassLoader(apkPath, getDir("apk_code_cache", 0).getPath(), 
+//				libPath, mRealBaseContext.getClassLoader(), getClassLoader());
+		
+		RestrictClassLoader rc = new TargetClassLoader.RestrictClassLoader();
+		rc.setHostClassLoader(baseContext.getClassLoader());;
+		c = new TargetClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), 
+				libPath,
+				rc
+				);
+
+//		c = new TargetClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), libPath, ClassLoader.getSystemClassLoader());
+//		c = new ClassLoaderMerge(c, baseContext.getClassLoader());
+		
+		return c;
+	}
+	
+	public static void putApplication(String packageName, Application app) {
+		sApk2ApplicationtMap.put(packageName, new WeakReference<Application>(app));
 	}
 	
 	public void init(Application context, File apkDir){
@@ -73,6 +116,10 @@ public class InstalledAPks {
 					AndroidUtil.extractZipEntry(new ZipFile(info.applicationInfo.publicSourceDir), "lib/armeabi", destDir);
 					AndroidUtil.extractZipEntry(new ZipFile(info.applicationInfo.publicSourceDir), "lib/armeabi-v7a", destDir);
 					info.mLibPath = destDir.getPath();
+					
+					// asume there is only one apk.
+					ClassLoader cl = createClassLoader(info.applicationInfo.sourceDir, info.mLibPath, mContext);
+					putClassLoader(info.applicationInfo.sourceDir, cl);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -81,7 +128,7 @@ public class InstalledAPks {
 		}
 	}
 	
-	public ApplicationInfoX getApplication(String applicationName) {
+	public ApplicationInfoX getApplicationInfo(String applicationName) {
 		ApplicationInfoX a = null;
 		boolean has = false;
 		for (PackageInfoX m : mInfos) {
@@ -95,7 +142,7 @@ public class InstalledAPks {
 		return a;
 	}
 	
-	public PackageInfoX getApk(ComponentName comName){
+	public PackageInfoX getPackageInfo(ComponentName comName){
 		PackageInfoX p = null;
 		for (PackageInfoX a : mInfos) {
 			if (a.packageName.equals(comName.getPackageName())){
@@ -107,7 +154,7 @@ public class InstalledAPks {
 		return p;
 	}
 	
-	public boolean hasApplication(String applicationName) {
+	public boolean hasApplicationInfo(String applicationName) {
 		boolean has = false;
 		for (PackageInfoX m : mInfos) {
 			if (applicationName.equals(m.applicationInfo.packageName)) {

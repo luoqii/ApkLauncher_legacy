@@ -54,6 +54,7 @@ public class ApkManifestParser {
 	private static final String ATTR_NAME = "name";
 	private static final String ATTR_PACKAGE = "package";
 	private static final String TAG_MANIFEST = "manifest";
+	private static final boolean LOG_UN_HANDLED_ITEM = false;
 
 	public static PackageInfoX parseAPk(Context context, String apkFile) {
 		PackageInfoX info = new PackageInfoX();
@@ -72,8 +73,8 @@ public class ApkManifestParser {
 			info.applicationInfo.sourceDir = apkFile;
 			resolveParsedApk(info);
 			
-			parser = assets.openXmlResourceParser(cookie, "AndroidManifest.xml");
-			dumpParser(parser);
+//			parser = assets.openXmlResourceParser(cookie, "AndroidManifest.xml");
+//			dumpParser(parser);
 //			info.dump();
 
 			return info;
@@ -205,7 +206,9 @@ public class ApkManifestParser {
 //			} else if ("installLocation".equals(attName)) {
 //				info.installLocation = toResId(attValue);
 			} else {
-				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				}
 			}
 		}
 		
@@ -224,7 +227,9 @@ public class ApkManifestParser {
 			} else if (TAG_USES_SDK.equals(tagName)) {
 				parserUsesSdk(parser, info);
 			} else {
-				Log.w(TAG, "un-handled tag: " + tagName);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled tag: " + tagName);
+				}
 			}
 		}
 
@@ -260,7 +265,9 @@ public class ApkManifestParser {
 			} else if ("targetSdkVersion".equals(attName)) {
 				sdk.mTargetSdkVersion = Integer.parseInt(attValue);
 			} else {
-				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				}
 			}
 		}
 		
@@ -287,7 +294,9 @@ public class ApkManifestParser {
 			} else if (ATTR_PROCESS.equals(attName)) {
 				app.processName = (attValue);
 			} else {
-				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				}
 			}
 		}
 		parsePackageItem(parser, app);
@@ -314,7 +323,9 @@ public class ApkManifestParser {
 				}
 				parserMetaData(parser, info.applicationInfo.metaData);
 			} else {
-				Log.w(TAG, "un-handled tag: " + tagName);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled tag: " + tagName);
+				}
 			}
 		}
 
@@ -341,7 +352,9 @@ public class ApkManifestParser {
 			} else if (ATTR_BANNER.equals(attName)) {
 					info.logo = toResId(attValue);
 			} else {
-				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				}
 			} 
 		}
 	}
@@ -362,7 +375,9 @@ public class ApkManifestParser {
 					value = attValue;
 				}
 			} else {
-				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				}
 			}
 		}
 		
@@ -382,7 +397,9 @@ public class ApkManifestParser {
 			if (ATTR_THEME.equals(attName)) {
 				a.theme = Integer.parseInt(attValue.substring(1));
 			} else {
-				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				}
 			}
 		}
 		parsePackageItem(parser, a);		
@@ -406,7 +423,9 @@ public class ApkManifestParser {
 				}
 				parserMetaData(parser, a.metaData);
 			} else {
-				Log.w(TAG, "un-handled tag: " + tagName);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled tag: " + tagName);
+				}
 			}
 			
 		}
@@ -447,7 +466,9 @@ public class ApkManifestParser {
 			} else if (TAG_CATEGORY.equals(tagName)) {
 				parseCategory(parser, info, i);
 			} else {
-				Log.w(TAG, "un-handled tag: " + tagName);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled tag: " + tagName);
+				}
 			}
 		}
 
@@ -477,7 +498,9 @@ public class ApkManifestParser {
 				String category = attValue;
 				intentInfo.addCategory(category);
 			} else {
-				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				}
 			}
 		}
 	}
@@ -493,7 +516,9 @@ public class ApkManifestParser {
 				String action = attValue;
 				intentInfo.addAction(action);
 			} else {
-				Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				if (LOG_UN_HANDLED_ITEM) {
+					Log.w(TAG, "un-handled att: " + attName + "=" + attValue);
+				}
 			}
 		}
 	}

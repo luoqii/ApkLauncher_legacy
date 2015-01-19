@@ -13,13 +13,17 @@ public class Target_Application extends
 //Application
 ContextWrapper
 {
-	protected Host_Application mHostApplication;
+	private Host_Application mHostApplication;
 	
 	public Target_Application(Context base) {
 		super(base);
 	}	
 	public Target_Application() {
 		super(null);
+	}
+	
+	public Host_Application getHostApplication() {
+		return mHostApplication;
 	}
 	
 	protected void attachBaseContext(Context base) {

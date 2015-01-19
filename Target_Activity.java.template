@@ -46,6 +46,7 @@ import android.preference.PreferenceScreen;
 import android.transition.Scene;
 import android.transition.TransitionManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.ActionMode.Callback;
 import android.view.ContextMenu;
@@ -94,7 +95,7 @@ ContextWrapper
 		mHostActivity = (Host_SUPER_CLASS) base;
 	}
 	
-	public Activity getHostActivity() {
+	public Host_SUPER_CLASS getHostActivity() {
 		return mHostActivity;
 	}
 	
@@ -817,6 +818,7 @@ ContextWrapper
 
 	
 	public void overridePendingTransition(int enterAnim, int exitAnim) {
+		Log.w(TAG, "overridePendingTransition() is not impled.");
 		mHostActivity.overridePendingTransition(enterAnim, exitAnim);
 	}
 

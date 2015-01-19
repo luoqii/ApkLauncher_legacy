@@ -46,9 +46,16 @@ Application
 
 	@Override
     public void onCreate()  {
-		Log.d(TAG, "px0: " + getBaseContext().getResources().getDimensionPixelOffset(R.dimen.px0));
+		Log.d(TAG, "px0: " + getBaseContext().getResources().getDimensionPixelSize(R.dimen.px0));
 		Log.d(TAG, "px10: " + getBaseContext().getResources().getDimensionPixelOffset(R.dimen.px1));
 		Log.d(TAG, "px1_1: " + getBaseContext().getResources().getDimensionPixelOffset(R.dimen.px1_1));
+		Log.d(TAG, "px100_11: " + getBaseContext().getResources().getDimensionPixelSize(R.dimen.px100_11));
+		Log.d(TAG, "px1000_11: " + getBaseContext().getResources().getDimensionPixelSize(R.dimen.px1000_11));
 //		gets
+		
+
+		Log.d(TAG, "px_minus_100: " + getBaseContext().getResources().getDimensionPixelSize(R.dimen.px_minus_100));
+		Log.d(TAG, "px_minus_100: " + getBaseContext().getResources().getDimensionPixelSize(R.dimen.px_minus_100));
+	
     }
 }
