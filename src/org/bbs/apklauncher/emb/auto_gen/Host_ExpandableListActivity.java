@@ -598,7 +598,6 @@ public class Host_ExpandableListActivity extends ExpandableListActivity {
 		mTargetActivity.onGroupExpand(groupPosition);
 	}	
 	// tag_end:ExpandableListActivity
-	
 		
 	// tag_start:ActionBarActivity
 	// tag_end:ActionBarActivity

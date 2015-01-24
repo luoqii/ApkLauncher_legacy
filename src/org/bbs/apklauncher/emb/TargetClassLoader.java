@@ -17,12 +17,12 @@ public class TargetClassLoader extends DexClassLoader {
 	 protected Class<?> findClass(String className)
 			 throws ClassNotFoundException {
 		 //==========12345678901234567890
-		 Log.d(TAG, "#" + mLevel + " try to  load class: " + className);
+//		 Log.d(TAG, "#" + mLevel + " try to  find class: " + className);
 		 mLevel++;
 		 Class c = null;
 		 c = super.findClass(className);
 		 //==========12345678901234567890
-		 Log.d(TAG, "#" + mLevel + " load class success: " + c + " classloader: " + c.getClassLoader());
+//		 Log.d(TAG, "#" + mLevel + " find class success: " + c + " classloader: " + c.getClassLoader());
 		 mLevel--;
 
 		 return c;
@@ -33,8 +33,22 @@ public class TargetClassLoader extends DexClassLoader {
 		return super.loadClass(className);
 	}
 
+	@Override
+	protected Class<?> loadClass(String className, boolean resolve)
+			throws ClassNotFoundException {
+		 mLevel++;
+		 //==========1234567890123456789012345678901234567890
+		 Log.d(TAG,    "#  class: " + className);
+		 Class c =  super.loadClass(className, resolve);
+		 //==========1234567890123456789012345678901234567890
+		 Log.d(TAG,    "#  class: " + c + " classloader: " + c.getClassLoader());
+		 mLevel--;
+		 
+		 return c;
+	}
+
 	static  boolean shouldLoadByHost(String className) {
-		if (className.startsWith("org.bbs.apklauncher.emb.auto_gen.")
+		if (className.startsWith("org.bbs.apklauncher")
 				|| (className.startsWith("android") 
 //						&& !className.startsWith("android.support")
 						)) {
@@ -45,6 +59,8 @@ public class TargetClassLoader extends DexClassLoader {
 	
 	public static class RestrictClassLoader extends ClassLoader {
 
+		private static final String TAG = RestrictClassLoader.class.getSimpleName();
+		int mLevel;
 		private ClassLoader mHostClassLoader;
 
 		public RestrictClassLoader() {
@@ -60,17 +76,42 @@ public class TargetClassLoader extends DexClassLoader {
 				throws ClassNotFoundException {
 			Class c = null;
 			if (shouldLoadByHost(className)) {
-//				Log.d(TAG, "try to  + class: " + className + " by classLoader: " + mHostClassLoader);
+				 //========123456789012345678901234567890123
+				 Log.d(TAG, "# load class by hostClassLoader class: " + className);
+				 mLevel++;
 				c = mHostClassLoader.loadClass(className);
-//				Log.d(TAG, "class   loaded   by  classLoader: " + mHostClassLoader);
+				 //========123456789012345678901234567890123
+				 Log.d(TAG, "# class  loaded  by  hostClassLoader   : " + c + " classloader: " + c.getClassLoader());
+				 mLevel--;
+
 				return c;
 			}
-//			Log.d(TAG, "try to clsss: " + className + " by classLoader: " + this);
+			 //==========12345678901234567890
+//			 Log.d(TAG, "#" + mLevel + " try to  find class: " + className);
+			 mLevel++;
 			c =  super.findClass(className);
-//			Log.d(TAG, "class   loaded   by  classLoader: " + mHostClassLoader);
+			 //==========12345678901234567890
+//			 Log.d(TAG, "#" + mLevel + " find class success: " + c + " classloader: " + c.getClassLoader());
+			 mLevel--;
 			return c;
 		}
-		
+
+		 @Override
+		public Class<?> loadClass(String className) throws ClassNotFoundException {
+			return super.loadClass(className);
+		}
+
+		 @Override
+		 protected Class<?> loadClass(String className, boolean resolve)
+				 throws ClassNotFoundException {
+			 //==========12345678901234567890
+//			 Log.d(TAG, "#"  +   " try to  find class: " + className);
+			 Class c =  super.loadClass(className, resolve);
+			 //==========12345678901234567890
+//			 Log.d(TAG, "#"  +  " find class success: " + c + " classloader: " + c.getClassLoader());
+			 
+			 return c;
+		 }
 		
 	}
 

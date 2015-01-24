@@ -1,12 +1,9 @@
 package org.bbs.osgi.activity;
 
-import java.nio.MappedByteBuffer;
-
-import org.bbs.osgi.activity.ReflectUtil.ActivityReflectUtil;
+import org.bbs.apklauncher.emb.Host_Application;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
-import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -19,7 +16,6 @@ import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 
 /**
  * when bundle resource is ready, return this, otherwise, return normally.
@@ -192,17 +188,18 @@ ContextWrapper
 	
 	@Override
 	public ComponentName startService(Intent service) {
-//		return super.startService(service);
-		Log.w(TAG, "startService not implemented.");
-		return null;
+		((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
+		return super.startService(service);
+//		Log.w(TAG, "startService not implemented.");
+//		return null;
 	}
 
 	@Override
 	public boolean bindService(Intent service, ServiceConnection conn, int flags) {
-//		return super.bindService(service, conn, flags);
-
-		Log.w(TAG, "bindService not implemented.");
-		return false;
+		((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
+		return super.bindService(service, conn, flags);
+//		Log.w(TAG, "bindService not implemented.");
+//		return false;
 	}
 
 

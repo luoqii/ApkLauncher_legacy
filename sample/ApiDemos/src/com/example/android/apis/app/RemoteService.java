@@ -54,7 +54,7 @@ import com.example.android.apis.R;
  * running in its own process, the {@link LocalService} sample shows a much
  * simpler way to interact with it.
  */
-public class RemoteService extends Service {
+public class RemoteService extends com.example.android.apis.stub.Base_Service {
     /**
      * This is a list of callbacks that have been registered with the
      * service.  Note that this is package scoped (instead of private) so

@@ -9,6 +9,8 @@ public class ClassLoaderMerge extends ClassLoader {
 	private ClassLoader mHost;
 	private ClassLoader mTarget;
 
+	private int mLevel;
+
 	public ClassLoaderMerge(ClassLoader targetClassLoader, ClassLoader hostClassLoader) {
 		mTarget = targetClassLoader;
 		mHost = hostClassLoader;
@@ -19,7 +21,8 @@ public class ClassLoaderMerge extends ClassLoader {
 		Class c =  null;;
 
 		 //==========12345678901234567890
-		 Log.d(TAG, "try to  load class: " + className);
+		 Log.d(TAG, "#" + mLevel + " try to  load class: " + className);
+		 mLevel++;
 		 
 		if (className.startsWith("android")
 				|| className.startsWith("org.bbs")
@@ -30,7 +33,8 @@ public class ClassLoaderMerge extends ClassLoader {
 		}
 
 		 //==========12345678901234567890
-		 Log.d(TAG, "load class success: " + c + " classloader: " + c.getClassLoader());
+		 Log.d(TAG, "#" + mLevel + " load class success: " + c + " classloader: " + c.getClassLoader());
+		 mLevel--;
 		return c;
 	}
 	

@@ -643,7 +643,6 @@ public class Host_PreferenceActivity extends PreferenceActivity {
 	
 	// tag_start:ExpandableListActivity
 	// tag_end:ExpandableListActivity
-	
 		
 	// tag_start:ActionBarActivity
 	// tag_end:ActionBarActivity

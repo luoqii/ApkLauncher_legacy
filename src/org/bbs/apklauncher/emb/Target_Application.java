@@ -1,81 +1,34 @@
 package org.bbs.apklauncher.emb;
 
+import org.bbs.apklauncher.ApkLuncherActivity;
+import org.bbs.apklauncher.InstalledAPks;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
+
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.app.Application.OnProvideAssistDataListener;
 import android.content.ComponentCallbacks;
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.ContextWrapper;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.content.res.Resources.Theme;
+import android.text.TextUtils;
+import android.util.Log;
 
 @SuppressLint("NewApi")
-public class Target_Application extends 
-//Application
-ContextWrapper
+public class Target_Application extends Application
 {
-	private Host_Application mHostApplication;
+	private static final String TAG = Target_Application.class.getSimpleName();
 	
-	public Target_Application(Context base) {
-		super(base);
+	@Override
+	public Theme getTheme() {
+		return getBaseContext().getTheme();
+	}
+
+	public Resources getResources() {
+		return getBaseContext().getResources();
 	}	
-	public Target_Application() {
-		super(null);
-	}
-	
-	public Host_Application getHostApplication() {
-		return mHostApplication;
-	}
-	
-	protected void attachBaseContext(Context base) {
-//		mHostApplication = (Host_Application) base;
-		super.attachBaseContext(base);
-	}
-	
-	void setHostApplication(Host_Application app) {
-		mHostApplication = app;
-	}
-
-	public void onCreate() {
-	}
-
-	public void onTerminate() {
-	}
-
-	public void onConfigurationChanged(Configuration newConfig) {
-	}
-
-	public void onLowMemory() {
-	}
-
-	public void onTrimMemory(int level) {
-	}
-
-	public void registerComponentCallbacks(ComponentCallbacks callback) {
-		mHostApplication.registerComponentCallbacks(callback);
-	}
-
-	public void unregisterComponentCallbacks(ComponentCallbacks callback) {
-		mHostApplication.unregisterComponentCallbacks(callback);
-	}
-
-	public void registerActivityLifecycleCallbacks(
-			ActivityLifecycleCallbacks callback) {
-		mHostApplication.registerActivityLifecycleCallbacks(callback);
-	}
-
-	public void unregisterActivityLifecycleCallbacks(
-			ActivityLifecycleCallbacks callback) {
-		mHostApplication.unregisterActivityLifecycleCallbacks(callback);
-	}
-
-	public void registerOnProvideAssistDataListener(
-			OnProvideAssistDataListener callback) {
-		mHostApplication.registerOnProvideAssistDataListener(callback);
-	}
-
-	public void unregisterOnProvideAssistDataListener(
-			OnProvideAssistDataListener callback) {
-		mHostApplication.unregisterOnProvideAssistDataListener(callback);
-	}
-	
 }

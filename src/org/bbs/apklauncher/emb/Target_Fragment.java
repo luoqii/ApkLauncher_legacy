@@ -1,11 +1,12 @@
 package org.bbs.apklauncher.emb;
 
-import org.bbs.apklauncher.emb.auto_gen.Host_FragmentActivity;
-import org.bbs.apklauncher.emb.auto_gen.Target_FragmentActivity;
+import org.bbs.apklauncher.emb.auto_gen.Host_Activity;
+import org.bbs.apklauncher.emb.auto_gen.Target_Activity;
 
-import android.app.Activity;
-import android.support.v4.app.Fragment;
+import android.annotation.SuppressLint;
+import android.app.Fragment;
 
+@SuppressLint("NewApi")
 public class Target_Fragment extends Fragment {
 //	public Activity getHostActivity() {
 //		return getActivity();
@@ -15,11 +16,11 @@ public class Target_Fragment extends Fragment {
 //		return getActivity();
 //	}
 	
-	public Host_FragmentActivity getHostActivity() {
-		return (Host_FragmentActivity) getActivity();
+	public Host_Activity getHostActivity() {
+		return (Host_Activity) getActivity();
 	}
 	
-	public Target_FragmentActivity getTargetActivity() {
+	public Target_Activity getTargetActivity() {
 		return getHostActivity().getTargetActivity();
 	}
 }

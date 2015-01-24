@@ -6,25 +6,18 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Date;
 
 import org.bbs.apklauncher.emb.Host_Application;
-import org.bbs.osgi.activity.ApplicationAgent;
-import org.bbs.osgi.activity.ApplicationWrapper;
-import org.bbs.osgi.activity.LazyContext;
-import org.bbs.osgi.activity.ReflectUtil;
-import org.bbs.osgi.activity.embed.EmbeddedApplictionAgent;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.CallLog.Calls;
 import android.util.Log;
 
-public class ApkLauncherApplication extends Host_Application {
+public class ApkLauncherApplication extends 
+//Application
+Host_Application 
+{
 	private static final String TAG = ApkLauncherApplication.class.getSimpleName();
 	public static final String APK_LAUNCHER_DIR = "apklauncher";
 	

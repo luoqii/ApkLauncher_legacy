@@ -36,7 +36,7 @@ import android.os.RemoteException;
  * every 5 seconds for a minute.
  * 
  */
-public class NotifyingService extends Service {
+public class NotifyingService extends com.example.android.apis.stub.Base_Service {
     
     // Use a layout id for a unique identifier
     private static int MOOD_NOTIFICATIONS = R.layout.status_bar_notifications;

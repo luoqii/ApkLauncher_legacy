@@ -49,7 +49,7 @@ import com.example.android.apis.app.RemoteService.Controller;
  * calling startActivity().
  */
 
-public class MessengerService extends Service {
+public class MessengerService extends com.example.android.apis.stub.Base_Service {
     /** For showing and hiding our notification. */
     NotificationManager mNM;
     /** Keeps track of all current registered clients. */

@@ -580,7 +580,6 @@ public class Host_ActivityGroup extends ActivityGroup {
 	
 	// tag_start:ExpandableListActivity
 	// tag_end:ExpandableListActivity
-	
 		
 	// tag_start:ActionBarActivity
 	// tag_end:ActionBarActivity

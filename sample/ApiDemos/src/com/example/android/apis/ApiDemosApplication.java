@@ -16,8 +16,9 @@
 
 package com.example.android.apis;
 
-import android.app.Application;
 import android.util.Log;
+
+import com.example.android.apis.stub.Base_Application;
 
 /**
  * This is an example of a {@link android.app.Application} class.  This can
@@ -31,8 +32,7 @@ import android.util.Log;
  * of how to perform unit tests on an Application object.
  */
 public class ApiDemosApplication extends 
-Application 
-//Target_Application
+Base_Application
 {
 //    public ApiDemosApplication(Context base) {
 //		super(base);
@@ -46,8 +46,9 @@ Application
 
 	@Override
     public void onCreate()  {
-		Log.d(TAG, "px0: " + getBaseContext().getResources().getDimensionPixelSize(R.dimen.px0));
-		Log.d(TAG, "px10: " + getBaseContext().getResources().getDimensionPixelOffset(R.dimen.px1));
+		Log.d(TAG, " string: " + getString(R.string.activity_sample_code));
+		Log.d(TAG, "px0: " + getResources().getDimensionPixelSize(R.dimen.px0));
+		Log.d(TAG, "px10: " + getResources().getDimensionPixelOffset(R.dimen.px1));
 		Log.d(TAG, "px1_1: " + getBaseContext().getResources().getDimensionPixelOffset(R.dimen.px1_1));
 		Log.d(TAG, "px100_11: " + getBaseContext().getResources().getDimensionPixelSize(R.dimen.px100_11));
 		Log.d(TAG, "px1000_11: " + getBaseContext().getResources().getDimensionPixelSize(R.dimen.px1000_11));

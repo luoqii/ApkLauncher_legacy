@@ -42,7 +42,7 @@ import com.example.android.apis.R;
  * calling startActivity().
  */
 
-public class LocalService extends Service {
+public class LocalService extends com.example.android.apis.stub.Base_Service {
     private NotificationManager mNM;
 
     // Unique Identification Number for the Notification.

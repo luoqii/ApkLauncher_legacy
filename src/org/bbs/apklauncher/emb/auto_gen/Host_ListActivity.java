@@ -584,7 +584,6 @@ public class Host_ListActivity extends ListActivity {
 	
 	// tag_start:ExpandableListActivity
 	// tag_end:ExpandableListActivity
-	
 		
 	// tag_start:ActionBarActivity
 	// tag_end:ActionBarActivity

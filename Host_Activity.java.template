@@ -670,7 +670,6 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 		mTargetActivity.onGroupExpand(groupPosition);
 	}	
 	// tag_end:ExpandableListActivity
-	
 		
 	// tag_start:ActionBarActivity
 	@Override

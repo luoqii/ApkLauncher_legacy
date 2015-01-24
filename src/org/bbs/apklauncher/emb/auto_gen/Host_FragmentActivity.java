@@ -592,7 +592,6 @@ public class Host_FragmentActivity extends FragmentActivity {
 	
 	// tag_start:ExpandableListActivity
 	// tag_end:ExpandableListActivity
-	
 		
 	// tag_start:ActionBarActivity
 	// tag_end:ActionBarActivity

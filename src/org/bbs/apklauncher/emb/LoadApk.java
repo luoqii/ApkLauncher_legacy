@@ -21,8 +21,9 @@ import dalvik.system.DexClassLoader;
 
 public class LoadApk {
 	private static final String TAG = LoadApk.class.getSimpleName();
-	
+
 	static HashMap<String, String> sActivitySuperClassNameMap = new HashMap<String, String>();
+	static HashMap<String, String> sSuperClassNameMap = new HashMap<String, String>();
 	
 	PackageInfoX mApkInfo;
 	private String mDexCacheDir;
@@ -55,7 +56,7 @@ public class LoadApk {
 			try {
 				Class<?> clazz = classloader.loadClass(activityClassName);
 				List<String> superClassNames = new ArrayList<String>();
-				dumpActivityType(clazz, superClassNames);
+				dumpClassType(clazz, superClassNames);
 				if (superClassNames.contains(Target_ActionBarActivity.class.getName())) {
 					cName = Target_ActionBarActivity.class.getName();
 				} else if (superClassNames.contains(Target_FragmentActivity.class.getName())) {
@@ -87,14 +88,46 @@ public class LoadApk {
 		
 		Log.d(TAG, "superClass: " + cName + " for class: " + activityClassName);
 		return cName;
+	}	
+	
+	public static String getServiceSuperClassName(ClassLoader classloader, String serviceClassName) {
+		String cName = null;
+		if (sSuperClassNameMap.containsKey(serviceClassName)) {
+			cName = sSuperClassNameMap.get(serviceClassName);
+		}
+		if (TextUtils.isEmpty(cName)) {
+			try {
+				Class<?> clazz = classloader.loadClass(serviceClassName);
+				List<String> superClassNames = new ArrayList<String>();
+				dumpClassType(clazz, superClassNames);
+				if (superClassNames.contains(Target_Service.class.getName())) {
+					cName = Target_Service.class.getName();
+				} else if (superClassNames.contains(Target_FragmentActivity.class.getName())) {
+					cName = Target_FragmentActivity.class.getName();
+				}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if (!TextUtils.isEmpty(cName)) {
+			sSuperClassNameMap.put(serviceClassName, cName);
+		} else {
+			throw new RuntimeException("no usefull super class for service: " + serviceClassName);
+		}
+		
+		Log.d(TAG, "superClass: " + cName + " for class: " + serviceClassName);
+		return cName;
 	}
 	
-	private static void dumpActivityType(Class clazz, List<String> superClassName) {
-		Log.d(TAG, "class      : " + clazz + " name: " + clazz.getName());
+	private static void dumpClassType(Class clazz, List<String> superClassName) {
+		//========1234567890
+		Log.d(TAG, "class        : " + clazz + " name: " + clazz.getName());
 		while (!clazz.getName().equals(Object.class.getName())) {
 			clazz = clazz.getSuperclass();
 
-			//==========+++++++++++
+			//=========1234567890
 			Log.d(TAG, "super class: " + clazz);
 			superClassName.add(clazz.getName());
 		}

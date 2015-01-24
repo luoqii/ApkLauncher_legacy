@@ -52,11 +52,10 @@ public class Host_Activity extends Activity {
 		return mTargetActivity;
 	}
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mTargetActivity.onCreate(savedInstanceState);;
+//		mTargetActivity.onCreate(savedInstanceState);;
 	}
 
 	@Override
@@ -580,7 +579,6 @@ public class Host_Activity extends Activity {
 	
 	// tag_start:ExpandableListActivity
 	// tag_end:ExpandableListActivity
-	
 		
 	// tag_start:ActionBarActivity
 	// tag_end:ActionBarActivity

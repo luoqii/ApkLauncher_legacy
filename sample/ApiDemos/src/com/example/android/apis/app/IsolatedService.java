@@ -40,7 +40,7 @@ import com.example.android.apis.R;
 /**
  * This is an example if implementing a Service that uses android:isolatedProcess.
  */
-public class IsolatedService extends Service {
+public class IsolatedService extends com.example.android.apis.stub.Base_Service {
     /**
      * This is a list of callbacks that have been registered with the
      * service.  Note that this is package scoped (instead of private) so

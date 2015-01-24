@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipFile;
 
-import org.bbs.apklauncher.emb.ClassLoaderMerge;
 import org.bbs.apklauncher.emb.TargetClassLoader;
 import org.bbs.apklauncher.emb.TargetClassLoader.RestrictClassLoader;
 import org.bbs.felix.util.AndroidUtil;
@@ -17,6 +16,7 @@ import org.bbs.felix.util.ApkManifestParser;
 import org.bbs.felix.util.ApkManifestParser.PackageInfoX;
 import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ApplicationInfoX;
+import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ServiceInfoX;
 
 import android.app.Application;
 import android.content.ComponentName;
@@ -65,6 +65,13 @@ public class InstalledAPks {
 		ClassLoader c = null;	
 		
 		// this classlaoder can work on nexus 4, ???
+		/*
+E/ActivityThread(28347): Caused by: java.lang.IllegalAccessError: Class ref in pre-verified class resolved to unexpected implementation
+E/ActivityThread(28347): 	at com.youku.lib.support.v4.widget.ViewPager.initViewPager(ViewPager.java:328)
+E/ActivityThread(28347): 	at com.youku.lib.support.v4.widget.ViewPager.<init>(ViewPager.java:318)
+E/ActivityThread(28347): 	at com.youku.tv.ui.activity.HomeActivityWithViewPager$HomeViewPager.<init>(HomeActivityWithViewPager.java:2475)
+E/ActivityThread(28347): 	... 29 more
+*/
 		c = new DexClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), 
 				libPath,
 				baseContext.getClassLoader()
@@ -205,15 +212,33 @@ public class InstalledAPks {
 		return mInfos;
 	}
 	
-	public ActivityInfoX getActivityInfo(String activityClassName) {
+	public ActivityInfoX getActivityInfo(String className) {
 		ActivityInfoX info = null;
 		for (PackageInfoX m : mInfos) {
 				if (m.activities != null &&  m.activities.length > 0) {
 					final int count = m.activities.length;
 					for (int i = 0 ; i < count; i++){
 						ActivityInfoX a = (ActivityInfoX) m.activities[i];
-						if (activityClassName.equals(a.name)) {
-							return a;
+						if (className.equals(a.name)) {
+							info  = a;
+							break;
+						}
+				}}
+		}
+		
+		return info;
+	}	
+	
+	public ServiceInfoX getServiceInfo(String className) {
+		ServiceInfoX info = null;
+		for (PackageInfoX m : mInfos) {
+				if (m.services != null &&  m.services.length > 0) {
+					final int count = m.services.length;
+					for (int i = 0 ; i < count; i++){
+						ServiceInfoX a = (ServiceInfoX) m.services[i];
+						if (className.equals(a.name)) {
+							info = a;
+							break;
 						}
 				}}
 		}
