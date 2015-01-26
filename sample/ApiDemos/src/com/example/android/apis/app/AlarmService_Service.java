@@ -39,7 +39,7 @@ import android.widget.Toast;
  * @see AlarmService
  * @see AlarmService_Alarm
  */
-public class AlarmService_Service extends Service {
+public class AlarmService_Service extends com.example.android.apis.stub.Base_Service {
     NotificationManager mNM;
 
     @Override
@@ -100,7 +100,10 @@ public class AlarmService_Service extends Service {
         CharSequence text = getText(R.string.alarm_service_started);
 
         // Set the icon, scrolling text and timestamp
-        Notification notification = new Notification(R.drawable.stat_sample, text,
+        Notification notification = new Notification(
+//        		R.drawable.stat_sample,
+        		getHostIdentifier("ic_launcher", "drawable"),
+        		text,
                 System.currentTimeMillis());
 
         // The PendingIntent to launch our activity if the user selects this notification
@@ -108,7 +111,7 @@ public class AlarmService_Service extends Service {
                 new Intent(this, AlarmService.class), 0);
 
         // Set the info for the views that show in the notification panel.
-        notification.setLatestEventInfo(this, getText(R.string.alarm_service_label),
+        notification.setLatestEventInfo(getHostContext(), getText(R.string.alarm_service_label),
                        text, contentIntent);
 
         // Send the notification.

@@ -1,8 +1,12 @@
 package org.bbs.apklauncher.emb;
 
+import org.bbs.osgi.activity.LazyContext;
+
 import android.annotation.SuppressLint;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.IBinder;
 
@@ -10,6 +14,21 @@ import android.os.IBinder;
 public abstract class Host_Service extends Service {
 	
 	Target_Service mTargetService;
+	protected LazyContext mTargetContext;
+	Context mRealBaseContext;
+	private PackageManager mSysPm;
+
+	@Override
+	protected void attachBaseContext(Context newBase) {
+		mRealBaseContext = newBase;
+		mTargetContext = new LazyContext(newBase);
+		super.attachBaseContext(mTargetContext);
+		mSysPm = getPackageManager();
+	}
+	
+	Context getHostContext() {
+		return mRealBaseContext;
+	}
 
 	abstract protected void onPrepareServiceStub(Intent intent) ;
 	
@@ -22,7 +41,6 @@ public abstract class Host_Service extends Service {
 			return null;
 		}
 	}
-	
 
 	@Override
 	public void onCreate() {
@@ -107,6 +125,7 @@ public abstract class Host_Service extends Service {
 			mTargetService.onTaskRemoved(rootIntent);
 		}
 	}
+
 	
 	
 

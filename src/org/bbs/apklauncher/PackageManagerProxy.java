@@ -2,7 +2,7 @@ package org.bbs.apklauncher;
 
 import java.util.List;
 
-import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ApplicationInfoX;
+import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ApplicationInfoX;
 
 import android.content.ComponentName;
 import android.content.Intent;

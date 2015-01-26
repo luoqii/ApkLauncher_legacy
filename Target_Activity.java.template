@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.bbs.osgi.activity.ReflectUtil.ActivityReflectUtil;
+import org.bbs.osgi.activity.LazyContext;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -100,8 +101,16 @@ ContextWrapper
 	}
 	
 	protected void attachBaseContext(Context base) {
-		mHostActivity = (Host_SUPER_CLASS) base;
+		mHostActivity = getHostActivityFromBaseContext(base);
 		super.attachBaseContext(base);
+	}
+	
+	private Host_SUPER_CLASS getHostActivityFromBaseContext(Context base) {
+		//return (Host_SUPER_CLASS) base;	
+		if (base instanceof Host_SUPER_CLASS) {
+			return (Host_SUPER_CLASS) base;
+		}
+		return (Host_SUPER_CLASS) ((LazyContext)base).getHostActivity();
 	}
 	
     public final Application getApplication() {

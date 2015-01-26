@@ -4,21 +4,19 @@ import java.io.FileDescriptor;
 import java.io.PrintWriter;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.Service;
-import android.content.ComponentName;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.util.Log;
 
 public class Target_Service extends 
 //Service
 ContextWrapper
 {
+	private static final String TAG = Target_Service.class.getSimpleName();
 	
     public static final int START_CONTINUATION_MASK = Service.START_CONTINUATION_MASK;
     public static final int START_STICKY_COMPATIBILITY = Service.START_STICKY_COMPATIBILITY;
@@ -30,13 +28,28 @@ ContextWrapper
 
 	private boolean mStartCompatibility;
 	
-	Target_Service mHostService;
+	Host_Service mHostService;
+	
+	public Context getHostContext() {
+		return mHostService.getHostContext();
+	}
+	
+	public int getHostIdentifier(String name, String defType) {
+		return mHostService.mRealBaseContext
+				.getResources().getIdentifier(name, defType, mHostService.mRealBaseContext.getPackageName());
+	}
 	
 	public Target_Service(){
 		super(null);
 		
-        mStartCompatibility = getApplicationInfo().targetSdkVersion
-                < Build.VERSION_CODES.ECLAIR;
+//        mStartCompatibility = getApplicationInfo().targetSdkVersion
+//                < Build.VERSION_CODES.ECLAIR;
+	}
+
+	@Override
+	protected void attachBaseContext(Context base) {
+		mHostService = (Host_Service) base;
+		super.attachBaseContext(base);
 	}
 
 	public IBinder onBind(Intent intent) {
@@ -92,7 +105,8 @@ ContextWrapper
     }
     
     public final void setForeground(boolean isForeground) {
-    	mHostService.setForeground(isForeground);
+    	Log.w(TAG, "setForeground() is not defined for Service...");
+//    	mHostService.setForeground(isForeground);
     }
     
     public final void startForeground(int id, Notification notification) {

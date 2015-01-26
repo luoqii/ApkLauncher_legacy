@@ -81,12 +81,16 @@ public class TargetClassLoader extends DexClassLoader {
 				throws ClassNotFoundException {
 			Class c = null;
 			if (shouldLoadByHost(className)) {
-				 //========123456789012345678901234567890123
-				 Log.d(TAG, "# load class by hostClassLoader class: " + className);
+				if (DEBUG) { 
+					//========123456789012345678901234567890123
+					Log.d(TAG, "# load class by hostClassLoader class: " + className);
+				}
 				 mLevel++;
 				c = mHostClassLoader.loadClass(className);
-				 //========123456789012345678901234567890123
-				 Log.d(TAG, "# class  loaded  by  hostClassLoader   : " + c + " classloader: " + c.getClassLoader());
+				if (DEBUG) {
+					//========123456789012345678901234567890123
+					Log.d(TAG, "# class  loaded  by  hostClassLoader   : " + c + " classloader: " + c.getClassLoader());
+				}
 				 mLevel--;
 
 				return c;

@@ -44,7 +44,7 @@ import com.example.android.apis.R;
  * against the Android 2.0 SDK, and it will against everything down to
  * Android 1.0.
  */
-public class ForegroundService extends Service {
+public class ForegroundService extends com.example.android.apis.stub.Base_Service {
     static final String ACTION_FOREGROUND = "com.example.android.apis.FOREGROUND";
     static final String ACTION_BACKGROUND = "com.example.android.apis.BACKGROUND";
     
@@ -167,15 +167,19 @@ public class ForegroundService extends Service {
             CharSequence text = getText(R.string.foreground_service_started);
 
             // Set the icon, scrolling text and timestamp
-            Notification notification = new Notification(R.drawable.stat_sample, text,
+            Notification notification = new Notification(
+//            		R.drawable.stat_sample,
+
+            		getHostIdentifier("ic_launcher", "drawable"),
+            		text,
                     System.currentTimeMillis());
 
             // The PendingIntent to launch our activity if the user selects this notification
-            PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+            PendingIntent contentIntent = PendingIntent.getActivity(getHostContext(), 0,
                     new Intent(this, Controller.class), 0);
 
             // Set the info for the views that show in the notification panel.
-            notification.setLatestEventInfo(this, getText(R.string.local_service_label),
+            notification.setLatestEventInfo(getHostContext(), getText(R.string.local_service_label),
                            text, contentIntent);
             
             startForegroundCompat(R.string.foreground_service_started, notification);

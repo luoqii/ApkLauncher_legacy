@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.bbs.apkparser.ApkManifestParser;
+import org.bbs.apkparser.ApkManifestParser.PackageInfoX;
+import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felix.util.AndroidUtil;
-import org.bbs.felix.util.ApkManifestParser;
-import org.bbs.felix.util.ApkManifestParser.PackageInfoX;
-import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felixonandroid.R;
 
 import android.annotation.SuppressLint;

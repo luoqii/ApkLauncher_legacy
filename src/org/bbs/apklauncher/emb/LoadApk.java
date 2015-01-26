@@ -12,7 +12,7 @@ import org.bbs.apklauncher.emb.auto_gen.Target_FragmentActivity;
 import org.bbs.apklauncher.emb.auto_gen.Target_ListActivity;
 import org.bbs.apklauncher.emb.auto_gen.Target_PreferenceActivity;
 import org.bbs.apklauncher.emb.auto_gen.Target_TabActivity;
-import org.bbs.felix.util.ApkManifestParser.PackageInfoX;
+import org.bbs.apkparser.ApkManifestParser.PackageInfoX;
 
 import android.app.Application;
 import android.text.TextUtils;

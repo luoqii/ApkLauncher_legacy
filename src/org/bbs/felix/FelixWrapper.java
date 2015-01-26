@@ -12,9 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.bbs.apkparser.ApkManifestParser;
+import org.bbs.apkparser.ApkManifestParser.PackageInfoX;
 import org.bbs.felix.util.AndroidUtil;
-import org.bbs.felix.util.ApkManifestParser;
-import org.bbs.felix.util.ApkManifestParser.PackageInfoX;
 import org.bbs.felix.util.OsgiUtil;
 import org.bbs.osgi.activity.embed.EmbeddedActivityAgent;
 import org.knopflerfish.framework.FrameworkFactoryImpl;

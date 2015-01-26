@@ -4,6 +4,7 @@ import org.bbs.apklauncher.emb.Host_Application;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -36,6 +37,7 @@ ContextWrapper
 	private Context mAppContext;
 	private Theme mTargetTheme;
 	private int mTargetThemeId;
+	private Activity mHostActivity;
 	
 	public LazyContext(Context base) {
 		super(base);
@@ -76,6 +78,14 @@ ContextWrapper
 		mClassLoader = classloader;
 	}
 	
+	public void hostActivityReady(Activity activity) {
+		mHostActivity = activity;
+	}
+	
+	public Activity getHostActivity() {
+		return mHostActivity;
+	}
+	
 	@Override
 	public Theme getTheme() {
 		if (null != mTargetTheme) {
@@ -110,11 +120,9 @@ ContextWrapper
 			return mPackageName;
 		}
 		return super.getPackageName();
-	}
+	}	
 	
-	
-	
-	@Override
+	@Override	
 	public Resources getResources() {
 		if (null == mResource) {
 			return super.getResources();
@@ -201,6 +209,21 @@ ContextWrapper
 //		Log.w(TAG, "bindService not implemented.");
 //		return false;
 	}
+
+	@Override
+	public boolean stopService(Intent service) {
+		((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
+
+		return super.stopService(service);
+	}
+
+	@Override
+	public void unbindService(ServiceConnection conn) {
+		// TODO Auto-generated method stub
+		super.unbindService(conn);
+	}
+
+
 
 
 	class MergedAssetManager 

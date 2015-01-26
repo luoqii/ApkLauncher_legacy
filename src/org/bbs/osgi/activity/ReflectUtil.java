@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Dialog;
+import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -693,16 +694,28 @@ public class ReflectUtil {
 				}
 			}
 
-			public static void setApplication(Activity mTargetActivity,
+			public static void setActivityApplication(Activity activity,
 					Application app) {
 				try {
 					Field field = Activity.class.getDeclaredField("mApplication");
-					ReflectUtil.ActivityReflectUtil.setField(mTargetActivity, field, app);
+					ReflectUtil.ActivityReflectUtil.setField(activity, field, app);
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("error in setApplictivity.", e);
 				}
 			}
+			
+			public static void setServiceApplication(Service service,
+					Application app) {
+				try {
+					Field field = Service.class.getDeclaredField("mApplication");
+					ReflectUtil.ActivityReflectUtil.setField(service, field, app);
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in setApplictivity.", e);
+				}
+			}
+			
 			public static void setBaseContext(Activity mTargetActivity,
 					Context baseContext) {
 				try {

@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.zip.ZipFile;
 
 import org.bbs.apklauncher.emb.LoadApk;
+import org.bbs.apkparser.ApkManifestParser;
+import org.bbs.apkparser.ApkManifestParser.PackageInfoX;
+import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felix.util.AndroidUtil;
-import org.bbs.felix.util.ApkManifestParser;
-import org.bbs.felix.util.ApkManifestParser.PackageInfoX;
-import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felixonandroid.R;
 
 import dalvik.system.DexClassLoader;

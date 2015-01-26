@@ -168,9 +168,10 @@ implements CallBack {
 			
 			mTargetContext.resReady(mResourceMerger);
 			
-			ReflectUtil.ActivityReflectUtil.setApplication(this, app);
+			ReflectUtil.ActivityReflectUtil.setActivityApplication(this, app);
 			Class clazz = mClassLoader.loadClass(mActivityClassName);
 			mTargetActivity = (Target_SUPER_CLASS) clazz.newInstance();
+			mTargetContext.hostActivityReady(this);
 			ReflectUtil.ActivityReflectUtil.attachBaseContext(mTargetActivity, this);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -191,12 +192,12 @@ implements CallBack {
 			setTitle(title);
 		}
 	}
-	
+
+	// XXX are we need this really???
 	@Override
 	public Theme getTheme() {
 		return mTargetContext.getTheme();
 	}
-
 	// for Window to get target's resource
 	public Resources getResources() {
 		return mTargetContext.getResources();

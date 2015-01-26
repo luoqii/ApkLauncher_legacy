@@ -2,7 +2,7 @@ package org.bbs.apklauncher.emb;
 
 import org.bbs.apklauncher.ApkLuncherActivity;
 import org.bbs.apklauncher.InstalledAPks;
-import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
+import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
 
 import android.annotation.SuppressLint;
 import android.app.Application;

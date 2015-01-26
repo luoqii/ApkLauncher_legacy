@@ -48,8 +48,8 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 	private static boolean LOG = true;
 	// keep stub lowcase.
 	private static boolean LOG_stub = true && LOG;
-	protected static boolean LOG_LIFECYCLE = true && LOG;
-	protected static boolean LOG_MENU = true && LOG;
+	protected static boolean LOG_LIFECYCLE = false && LOG;
+	protected static boolean LOG_MENU = false && LOG;
 	protected static boolean LOG_CONTENT = true && LOG;
 	protected static boolean LOG_DIALOG = true && LOG;
 	protected static boolean LOG_KEY_EVENT = true && LOG;
