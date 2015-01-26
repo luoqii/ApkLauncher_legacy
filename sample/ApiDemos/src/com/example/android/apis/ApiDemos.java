@@ -46,15 +46,6 @@ Base_ListActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-
-		Log.d(TAG, "px0: " + getResources().getDimensionPixelOffset(R.dimen.px0));
-		Log.d(TAG, "px10: " + getResources().getDimensionPixelOffset(R.dimen.px1));
-		Log.d(TAG, "px1_1: " + getResources().getDimensionPixelOffset(R.dimen.px1_1));
-		
-		Log.d(TAG, "px0: " + getResources().getDimensionPixelSize(R.dimen.px0));
-		Log.d(TAG, "px10: " + getResources().getDimensionPixelSize(R.dimen.px1));
-		Log.d(TAG, "px1_1: " + getResources().getDimensionPixelSize(R.dimen.px1_1));
-        
         Intent intent = getIntent();
         String path = intent.getStringExtra("com.example.android.apis.Path");
         

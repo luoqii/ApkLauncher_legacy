@@ -214,7 +214,7 @@ implements CallBack {
 
 	@Override
 	public void processIntent(Intent intent) {
-		Host_Application.onProcessIntent(intent, mClassLoader, mRealBaseContext);
+		Host_Application.onProcessStartActivityIntent(intent, mClassLoader, mRealBaseContext);
 	}
 	
 	@Override

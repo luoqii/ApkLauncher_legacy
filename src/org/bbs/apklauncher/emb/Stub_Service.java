@@ -2,7 +2,9 @@ package org.bbs.apklauncher.emb;
 
 import org.bbs.apklauncher.InstalledAPks;
 import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ServiceInfoX;
+import org.bbs.osgi.activity.ReflectUtil;
 
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Intent;
 
@@ -50,14 +52,17 @@ public class Stub_Service extends Host_Service {
 		}
 		sLastClassLoader = mClassLoader;
 		
+//		Application app = ((Host_Application)getApplication()).onPrepareApplictionStub(mActInfo.applicationInfo, mClassLoader, mSysPm);
 		try {
 			mTargetService = (Target_Service) mClassLoader.loadClass(mServiceClassNmae).newInstance();
 			if (!mCallOnCreate) {
+//				ReflectUtil.ActivityReflectUtil.setApplication(this, app);
+				ReflectUtil.ActivityReflectUtil.attachBaseContext(mTargetService, this);
 				mTargetService.onCreate();
 				mCallOnCreate = true;
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("error in create target service.  class: " + mServiceClassNmae);
+			throw new RuntimeException("error in create target service.  class: " + mServiceClassNmae, e);
 		}
 	}
 	

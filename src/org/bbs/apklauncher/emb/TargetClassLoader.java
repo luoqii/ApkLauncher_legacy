@@ -4,8 +4,9 @@ import android.util.Log;
 import dalvik.system.DexClassLoader;
 
 public class TargetClassLoader extends DexClassLoader {
-
 	private static final String TAG = TargetClassLoader.class.getSimpleName();
+
+	private static final boolean DEBUG = false;
 	
 	int mLevel = 0;
 	public TargetClassLoader(String dexPath, String optimizedDirectory,
@@ -38,10 +39,14 @@ public class TargetClassLoader extends DexClassLoader {
 			throws ClassNotFoundException {
 		 mLevel++;
 		 //==========1234567890123456789012345678901234567890
-		 Log.d(TAG,    "#  class: " + className);
+		 if (DEBUG) {
+			 Log.d(TAG,    "#  class: " + className);
+		 }
 		 Class c =  super.loadClass(className, resolve);
 		 //==========1234567890123456789012345678901234567890
-		 Log.d(TAG,    "#  class: " + c + " classloader: " + c.getClassLoader());
+		 if (DEBUG) {
+			 Log.d(TAG,    "#  class: " + c + " classloader: " + c.getClassLoader());
+		 }
 		 mLevel--;
 		 
 		 return c;

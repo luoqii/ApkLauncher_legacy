@@ -45,6 +45,16 @@ import android.support.v7.app.ActionBarActivity;
 public class Host_SUPER_CLASS extends SUPER_CLASS {
 	private static final String TAG = Host_SUPER_CLASS.class.getSimpleName();
 	
+	private static boolean LOG = true;
+	// keep stub lowcase.
+	private static boolean LOG_stub = true && LOG;
+	protected static boolean LOG_LIFECYCLE = true && LOG;
+	protected static boolean LOG_MENU = true && LOG;
+	protected static boolean LOG_CONTENT = true && LOG;
+	protected static boolean LOG_DIALOG = true && LOG;
+	protected static boolean LOG_KEY_EVENT = true && LOG;
+	protected static boolean LOG_MOTTION_EVENT = true && LOG;
+	
 	protected  Target_SUPER_CLASS mTargetActivity;
 	
 	
@@ -52,11 +62,13 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 		return mTargetActivity;
 	}
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mTargetActivity.onCreate(savedInstanceState);;
+		mTargetActivity.onCreate(savedInstanceState);;		
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onCreate(). savedInstanceState: " + savedInstanceState);
+		}
 	}
 
 	@Override
@@ -64,12 +76,18 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 			PersistableBundle persistentState) {
 		super.onCreate(savedInstanceState, persistentState);
 		mTargetActivity.onCreate(savedInstanceState, persistentState);
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onCreate(). persistentState: " + persistentState + " persistentState: " + persistentState );
+		}
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		mTargetActivity.onRestoreInstanceState(savedInstanceState);
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onRestoreInstanceState(). savedInstanceState: " + savedInstanceState);
+		}
 	}
 
 	@Override
@@ -77,12 +95,18 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 			PersistableBundle persistentState) {
 		super.onRestoreInstanceState(savedInstanceState, persistentState);
 		mTargetActivity.onRestoreInstanceState(savedInstanceState, persistentState);
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onRestoreInstanceState(). persistentState: " + persistentState + " persistentState: " + persistentState );
+		}
 	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		mTargetActivity.onPostCreate(savedInstanceState);
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onPostCreate(). savedInstanceState: " + savedInstanceState);
+		}
 	}
 
 	@Override
@@ -90,42 +114,63 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 			PersistableBundle persistentState) {
 		super.onPostCreate(savedInstanceState, persistentState);
 		mTargetActivity.onPostCreate(savedInstanceState, persistentState);
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onPostCreate(). persistentState: " + persistentState + " persistentState: " + persistentState );
+		}
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 		mTargetActivity.onStart();
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onStart(). " );
+		}
 	}
 
 	@Override
 	protected void onRestart() {
 		super.onStart();
-		mTargetActivity.onStart();
+		mTargetActivity.onRestart();
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onRestart(). " );
+		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		mTargetActivity.onResume();
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onResume(). " );
+		}
 	}
 
 	@Override
 	protected void onPostResume() {
 		super.onPostResume();
 		mTargetActivity.onPostResume();
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onPostResume(). " );
+		}
 	}
 
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		mTargetActivity.onNewIntent(intent);
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onNewIntent(). intent: " + intent );
+		}
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		mTargetActivity.onSaveInstanceState(outState);
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onSaveInstanceState(). outState: " + outState );
+		}
 	}
 
 	@Override
@@ -133,18 +178,27 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 			PersistableBundle outPersistentState) {
 		super.onSaveInstanceState(outState, outPersistentState);
 		mTargetActivity.onSaveInstanceState(outState, outPersistentState);
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onSaveInstanceState(). outState: " + outState  + " outPersistentState: " + outPersistentState);
+		}
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		mTargetActivity.onPause();
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onPause(). " );
+		}
 	}
 
 	@Override
 	protected void onUserLeaveHint() {
 		super.onUserLeaveHint();
 		mTargetActivity.onUserLeaveHint();
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onUserLeaveHint(). " );
+		}
 	}
 
 	@Override
@@ -169,12 +223,18 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 	protected void onStop() {
 		super.onStop();
 		mTargetActivity.onStop();
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onStop(). " );
+		}
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		mTargetActivity.onDestroy();
+		if (LOG_LIFECYCLE) {
+		    _log(TAG, "call mTargetActivity onDestroy(). " );
+		}
 	}
 
 	@Override
@@ -712,4 +772,16 @@ public class Host_SUPER_CLASS extends SUPER_CLASS {
 		return handled ? true :  super.onSupportNavigateUp();
 	}
 	// tag_end:ActionBarActivity
+	
+	
+    // auxiliary function
+	private void _log(String tag, String message) {
+	   logD(tag, message);
+	   if (LOG_stub) {
+	       logD(tag, "mTargetActivity: " + mTargetActivity);
+	   }
+    }
+    protected void logD(String tag, String message) {
+	   android.util.Log.d(tag, message);
+    }
 }
