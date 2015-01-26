@@ -25,6 +25,7 @@ do not denpendent some specific osgi impl, just use stardard osgi feature.
 
 PROBLEM
 =======
+notification
 do not user Activity.this (directly or indirectly) in embedded activiy.
 overridePendingTransition(0, 0)
 asset only one (bundel or host) useable.

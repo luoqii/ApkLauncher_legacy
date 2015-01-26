@@ -35,8 +35,8 @@ ContextWrapper
 	public Target_Service(){
 		super(null);
 		
-        mStartCompatibility = getApplicationInfo().targetSdkVersion
-                < Build.VERSION_CODES.ECLAIR;
+//        mStartCompatibility = getApplicationInfo().targetSdkVersion
+//                < Build.VERSION_CODES.ECLAIR;
 	}
 
 	public IBinder onBind(Intent intent) {

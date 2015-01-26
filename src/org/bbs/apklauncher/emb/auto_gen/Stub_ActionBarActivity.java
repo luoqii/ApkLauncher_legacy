@@ -174,7 +174,7 @@ implements CallBack {
 			
 			mTargetContext.resReady(mResourceMerger);
 			
-			ReflectUtil.ActivityReflectUtil.setApplication(this, app);
+			ReflectUtil.ActivityReflectUtil.setActivityApplication(this, app);
 			Class clazz = mClassLoader.loadClass(mActivityClassName);
 			mTargetActivity = (Target_ActionBarActivity) clazz.newInstance();
 			ReflectUtil.ActivityReflectUtil.attachBaseContext(mTargetActivity, this);

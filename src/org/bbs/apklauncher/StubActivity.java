@@ -203,7 +203,7 @@ implements CallBack {
 			if (null == app) {
 				throw new IllegalStateException("target apk app is null.");
 			}
-			ReflectUtil.ActivityReflectUtil.setApplication(mTargetActivity, app);
+			ReflectUtil.ActivityReflectUtil.setActivityApplication(mTargetActivity, app);
 			ReflectUtil.ActivityReflectUtil.setResource(this, mResourceMerger);
 			ReflectUtil.ActivityReflectUtil.setResource(mTargetActivity, mResourceMerger);
 			ReflectUtil.ActivityReflectUtil.setBaseContext(mTargetActivity, mTargetContext);
