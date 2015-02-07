@@ -14,7 +14,8 @@ android:
     # The SDK version used to compile your project
     - android-19
 
-install: ant deps
+install:
+#ant deps
 
 before_script:
   -export ANDROID_TARGET=android-21
