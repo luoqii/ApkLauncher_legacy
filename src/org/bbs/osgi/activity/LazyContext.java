@@ -224,9 +224,6 @@ ContextWrapper
 		super.unbindService(conn);
 	}
 
-
-
-
 	class MergedAssetManager 
 //	extends AssetManager 
 	{

@@ -121,6 +121,9 @@ public abstract class Host_Service extends Service {
 	@Override
 	public boolean onUnbind(Intent intent) {
 //		return super.onUnbind(intent);
+		if (DEBUG) {
+			Log.d(TAG, "onUnbind(). intent: " + intent);
+		}
 		if (null != mTargetService) {
 			return mTargetService.onUnbind(intent);
 		} else {
@@ -131,6 +134,9 @@ public abstract class Host_Service extends Service {
 	
 	@Override
 	public void onRebind(Intent intent) {
+		if (DEBUG) {
+			Log.d(TAG, "onRebind(). intent: " + intent);
+		}
 		super.onRebind(intent);
 		if (null != mTargetService) {
 			mTargetService.onRebind(intent);
@@ -144,8 +150,4 @@ public abstract class Host_Service extends Service {
 			mTargetService.onTaskRemoved(rootIntent);
 		}
 	}
-
-	
-	
-
 }

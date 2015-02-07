@@ -34,11 +34,6 @@ ContextWrapper
 		return mHostService.getHostContext();
 	}
 	
-	public int getHostIdentifier(String name, String defType) {
-		return mHostService.mRealBaseContext
-				.getResources().getIdentifier(name, defType, mHostService.mRealBaseContext.getPackageName());
-	}
-	
 	public Target_Service(){
 		super(null);
 		
