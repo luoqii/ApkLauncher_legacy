@@ -21,6 +21,7 @@ install:
 
 before_script:
   - export ANDROID_TARGET=android-21
+  - android list targets
   - android update project -p . $ANDROID_TARGET
 
 script:
