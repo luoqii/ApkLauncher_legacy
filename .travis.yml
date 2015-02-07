@@ -17,7 +17,7 @@ android:
     - android-21
 
 jdk:
-  - openjdk6
+  - openjdk7
 
 install:
 #ant deps
