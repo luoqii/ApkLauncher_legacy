@@ -24,7 +24,7 @@ public class DictionaryActivity extends Activity {
 			public void onClick(View v) {
 				CharSequence word = ((TextView)findViewById(R.id.word)).getText();
 				
-				ServiceReference<?> s = FelixWrapper.getInstance(null).getFramework().getBundleContext().getServiceReference("tutorial.example2.service.DictionaryService");
+				ServiceReference s = FelixWrapper.getInstance(null).getFramework().getBundleContext().getServiceReference("tutorial.example2.service.DictionaryService");
 				Object p = s.getProperty("dd");
 			}
 		});

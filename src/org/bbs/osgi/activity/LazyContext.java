@@ -49,7 +49,8 @@ ContextWrapper
 //	}
 	
 	public static void bundleReady(LazyContext LazyContext, Bundle bundle, Resources res, String packageName) {
-		LazyContext.mClassLoader = bundle.adapt(BundleWiring.class).getClassLoader();
+		// trivas build error
+//		LazyContext.mClassLoader = bundle.adapt(BundleWiring.class).getClassLoader();
 		LazyContext.mResource = res;
 		mPackageName = packageName;
 	}	

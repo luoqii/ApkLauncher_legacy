@@ -199,7 +199,10 @@ implements InstrumentationWrapper.CallBack
 				}
 			}
 
-			ClassLoader cl = mBundle.adapt(BundleWiring.class).getClassLoader();
+
+			// trivas build error
+//			ClassLoader cl = mBundle.adapt(BundleWiring.class).getClassLoader();
+			ClassLoader cl = null;
 			if (null != cl) {
 				getIntent().setExtrasClassLoader(cl);
 			}
@@ -221,7 +224,7 @@ implements InstrumentationWrapper.CallBack
 				mServiceName = getDefaultLauncherServiceName();;
 			}
 			mServiceFilter =  intent.getStringExtra(EXTRA_SERVICE_FILTER);
-			ServiceReference<?> s = null;
+			ServiceReference s = null;
 			if (TextUtils.isEmpty(mServiceFilter)) {
 				s = bundleContext.getServiceReference(mServiceName);
 			} else {
@@ -235,7 +238,8 @@ implements InstrumentationWrapper.CallBack
 			if (null != s) {
 				mBundle = s.getBundle();
 				if (null == cl) {
-					cl = mBundle.adapt(BundleWiring.class).getClassLoader();
+// travis build error
+//					cl = mBundle.adapt(BundleWiring.class).getClassLoader();
 					sBundleClassLoader = cl;
 					if (null != cl) {
 						sBundle2Classloader.put(new WeakReference(mBundle), new WeakReference(cl));
