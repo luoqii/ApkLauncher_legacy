@@ -338,7 +338,7 @@ public class ReflectUtil {
 				try {
 					Method m = Activity.class.getDeclaredMethod("isValidFragment", new Class[]{String.class});
 					m.setAccessible(true);
-					return (boolean) m.invoke(activity, new Object[]{fragmentName});
+					return (Boolean) m.invoke(activity, new Object[]{fragmentName});
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("error in isValidFragment", e);
