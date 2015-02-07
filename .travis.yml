@@ -18,8 +18,8 @@ install:
 #ant deps
 
 before_script:
-  -export ANDROID_TARGET=android-21
-  -android update project -p . $ANDROID_TARGET
+  - export ANDROID_TARGET=android-21
+  - android update project -p . $ANDROID_TARGET
 
 script:
-  -ant debug
+  - ant debug
