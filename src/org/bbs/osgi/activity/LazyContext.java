@@ -29,6 +29,9 @@ ContextWrapper
 {
 
 	private static final String TAG = LazyContext.class.getSimpleName();
+	
+	private static final boolean ENALBE_SERVICE = false;
+	
 	private static String mPackageName;
 	private Resources mResource;
 	private ClassLoader mClassLoader;
@@ -197,31 +200,45 @@ ContextWrapper
 	
 	@Override
 	public ComponentName startService(Intent service) {
-		((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
-		return super.startService(service);
-//		Log.w(TAG, "startService not implemented.");
-//		return null;
+		if (ENALBE_SERVICE) {
+			((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
+			return super.startService(service);
+		} else {
+			Log.w(TAG, "startService not implemented.");
+			return null;
+		}
 	}
 
 	@Override
 	public boolean bindService(Intent service, ServiceConnection conn, int flags) {
-		((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
-		return super.bindService(service, conn, flags);
-//		Log.w(TAG, "bindService not implemented.");
-//		return false;
+		if (ENALBE_SERVICE) {
+			((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
+			return super.bindService(service, conn, flags);
+		} else {
+			Log.w(TAG, "bindService not implemented.");
+			return false;
+		}
 	}
 
 	@Override
 	public boolean stopService(Intent service) {
-		((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
-
-		return super.stopService(service);
+		if (ENALBE_SERVICE) {
+			((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
+			return super.stopService(service);
+		} else {
+			Log.w(TAG, "stopService not implemented.");
+			return false;
+		}
 	}
 
 	@Override
 	public void unbindService(ServiceConnection conn) {
-		// TODO Auto-generated method stub
-		super.unbindService(conn);
+		if (ENALBE_SERVICE) {
+			// TODO Auto-generated method stub
+			super.unbindService(conn);
+		} else {
+			Log.w(TAG, "unbindService not implemented.");
+		}
 	}
 
 	class MergedAssetManager 

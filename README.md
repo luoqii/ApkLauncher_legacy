@@ -44,6 +44,7 @@ there is ONE (yes 1 not 2 or 3 ...) BLANK line in manifest.mf
 TODO
 ====
 how to build felix?
+to add all android demo app (now only has ApiDemo.)
 
 SEE
 ===
