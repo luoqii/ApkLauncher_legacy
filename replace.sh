@@ -8,6 +8,7 @@
 #Robot_R="\/\*Robot\*\/"
 Robot_R=""
 
+export PREFIX=com.example.android.apis.stub.Base_
 for file in `find . -name "*.java"`; do
 
 echo "file: $file"
@@ -15,7 +16,7 @@ echo "file: $file"
 #ExpandableListActivity
 #TabActivity
 cp $file ${file}.bak
-sed  "/^.*extends\s*[a-zA-Z0-9-_]*Activity.*/ s/\(.*extends\s*\)\(.*Activity.*\)\(.*\)/\1${PREFIX}_\2\3/" ${file}.bak > $file
+sed  "/^.*extends\s*[^_]*Activity.*/ s/\(.*extends\s*\)\(.*Activity.*\)\(.*\)/\1${PREFIX}\2\3/" ${file}.bak > $file
 rm ${file}.bak
 
 

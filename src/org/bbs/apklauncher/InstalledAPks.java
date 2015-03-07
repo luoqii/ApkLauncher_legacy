@@ -120,8 +120,11 @@ E/ActivityThread(28347): 	... 29 more
 				try {
 					File dataDir = mContext.getDir("plugin", 0);
 					File destDir = new File(dataDir, info.packageName + "/lib");
+					
+					//TODO native lib
 					AndroidUtil.extractZipEntry(new ZipFile(info.applicationInfo.publicSourceDir), "lib/armeabi", destDir);
 					AndroidUtil.extractZipEntry(new ZipFile(info.applicationInfo.publicSourceDir), "lib/armeabi-v7a", destDir);
+					
 					info.mLibPath = destDir.getPath();
 					
 					// asume there is only one apk.

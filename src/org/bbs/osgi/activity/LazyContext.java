@@ -1,6 +1,6 @@
 package org.bbs.osgi.activity;
 
-import org.bbs.apklauncher.emb.Host_Application;
+import org.bbs.apklauncher.emb.Util;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
@@ -30,7 +30,7 @@ ContextWrapper
 
 	private static final String TAG = LazyContext.class.getSimpleName();
 	
-	private static final boolean ENALBE_SERVICE = false;
+	private static final boolean ENALBE_SERVICE = true;
 	
 	private static String mPackageName;
 	private Resources mResource;
@@ -201,7 +201,7 @@ ContextWrapper
 	@Override
 	public ComponentName startService(Intent service) {
 		if (ENALBE_SERVICE) {
-			((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
+			Util.onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
 			return super.startService(service);
 		} else {
 			Log.w(TAG, "startService not implemented.");
@@ -212,7 +212,7 @@ ContextWrapper
 	@Override
 	public boolean bindService(Intent service, ServiceConnection conn, int flags) {
 		if (ENALBE_SERVICE) {
-			((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
+			Util.onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
 			return super.bindService(service, conn, flags);
 		} else {
 			Log.w(TAG, "bindService not implemented.");
@@ -223,7 +223,7 @@ ContextWrapper
 	@Override
 	public boolean stopService(Intent service) {
 		if (ENALBE_SERVICE) {
-			((Host_Application)getApplicationContext()).onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
+			Util.onProcessStartServiceIntent(service, mClassLoader, getBaseContext());
 			return super.stopService(service);
 		} else {
 			Log.w(TAG, "stopService not implemented.");

@@ -28,7 +28,7 @@ import com.example.android.apis.R;
 
 import java.util.ArrayList;
 
-public class ShadowCardStack extends Activity {
+public class ShadowCardStack extends com.example.android.apis.stub.Base_Activity {
 
     private static final float X_SHIFT_DP = 1000;
     private static final float Y_SHIFT_DP = 50;

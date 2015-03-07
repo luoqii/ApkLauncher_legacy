@@ -17,6 +17,7 @@
 package com.example.android.apis.graphics;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -41,7 +42,7 @@ import com.example.android.apis.R;
 
 import java.util.ArrayList;
 
-public class ShadowCardDrag extends Activity {
+public class ShadowCardDrag extends com.example.android.apis.stub.Base_Activity {
     private static final float MAX_Z_DP = 10;
     private static final float MOMENTUM_SCALE = 10;
     private static final int MAX_ANGLE = 10;
@@ -131,7 +132,8 @@ public class ShadowCardDrag extends Activity {
             canvas.drawPath(mPath, paint);
         }
 
-        @Override
+        @SuppressLint("NewApi")
+		@Override
         public void getOutline(Outline outline) {
             outline.setConvexPath(mPath);
         }
@@ -146,7 +148,8 @@ public class ShadowCardDrag extends Activity {
     private boolean mTiltEnabled;
     private boolean mShadingEnabled;
 
-    @Override
+    @SuppressLint("NewApi")
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shadow_card_drag);

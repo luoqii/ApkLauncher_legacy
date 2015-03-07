@@ -1,17 +1,13 @@
 package org.bbs.apklauncher.emb;
 
-import org.bbs.apklauncher.ApkLuncherActivity;
 import org.bbs.apklauncher.InstalledAPks;
 import org.bbs.apklauncher.PackageManagerProxy;
-import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
-import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ServiceInfoX;
 import org.bbs.osgi.activity.BundleActivity;
 import org.bbs.osgi.activity.LazyContext;
 import org.bbs.osgi.activity.ReflectUtil;
 import org.bbs.osgi.activity.ResourcesMerger;
 
 import android.app.Application;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -79,43 +75,19 @@ Application
 		return app;
 	}
 
+	/**
+	 * @deprecated Use {@link Util#onProcessStartActivityIntent(Intent,ClassLoader,Context)} instead
+	 */
 	public static void onProcessStartActivityIntent(Intent intent, ClassLoader classLoader, Context realContext) {
-		Log.d(TAG, "processIntent. intent: " + intent);
-		ComponentName com = intent.getComponent();
-		if (null != com) {
-			String c = com.getClassName();
-			if (!TextUtils.isEmpty(c)) {
-				String superClassName = LoadApk.getActivitySuperClassName(classLoader, c);
-				com = new ComponentName(realContext.getPackageName(), superClassName.replace("Target", "Stub"));
-				intent.setComponent(com);
-				ActivityInfoX a = InstalledAPks.getInstance().getActivityInfo(c);
-				if (a != null) {
-					ApkLuncherActivity.putExtra(a, intent);
-				}
-			} 
-		} else {
-			Log.w(TAG, "can not handle intent:  "  + intent);
-		}
+		Util.onProcessStartActivityIntent(intent, classLoader, realContext);
 	}	
 	
 	
+	/**
+	 * @deprecated Use {@link Util#onProcessStartServiceIntent(Intent,ClassLoader,Context)} instead
+	 */
 	public static void onProcessStartServiceIntent(Intent intent, ClassLoader classLoader, Context realContext) {
-		Log.d(TAG, "processIntent. intent: " + intent);
-		ComponentName com = intent.getComponent();
-		if (null != com) {
-			String c = com.getClassName();
-			if (!TextUtils.isEmpty(c)) {
-				String superClassName = LoadApk.getServiceSuperClassName(classLoader, c);
-				com = new ComponentName(realContext.getPackageName(), superClassName.replace("Target", "Stub"));
-				intent.setComponent(com);
-				ServiceInfoX a = InstalledAPks.getInstance().getServiceInfo(c);
-				if (a != null) {
-					intent.putExtra(Stub_Service.EXTRA_COMPONENT, new ComponentName(a.packageName, a.name));
-				}
-			} 
-		} else {
-			Log.w(TAG, "can not handle intent:  "  + intent);
-		}
+		Util.onProcessStartServiceIntent(intent, classLoader, realContext);
 	}
 	
 	public void onTerminate() {

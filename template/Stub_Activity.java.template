@@ -12,10 +12,10 @@ import org.bbs.apklauncher.emb.LogClassLoader;
 import org.bbs.apklauncher.emb.Host_Application;
 import org.bbs.apklauncher.emb.LoadApk;
 import org.bbs.apklauncher.emb.LogClassLoader;
+import org.bbs.apklauncher.emb.Util;
 import org.bbs.apklauncher.emb.ViewCreater;
-import org.bbs.apklauncher.emb.auto_gen.Host_Activity;
 import org.bbs.apklauncher.emb.auto_gen.Target_Activity;
-import org.bbs.felix.util.ApkManifestParser.PackageInfoX.ActivityInfoX;
+import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.osgi.activity.BundleActivity;
 import org.bbs.osgi.activity.IActivityAgent;
 import org.bbs.osgi.activity.InstrumentationWrapper;
@@ -40,7 +40,7 @@ import android.view.View;
 import dalvik.system.DexClassLoader;
 
 public class Stub_SUPER_CLASS extends 
-Host_SUPER_CLASS
+StubBase_SUPER_CLASS
 implements CallBack {
 
 	/**
@@ -215,7 +215,7 @@ implements CallBack {
 
 	@Override
 	public void processIntent(Intent intent) {
-		Host_Application.onProcessStartActivityIntent(intent, mClassLoader, mRealBaseContext);
+		 Util.onProcessStartActivityIntent(intent, mClassLoader, mRealBaseContext);
 	}
 	
 	@Override

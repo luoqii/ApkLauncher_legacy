@@ -64,3 +64,6 @@ if (createTarget == true) {
 	createBaseActivity "./src", 'com.example.android.apis.stub', 'Base_ListActivity'
 	createBaseActivity "./src", 'com.example.android.apis.stub', 'Base_PreferenceActivity'
 }
+
+
+println args[0]

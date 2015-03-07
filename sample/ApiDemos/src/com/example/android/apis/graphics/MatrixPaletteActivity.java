@@ -23,7 +23,7 @@ import android.os.Bundle;
 /**
  * This sample shows how to implement a Matrix Palette
  */
-public class MatrixPaletteActivity extends Activity {
+public class MatrixPaletteActivity extends com.example.android.apis.stub.Base_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -33,7 +33,7 @@ class GraphicsActivity extends com.example.android.apis.stub.Base_Activity {
     @Override
     public void setContentView(View view) {
         if (TEST_PICTURE) {
-            ViewGroup vg = new PictureLayout(this);
+            ViewGroup vg = new PictureLayout(this.getHostActivity());
             vg.addView(view);
             view = vg;
         }

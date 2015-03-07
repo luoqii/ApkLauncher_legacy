@@ -24,7 +24,7 @@ import android.opengl.GLSurfaceView;
 
 import java.util.Random;
 
-public class Kube extends Activity implements KubeRenderer.AnimationCallback {
+public class Kube extends com.example.android.apis.stub.Base_Activity implements KubeRenderer.AnimationCallback {
 
     private GLWorld makeGLWorld()
     {

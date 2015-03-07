@@ -1,6 +1,6 @@
 package org.bbs.apklauncher.emb;
 
-import org.bbs.apklauncher.emb.auto_gen.Host_Activity;
+import org.bbs.apklauncher.emb.auto_gen.StubBase_Activity;
 import org.bbs.apklauncher.emb.auto_gen.Target_Activity;
 
 import android.annotation.SuppressLint;
@@ -16,8 +16,8 @@ public class Target_Fragment extends Fragment {
 //		return getActivity();
 //	}
 	
-	public Host_Activity getHostActivity() {
-		return (Host_Activity) getActivity();
+	public StubBase_Activity getHostActivity() {
+		return (StubBase_Activity) getActivity();
 	}
 	
 	public Target_Activity getTargetActivity() {

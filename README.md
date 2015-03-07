@@ -8,18 +8,16 @@ felix-on-android osgi android
 see:http://code.google.com/p/felix-on-android/
 
 优点：
-  * 在有限情况(主应用不需要更新)下，实现静黙升级(not root)；
-  * 快速分发，升级；
-  * 动态加载(扩展)应用功能（需要定义良好的框架）;
-  * 向第三方开放接口，我们成为平台；
+  * 实现静黙升级(not root/google play), 只需动态加载一个apk；
+  * 对升级的完全控制，大大减少了对第三方分发平台的依赖；
 
 缺点：
-  * 更加复杂的升级方案（apk升级，bundle升级）；
-  * 更加复杂的后台?
-  * 对传统android开发人员的挑战（引入额外的开发模型，工具的支持（ant, adt, gradle?），osgi 相关知识）;
+  * 因为android的静态声明模型（permission, activity, service, action...）,某些功能需要主应用的配合才能实现。
+  * 如果目标apk的AndroidManifest.xml描述发生变化，宿主apk也需要同时升级；
   * native支持
   * 多应用支持
-  * 某些功能需要主应用的配合才能实现。
+  * 更加复杂的后台?
+  * 对传统android开发人员的挑战（引入额外的开发模型，工具的支持（ant, adt, gradle?），osgi 相关知识）;
 
 NOTE
 ====
@@ -35,6 +33,11 @@ Fragment.startActvity()
 native lib
 start activity by custom action.
 intent.putSeriable() (less then 5.0) android has bug which will not use classload we support by Intent.getExtr().setClassLoader().
+
+CRASH:
+com.example.android.apis.graphics.BitmapDecode (n6)
+com.example.android.apis.graphics.ColorFilters (n6)
+java.lang.ClassNotFoundException: Didn't find class "com.example.android.apis.Purgeable" (n6)
 
 TRICK
 =====

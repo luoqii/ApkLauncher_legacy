@@ -6,7 +6,7 @@ import org.bbs.osgi.activity.ActivityAgent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class BundleList extends ActivityAgent {
+public class BundleList extends com.example.android.apis.stub.Base__ActivityAgent {
 
 	@Override
 	protected void onCreate(Bundle arg0) {
