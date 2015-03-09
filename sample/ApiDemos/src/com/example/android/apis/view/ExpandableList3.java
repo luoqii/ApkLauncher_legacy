@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * Demonstrates expandable lists backed by a Simple Map-based adapter
  */
-public class ExpandableList3 extends ExpandableListActivity {
+public class ExpandableList3 extends com.example.android.apis.stub.Base_ExpandableListActivity {
     private static final String NAME = "NAME";
     private static final String IS_EVEN = "IS_EVEN";
     

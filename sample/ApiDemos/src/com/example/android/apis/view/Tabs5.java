@@ -27,7 +27,7 @@ import android.widget.TextView;
 /**
  * Demonstrates the Tab scrolling when too many tabs are displayed to fit in the screen.
  */
-public class Tabs5 extends TabActivity implements TabHost.TabContentFactory {
+public class Tabs5 extends com.example.android.apis.stub.Base_TabActivity implements TabHost.TabContentFactory {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -38,7 +38,7 @@ import com.example.android.apis.R;
  * Demonstrates expandable lists using a custom {@link ExpandableListAdapter}
  * from {@link BaseExpandableListAdapter}.
  */
-public class ExpandableList1 extends ExpandableListActivity {
+public class ExpandableList1 extends com.example.android.apis.stub.Base_ExpandableListActivity {
 
     ExpandableListAdapter mAdapter;
 

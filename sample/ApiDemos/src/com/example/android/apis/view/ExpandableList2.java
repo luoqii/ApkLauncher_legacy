@@ -31,7 +31,7 @@ import android.widget.SimpleCursorTreeAdapter;
 /**
  * Demonstrates expandable lists backed by Cursors
  */
-public class ExpandableList2 extends ExpandableListActivity {
+public class ExpandableList2 extends com.example.android.apis.stub.Base_ExpandableListActivity {
 
     private static final String[] CONTACTS_PROJECTION = new String[] {
         Contacts._ID,

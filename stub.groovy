@@ -52,18 +52,16 @@ public class ${className} extends org.bbs.apklauncher.emb.auto_gen.${superClassN
 
 }
 
-
+def a=["Base_Activity", "Base_ListActivity", "Base_PreferenceActivity",
+		"Base_ExpandableListActivity", "Base_TabActivity"
+		]
+a.each() { activity ->
 if (createTarget == true) {
-	println "createTarget"
-	createTargetActivity "./src", 'com.example.android.apis.stub', 'Base_Activity'
-	createTargetActivity "./src", 'com.example.android.apis.stub', 'Base_ListActivity'
-	createTargetActivity "./src", 'com.example.android.apis.stub', 'Base_PreferenceActivity'
+	println "createTarget: " + "${activity}"
+	createTargetActivity "./src", 'com.example.android.apis.stub', "${activity}"
 } else {
 	println 'createBaseActivity'
-	createBaseActivity "./src", 'com.example.android.apis.stub', 'Base_Activity'
-	createBaseActivity "./src", 'com.example.android.apis.stub', 'Base_ListActivity'
-	createBaseActivity "./src", 'com.example.android.apis.stub', 'Base_PreferenceActivity'
+	createBaseActivity "./src", 'com.example.android.apis.stub', "${activity}"
+}
 }
 
-
-println args[0]
