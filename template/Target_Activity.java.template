@@ -1148,11 +1148,13 @@ ContextWrapper
 	}
 
 	public boolean isMultiPane() {
-		return mHostActivity.isMultiPane();
+		//return mHostActivity.isMultiPane();
+		return false;
 	}
 
 	public boolean onIsMultiPane() {
-		return mHostActivity.onIsMultiPane();
+		//return mHostActivity.onIsMultiPane();
+		return false;
 	}
 
 	public boolean onIsHidingHeaders() {

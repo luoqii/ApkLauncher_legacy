@@ -18,6 +18,8 @@ package com.example.android.apis.app;
 
 import java.util.List;
 
+import org.bbs.apklauncher.emb.Util;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -56,7 +58,7 @@ import com.example.android.apis.R;
  *     of the device security status have changed.
  */
 @SuppressLint("NewApi")
-public class DeviceAdminSample extends /*com.example.android.apis.stub.Base_*/PreferenceActivity {
+public class DeviceAdminSample extends com.example.android.apis.stub.Base_PreferenceActivity {
 
     // Miscellaneous utilities and definitions
     private static final String TAG = "DeviceAdminSample";
@@ -168,7 +170,7 @@ public class DeviceAdminSample extends /*com.example.android.apis.stub.Base_*/Pr
 
             // Retrieve the useful instance variables
 //            mActivity = (DeviceAdminSample) getActivity();
-            mActivity = (DeviceAdminSample) getActivity();
+            mActivity = (DeviceAdminSample) Util.getTargetActivityFormFrag(this);
             mDPM = mActivity.mDPM;
             mDeviceAdminSample = mActivity.mDeviceAdminSample;
             mAdminActive = mActivity.isActiveAdmin();
