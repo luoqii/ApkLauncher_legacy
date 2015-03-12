@@ -19,8 +19,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import dalvik.system.DexClassLoader;
 
-public class LoadApk {
-	private static final String TAG = LoadApk.class.getSimpleName();
+public class LoadedApk {
+	private static final String TAG = LoadedApk.class.getSimpleName();
 
 	static HashMap<String, String> sActivitySuperClassNameMap = new HashMap<String, String>();
 	static HashMap<String, String> sSuperClassNameMap = new HashMap<String, String>();
@@ -30,7 +30,7 @@ public class LoadApk {
 
 	private ClassLoader mClassLoader;
 
-	public LoadApk(Application appContext, PackageInfoX apkInfo){
+	public LoadedApk(Application appContext, PackageInfoX apkInfo){
 		mApkInfo = apkInfo;
 		
 		mDexCacheDir = appContext.getDir("apk_code_cache", 0).getPath();

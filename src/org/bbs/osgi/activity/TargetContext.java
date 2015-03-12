@@ -16,21 +16,24 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 
 /**
  * when bundle resource is ready, return this, otherwise, return normally.
  * @author bysong
  *
  */
-public class LazyContext extends 
+public class TargetContext extends 
 ContextWrapper 
 //ContextThemeWrapper
 {
 
-	private static final String TAG = LazyContext.class.getSimpleName();
+	private static final String TAG = TargetContext.class.getSimpleName();
 	
-	private static final boolean ENALBE_SERVICE = true;
+	private static final boolean ENALBE_SERVICE = false;
 	
 	private static String mPackageName;
 	private Resources mResource;
@@ -41,8 +44,10 @@ ContextWrapper
 	private Theme mTargetTheme;
 	private int mTargetThemeId;
 	private Activity mHostActivity;
+
+	private LayoutInflater mInflater;
 	
-	public LazyContext(Context base) {
+	public TargetContext(Context base) {
 		super(base);
 //		this(base, 0);
 	}
@@ -51,7 +56,7 @@ ContextWrapper
 //		super(base, themeResId);
 //	}
 	
-	public static void bundleReady(LazyContext LazyContext, Bundle bundle, Resources res, String packageName) {
+	public static void bundleReady(TargetContext LazyContext, Bundle bundle, Resources res, String packageName) {
 		// trivas build error
 //		LazyContext.mClassLoader = bundle.adapt(BundleWiring.class).getClassLoader();
 		LazyContext.mResource = res;
@@ -82,13 +87,9 @@ ContextWrapper
 		mClassLoader = classloader;
 	}
 	
-	public void hostActivityReady(Activity activity) {
-		mHostActivity = activity;
-	}
 	
-	public Activity getHostActivity() {
-		return mHostActivity;
-	}
+	
+	//------------------------------------------------------------------
 	
 	@Override
 	public Theme getTheme() {
@@ -234,7 +235,6 @@ ContextWrapper
 	@Override
 	public void unbindService(ServiceConnection conn) {
 		if (ENALBE_SERVICE) {
-			// TODO Auto-generated method stub
 			super.unbindService(conn);
 		} else {
 			Log.w(TAG, "unbindService not implemented.");

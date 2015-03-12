@@ -2,14 +2,13 @@ package org.bbs.apklauncher.emb;
 
 import org.bbs.apklauncher.InstalledAPks;
 import org.bbs.apklauncher.PackageManagerProxy;
-import org.bbs.osgi.activity.BundleActivity;
-import org.bbs.osgi.activity.LazyContext;
+import org.bbs.apklauncher.emb.IntentHelper.PersistentObject;
 import org.bbs.osgi.activity.ReflectUtil;
 import org.bbs.osgi.activity.ResourcesMerger;
+import org.bbs.osgi.activity.TargetContext;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -22,29 +21,28 @@ Application
 {
 	private static final String TAG = Host_Application.class.getSimpleName();;
 	Application mTargetAppliction;
+	private PersistentObject mPersistent;
 	
-	@Override
-	public void onCreate() {
-		super.onCreate();
-	}
-
 	public void attachBundleAplication(Application app, Context baseCcontext){
 		ReflectUtil.ActivityReflectUtil.attachBaseContext(app, baseCcontext);
 		mTargetAppliction = app;
+		
 		mTargetAppliction.onCreate();
 	}
 	
-	public Application onPrepareApplictionStub(ApplicationInfo appInfo, 
+	public /*static*/ Application onPrepareApplictionStub(ApplicationInfo appInfo, 
 			ClassLoader classLoader, PackageManager pm	) {
 		String apkPath = appInfo.publicSourceDir;
-		Application app = InstalledAPks.getApplication(apkPath);
+		Application app = InstalledAPks.getApplication(appInfo.packageName);
 		if (null == app) {
+			mPersistent.init(this, classLoader);
+			
 			String appClassName = appInfo.className;
 			if (!TextUtils.isEmpty(appClassName)) {
 				try {
 
-					LazyContext appBaseContext = new LazyContext(this);
-					Resources appRes = BundleActivity.loadApkResource(apkPath);
+					TargetContext appBaseContext = new TargetContext(this);
+					Resources appRes = Util.loadApkResource(apkPath);
 					appRes = new ResourcesMerger(appRes, getResources());
 					appBaseContext.resReady(appRes);
 					int appTheme = appInfo.theme;
@@ -65,31 +63,24 @@ Application
 
 					attachBundleAplication(app, appBaseContext);
 
-					InstalledAPks.putApplication(apkPath, (app));
+					InstalledAPks.putApplication(appInfo.packageName, app);
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("error in create application: " + appClassName , e);
 				}
 			}
 		}
+		
 		return app;
 	}
-
-	/**
-	 * @deprecated Use {@link Util#onProcessStartActivityIntent(Intent,ClassLoader,Context)} instead
-	 */
-	public static void onProcessStartActivityIntent(Intent intent, ClassLoader classLoader, Context realContext) {
-		Util.onProcessStartActivityIntent(intent, classLoader, realContext);
-	}	
 	
-	
-	/**
-	 * @deprecated Use {@link Util#onProcessStartServiceIntent(Intent,ClassLoader,Context)} instead
-	 */
-	public static void onProcessStartServiceIntent(Intent intent, ClassLoader classLoader, Context realContext) {
-		Util.onProcessStartServiceIntent(intent, classLoader, realContext);
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		
+		mPersistent = PersistentObject.getsInstance();
 	}
-	
+
 	public void onTerminate() {
 		if (null != mTargetAppliction) {
 			mTargetAppliction.onTerminate();

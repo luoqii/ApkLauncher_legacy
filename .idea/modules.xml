@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ApkLauncher.iml" filepath="$PROJECT_DIR$/.idea/ApkLauncher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ApkLauncher.iml" filepath="$PROJECT_DIR$/ApkLauncher.iml" />
     </modules>
   </component>
 </project>

@@ -1,6 +1,6 @@
 package org.bbs.apklauncher.emb;
 
-import org.bbs.osgi.activity.LazyContext;
+import org.bbs.osgi.activity.TargetContext;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
@@ -19,14 +19,14 @@ public abstract class Host_Service extends Service {
 	private static boolean DEBUG = true;
 	
 	Target_Service mTargetService;
-	protected LazyContext mTargetContext;
+	protected TargetContext mTargetContext;
 	Context mRealBaseContext;
 	private PackageManager mSysPm;
 
 	@Override
 	protected void attachBaseContext(Context newBase) {
 		mRealBaseContext = newBase;
-		mTargetContext = new LazyContext(newBase);
+		mTargetContext = new TargetContext(newBase);
 		super.attachBaseContext(mTargetContext);
 		mSysPm = getPackageManager();
 	}

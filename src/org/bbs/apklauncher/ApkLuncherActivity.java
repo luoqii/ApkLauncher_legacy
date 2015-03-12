@@ -1,15 +1,13 @@
 package org.bbs.apklauncher;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipFile;
 
-import org.bbs.apklauncher.emb.LoadApk;
+import org.bbs.apklauncher.emb.IntentHelper;
+import org.bbs.apklauncher.emb.LoadedApk;
+import org.bbs.apklauncher.emb.auto_gen.Stub_Activity;
 import org.bbs.apkparser.ApkManifestParser;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
-import org.bbs.felix.util.AndroidUtil;
 import org.bbs.felixonandroid.R;
 
 import dalvik.system.DexClassLoader;
@@ -46,9 +44,7 @@ public class ApkLuncherActivity extends Activity {
 		Adapter adapter = new ApkAdapter(this, parseLauncher(apks.getAllApks()));
 		recycleView.setAdapter(adapter);
 		;
-	}
-	
-	
+	}	
 
 	private List<PackageInfoX.ActivityInfoX> parseLauncher(List<PackageInfoX> ms) {
 		List<PackageInfoX.ActivityInfoX> launchers = new ArrayList<ApkManifestParser.PackageInfoX.ActivityInfoX>();
@@ -117,12 +113,17 @@ public class ApkLuncherActivity extends Activity {
 					Log.d(TAG, "onClick. activity: " + a);
 
 					ClassLoader cl = new DexClassLoader(a.applicationInfo.publicSourceDir, getDir("tmp", 0).getPath(), null, getClassLoader());
-					String superClassName = LoadApk.getActivitySuperClassName(cl, a.name);
+					String superClassName = LoadedApk.getActivitySuperClassName(cl, a.name);
 					Intent launcher = new Intent();
-					ComponentName com= new ComponentName(getPackageName(), superClassName.replace("Target", "Stub"));
+
+	                // inject and replace with our component.
+					String comClassName = superClassName.replace("Target", "Stub");
+					ComponentName com= new ComponentName(getPackageName(), comClassName);
 					launcher.setComponent(com);
-					putExtra(a, launcher);
+					launcher.putExtra(Stub_Activity.EXTRA_COMPONENT_CLASS_NAME, a.name);
+//					putExtra(a, launcher);
 					
+					launcher.putExtra(IntentHelper.EXTRA_INJECT, false);
 					startActivity(launcher);
 				}
 			});

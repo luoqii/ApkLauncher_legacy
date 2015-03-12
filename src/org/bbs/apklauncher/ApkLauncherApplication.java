@@ -82,6 +82,7 @@ Host_Application
 					view.setDataAndType(Uri.fromFile(crashFile), "text/*");
 					view.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					view.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+					view.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(view);
 				} catch (Exception e) {
 					e.printStackTrace();

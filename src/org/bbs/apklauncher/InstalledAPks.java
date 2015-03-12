@@ -17,6 +17,7 @@ import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ApplicationInfoX;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ServiceInfoX;
 import org.bbs.felix.util.AndroidUtil;
+import org.bbs.osgi.activity.ResourcesMerger;
 
 import android.app.Application;
 import android.content.ComponentName;
@@ -29,6 +30,7 @@ public class InstalledAPks {
 	
 	public static Map<String, WeakReference<ClassLoader>> sApk2ClassLoaderMap = new HashMap<String, WeakReference<ClassLoader>>();
 	public static Map<String, WeakReference<Application>> sApk2ApplicationtMap = new HashMap<String, WeakReference<Application>>();
+	public static Map<String, WeakReference<ResourcesMerger>> sApk2ResourceMap = new HashMap<String, WeakReference<ResourcesMerger>>();
 
 	public static ClassLoader sLastClassLoader;
 
@@ -53,46 +55,46 @@ public class InstalledAPks {
 		sApk2ClassLoaderMap.put(packageName, new WeakReference<ClassLoader>(classLoader));
 	}
 	
+	public static ClassLoader createClassLoader(String apkPath, String libPath, Context baseContext) {		
+			ClassLoader c = null;	
+			
+			// this classlaoder can work on nexus 4, ???
+			/*
+	E/ActivityThread(28347): Caused by: java.lang.IllegalAccessError: Class ref in pre-verified class resolved to unexpected implementation
+	E/ActivityThread(28347): 	at com.youku.lib.support.v4.widget.ViewPager.initViewPager(ViewPager.java:328)
+	E/ActivityThread(28347): 	at com.youku.lib.support.v4.widget.ViewPager.<init>(ViewPager.java:318)
+	E/ActivityThread(28347): 	at com.youku.tv.ui.activity.HomeActivityWithViewPager$HomeViewPager.<init>(HomeActivityWithViewPager.java:2475)
+	E/ActivityThread(28347): 	... 29 more
+	*/
+			c = new DexClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), 
+					libPath,
+					baseContext.getClassLoader()
+					);		
+			
+	//		c = new ClassLoaderMerger(c, mRealBaseContext.getClassLoader());
+			
+	//		c = new ApkClassLoader(apkPath, getDir("apk_code_cache", 0).getPath(), 
+	//				libPath, mRealBaseContext.getClassLoader(), getClassLoader());
+			
+			RestrictClassLoader rc = new TargetClassLoader.RestrictClassLoader();
+			rc.setHostClassLoader(baseContext.getClassLoader());;
+			c = new TargetClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), 
+					libPath,
+					rc
+					);
+	
+	//		c = new TargetClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), libPath, ClassLoader.getSystemClassLoader());
+	//		c = new ClassLoaderMerge(c, baseContext.getClassLoader());
+			
+			return c;
+		}
+
 	public static Application getApplication(String packageName) {
 		WeakReference<Application> weakReference = sApk2ApplicationtMap.get(packageName);
 		if (null != weakReference) {
 			return weakReference.get();
 		}
 		return null;
-	}
-	
-	public static ClassLoader createClassLoader(String apkPath, String libPath, Context baseContext) {		
-		ClassLoader c = null;	
-		
-		// this classlaoder can work on nexus 4, ???
-		/*
-E/ActivityThread(28347): Caused by: java.lang.IllegalAccessError: Class ref in pre-verified class resolved to unexpected implementation
-E/ActivityThread(28347): 	at com.youku.lib.support.v4.widget.ViewPager.initViewPager(ViewPager.java:328)
-E/ActivityThread(28347): 	at com.youku.lib.support.v4.widget.ViewPager.<init>(ViewPager.java:318)
-E/ActivityThread(28347): 	at com.youku.tv.ui.activity.HomeActivityWithViewPager$HomeViewPager.<init>(HomeActivityWithViewPager.java:2475)
-E/ActivityThread(28347): 	... 29 more
-*/
-		c = new DexClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), 
-				libPath,
-				baseContext.getClassLoader()
-				);		
-		
-//		c = new ClassLoaderMerger(c, mRealBaseContext.getClassLoader());
-		
-//		c = new ApkClassLoader(apkPath, getDir("apk_code_cache", 0).getPath(), 
-//				libPath, mRealBaseContext.getClassLoader(), getClassLoader());
-		
-		RestrictClassLoader rc = new TargetClassLoader.RestrictClassLoader();
-		rc.setHostClassLoader(baseContext.getClassLoader());;
-		c = new TargetClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), 
-				libPath,
-				rc
-				);
-
-//		c = new TargetClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), libPath, ClassLoader.getSystemClassLoader());
-//		c = new ClassLoaderMerge(c, baseContext.getClassLoader());
-		
-		return c;
 	}
 	
 	public static void putApplication(String packageName, Application app) {

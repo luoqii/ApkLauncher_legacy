@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.bbs.apklauncher.InstalledAPks;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ServiceInfoX;
-import org.bbs.osgi.activity.BundleActivity;
 import org.bbs.osgi.activity.ReflectUtil;
 import org.bbs.osgi.activity.ResourcesMerger;
 
@@ -71,7 +70,7 @@ public class Stub_Service extends Host_Service {
 				mResourceMerger = rr.get();
 				mTargetResource = mResourceMerger.mFirst;
 			} else {
-				mTargetResource = BundleActivity.loadApkResource(mApkPath);
+				mTargetResource = Util.loadApkResource(mApkPath);
 				mResourceMerger = new ResourcesMerger(mTargetResource, getResources());
 				sApk2ResourceMap.put(mApkPath, new WeakReference<ResourcesMerger>(mResourceMerger));
 			}

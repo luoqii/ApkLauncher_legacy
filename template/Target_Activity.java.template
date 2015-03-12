@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.bbs.osgi.activity.ReflectUtil.ActivityReflectUtil;
-import org.bbs.osgi.activity.LazyContext;
+import org.bbs.osgi.activity.TargetContext;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -92,7 +92,6 @@ ContextWrapper
 	
 	protected StubBase_SUPER_CLASS mHostActivity;
 	
-	// contructor
 	public Target_SUPER_CLASS() {
 		this(null);
 	}
@@ -102,21 +101,25 @@ ContextWrapper
 		mHostActivity = (StubBase_SUPER_CLASS) base;
 	}
 	
+	void setHostActivity(Stub_SUPER_CLASS hostActivity) {
+		mHostActivity = hostActivity;
+	}
+	
 	public StubBase_SUPER_CLASS getHostActivity() {
 		return mHostActivity;
 	}
 	
-	protected void attachBaseContext(Context base) {
-		mHostActivity = getHostActivityFromBaseContext(base);
-		super.attachBaseContext(base);
-	}
-	
-	private StubBase_SUPER_CLASS getHostActivityFromBaseContext(Context base) {
+	//private StubBase_SUPER_CLASS getHostActivityFromBaseContext(Context base) {
 		//return (StubBase_SUPER_CLASS) base;	
-		if (base instanceof StubBase_SUPER_CLASS) {
-			return (StubBase_SUPER_CLASS) base;
-		}
-		return (StubBase_SUPER_CLASS) ((LazyContext)base).getHostActivity();
+	//	if (base instanceof StubBase_SUPER_CLASS) {
+	//		return (StubBase_SUPER_CLASS) base;
+	//	}
+	//	return (StubBase_SUPER_CLASS) ((TargetContext)base).getHostActivity();
+	//}
+	
+	protected void attachBaseContext(Context base) {
+		//mHostActivity = getHostActivityFromBaseContext(base);
+		super.attachBaseContext(base);
 	}
 	
     public final Application getApplication() {

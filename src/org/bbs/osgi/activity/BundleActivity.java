@@ -8,12 +8,11 @@ import java.io.OutputStream;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bbs.apklauncher.emb.Util;
 import org.bbs.felix.App;
 import org.bbs.felix.FelixWrapper;
 import org.bbs.osgi.activity.ReflectUtil.ActivityReflectUtil;
@@ -32,15 +31,12 @@ import android.app.Instrumentation;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -93,7 +89,7 @@ implements InstrumentationWrapper.CallBack
 	private String mServiceFilter;
 	private Resources mSourceMerger;
 
-	private LazyContext mLazyContext;
+	private TargetContext mLazyContext;
 	
 //	private List<String> mExtendWidgetReg;
 
@@ -124,7 +120,7 @@ implements InstrumentationWrapper.CallBack
 	
     @Override 
     protected void attachBaseContext(Context newBase) {
-    	mLazyContext = new LazyContext(newBase);
+    	mLazyContext = new TargetContext(newBase);
         super.attachBaseContext(mLazyContext);
     }
 	
@@ -187,7 +183,7 @@ implements InstrumentationWrapper.CallBack
 			WeakReference<Resources> r = sBundle2ResMap.get(mBundle);
 			if (null != r) {
 				mSourceMerger = r.get();
-				LazyContext.bundleReady(mLazyContext, mBundle, mSourceMerger, null);
+				TargetContext.bundleReady(mLazyContext, mBundle, mSourceMerger, null);
 			} 
 			if (null == mSourceMerger) {
 				Resources bundleRes = getBundleResources(mBundle);
@@ -384,38 +380,8 @@ implements InstrumentationWrapper.CallBack
 					e.printStackTrace();
 				}
 			}
-			return loadApkResource(resApk.getAbsolutePath());
+			return Util.loadApkResource(resApk.getAbsolutePath());
 		}
-
-	public static  Resources loadApkResource(String apkFilePath) {
-		AssetManager assets = null;
-		try {
-			assets = AssetManager.class.getConstructor(null).newInstance(null);
-			Method method = assets.getClass().getMethod("addAssetPath", new Class[]{String.class});
-			Object r = method.invoke(assets, apkFilePath);
-			DisplayMetrics metrics = null;
-			Configuration config = null;
-			// TODO add confic & metrics
-			Resources res = new Resources(assets, metrics, config);
-			return res;
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	public void processIntent(Intent intent) {
 		Log.d(TAG, "processIntent. intent: " + intent);

@@ -26,15 +26,15 @@ public class BundleApplication extends AbsApplication
 {
 
 	private static final String TAG = BundleApplication.class.getSimpleName();
-	protected LazyContext mLazyContext;
+	protected TargetContext mLazyContext;
 	
 	public void attachBundleAplication(ApplicationAgent agent, Bundle bundle, Resources res, Context baseContext){
 		agent.mHostApplicion = this;
 		if (null != res) {
 			if (mLazyContext == null) {
-				mLazyContext = new LazyContext(baseContext);
+				mLazyContext = new TargetContext(baseContext);
 			}
-			LazyContext.bundleReady(mLazyContext, bundle, res, null);
+			TargetContext.bundleReady(mLazyContext, bundle, res, null);
 		}
 		if (agent instanceof EmbeddedApplictionAgent) {
 			Application app = ((EmbeddedApplictionAgent)agent).mBundelApp;
@@ -49,7 +49,7 @@ public class BundleApplication extends AbsApplication
 
 	@Override 
     protected void attachBaseContext(Context newBase) {
-    	mLazyContext = new LazyContext(newBase);
+    	mLazyContext = new TargetContext(newBase);
         super.attachBaseContext(mLazyContext);
     }
 

@@ -2,21 +2,29 @@ package org.bbs.apklauncher.emb;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
 import org.bbs.apklauncher.ApkLuncherActivity;
 import org.bbs.apklauncher.InstalledAPks;
+import org.bbs.apklauncher.emb.auto_gen.Stub_Activity;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ServiceInfoX;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 public class Util {
 	private static final String TAG = Util.class.getSimpleName();;
+
+    public static final String ACTIVITY_EXTRA_COMPONENT_CLASS_NAME = "EXTRA_COMPONENT_CLASS_NAME";
 	
 	// TODO
 	public static final String toMemoryLevel(int level) {
@@ -32,12 +40,14 @@ public class Util {
 		if (null != com) {
 			String c = com.getClassName();
 			if (!TextUtils.isEmpty(c)) {
-				String superClassName = LoadApk.getActivitySuperClassName(classLoader, c);
+				String superClassName = LoadedApk.getActivitySuperClassName(classLoader, c);
 				com = new ComponentName(realContext.getPackageName(), superClassName.replace("Target", "Stub"));
+                // inject and replace with our component.
 				intent.setComponent(com);
 				ActivityInfoX a = InstalledAPks.getInstance().getActivityInfo(c);
 				if (a != null) {
-					ApkLuncherActivity.putExtra(a, intent);
+//					ApkLuncherActivity.putExtra(a, intent);
+					intent.putExtra(Stub_Activity.EXTRA_COMPONENT_CLASS_NAME, a.name);
 				}
 			} 
 		} else {
@@ -51,17 +61,41 @@ public class Util {
 		if (null != com) {
 			String c = com.getClassName();
 			if (!TextUtils.isEmpty(c)) {
-				String superClassName = LoadApk.getServiceSuperClassName(classLoader, c);
+				String superClassName = LoadedApk.getServiceSuperClassName(classLoader, c);
 				com = new ComponentName(realContext.getPackageName(), superClassName.replace("Target", "Stub"));
+                // inject and replace with our component.
 				intent.setComponent(com);
 				ServiceInfoX a = InstalledAPks.getInstance().getServiceInfo(c);
 				if (a != null) {
-					intent.putExtra(Stub_Service.EXTRA_COMPONENT, new ComponentName(a.packageName, a.name));
+//					intent.putExtra(Stub_Service.EXTRA_COMPONENT, new ComponentName(a.packageName, a.name));
+					intent.putExtra(Stub_Activity.EXTRA_COMPONENT_CLASS_NAME, a.name);
 				}
 			} 
 		} else {
 			Log.w(TAG, "can not handle intent:  "  + intent);
 		}
+	}
+	
+	public static Object getTargetActivity(Context context) {
+		Object o = null;
+		try {
+			Method m = context.getClass().getMethod("getTargetActivity", (Class[])null);
+			o = m.invoke(context, (Object[]) null);
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return o;
 	}
 	
 	@SuppressLint("NewApi")
@@ -109,6 +143,36 @@ public class Util {
 		}
 		
 		return o;
+	}
+
+	public static  Resources loadApkResource(String apkFilePath) {
+		AssetManager assets = null;
+		try {
+			assets = AssetManager.class.getConstructor(null).newInstance(null);
+			Method method = assets.getClass().getMethod("addAssetPath", new Class[]{String.class});
+			Object r = method.invoke(assets, apkFilePath);
+			DisplayMetrics metrics = null;
+			Configuration config = null;
+			// TODO add confic & metrics
+			Resources res = new Resources(assets, metrics, config);
+			return res;
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	

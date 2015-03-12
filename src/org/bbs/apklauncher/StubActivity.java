@@ -4,12 +4,12 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bbs.apklauncher.emb.Util;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.osgi.activity.AbsActivityWraper;
-import org.bbs.osgi.activity.BundleActivity;
 import org.bbs.osgi.activity.InstrumentationWrapper;
 import org.bbs.osgi.activity.InstrumentationWrapper.CallBack;
-import org.bbs.osgi.activity.LazyContext;
+import org.bbs.osgi.activity.TargetContext;
 import org.bbs.osgi.activity.ReflectUtil;
 import org.bbs.osgi.activity.ResourcesMerger;
 import org.bbs.osgi.activity.embed.EmbeddedActivityAgent;
@@ -51,7 +51,7 @@ implements CallBack {
 	private String mApkPath;
 	private Activity mTargetActivity;
 	private ResourcesMerger mResourceMerger;
-	private LazyContext mTargetContext;
+	private TargetContext mTargetContext;
 	private int mTargetThemeId;
 	private Theme mTargetTheme;
 	private ActivityInfoX mActInfo;
@@ -86,7 +86,7 @@ implements CallBack {
 		mRealBaseContext = newBase;
 //		super.attachBaseContext(newBase);
 		
-		mTargetContext = new LazyContext(newBase);
+		mTargetContext = new TargetContext(newBase);
 		super.attachBaseContext(mTargetContext);
 		mSysPm = getPackageManager();
 	}
@@ -144,9 +144,9 @@ implements CallBack {
 					app = ((Application) mClassLoader.loadClass(mApplicationClassName).newInstance());
 					sApk2ApplicationtMap.put(mApkPath, new WeakReference<Application>(app));
 					
-					LazyContext appBaseContext = new LazyContext(getApplication());
+					TargetContext appBaseContext = new TargetContext(getApplication());
 					appBaseContext.applicationContextReady(app);
-					Resources appRes = BundleActivity.loadApkResource(mApkPath);
+					Resources appRes = Util.loadApkResource(mApkPath);
 					appRes = new ResourcesMerger(appRes, getResources());
 					appBaseContext.resReady(appRes);
 					int appTheme = mActInfo.applicationInfo.theme;
@@ -180,7 +180,7 @@ implements CallBack {
 				mResourceMerger = rr.get();
 				mTargetResource = mResourceMerger.mFirst;
 			} else {
-				mTargetResource = BundleActivity.loadApkResource(mApkPath);
+				mTargetResource = Util.loadApkResource(mApkPath);
 				mResourceMerger = new ResourcesMerger(mTargetResource, getResources());
 				sApk2ResourceMap.put(mApkPath, new WeakReference<ResourcesMerger>(mResourceMerger));
 			}

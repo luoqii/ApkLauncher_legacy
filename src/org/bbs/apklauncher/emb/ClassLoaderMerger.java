@@ -2,16 +2,16 @@ package org.bbs.apklauncher.emb;
 
 import android.util.Log;
 
-public class ClassLoaderMerge extends ClassLoader {
+public class ClassLoaderMerger extends ClassLoader {
 	
-	private static final String TAG = ClassLoaderMerge.class.getSimpleName();
+	private static final String TAG = ClassLoaderMerger.class.getSimpleName();
 	
 	private ClassLoader mHost;
 	private ClassLoader mTarget;
 
 	private int mLevel;
 
-	public ClassLoaderMerge(ClassLoader targetClassLoader, ClassLoader hostClassLoader) {
+	public ClassLoaderMerger(ClassLoader targetClassLoader, ClassLoader hostClassLoader) {
 		mTarget = targetClassLoader;
 		mHost = hostClassLoader;
 	}

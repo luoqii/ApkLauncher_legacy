@@ -7,21 +7,25 @@ felix-on-android osgi android
 
 see:http://code.google.com/p/felix-on-android/
 
+宿主平台，目标应用
+
 优点：
   * 实现静黙升级(not root/google play), 只需动态加载一个apk；
   * 对升级的完全控制，大大减少了对第三方分发平台的依赖；
 
 缺点：
   * 因为android的静态声明模型（permission, activity, service, action...）,某些功能需要主应用的配合才能实现。
-  * 如果目标apk的AndroidManifest.xml描述发生变化，宿主apk也需要同时升级；
-  * native支持
-  * 多应用支持
+  * 如果目标应用的AndroidManifest.xml描述发生变化，宿主平台也需要同时升级；
   * 更加复杂的后台?
   * 对传统android开发人员的挑战（引入额外的开发模型，工具的支持（ant, adt, gradle?），osgi 相关知识）;
 
-NOTE
-====
-do not denpendent some specific osgi impl, just use stardard osgi feature.
+HOW 2 USE DEMO
+=======
+adb shell mkdir /sdcard/apk
+adb push sample/ApiDemo/bin/ApiDemo.apk /sdcard/apk/
+# apidemo use ACTION to retrive Activity info, so we must install it. at runntime, activity which be loaded is 
+# located an /sdcard/apk/ApiDemo.apk
+adb install sample/ApiDemo/bin/ApiDemo.apk 
 
 PROBLEM
 =======
@@ -48,6 +52,10 @@ TODO
 ====
 how to build felix?
 to add all android demo app (now only has ApiDemo.)
+
+NOTE
+====
+do not denpendent some specific osgi impl, just use stardard osgi feature.
 
 SEE
 ===

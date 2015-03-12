@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.bbs.osgi.activity.ApplicationAgent;
 import org.bbs.osgi.activity.ApplicationWrapper;
-import org.bbs.osgi.activity.LazyContext;
+import org.bbs.osgi.activity.TargetContext;
 import org.bbs.osgi.activity.ReflectUtil;
 import org.bbs.osgi.activity.embed.EmbeddedApplictionAgent;
 

@@ -1,0 +1,498 @@
+diff --git a/Youku_TV/.classpath b/Youku_TV/.classpath
+index b76ec6c..1f599bf 100644
+--- a/Youku_TV/.classpath
++++ b/Youku_TV/.classpath
+@@ -1,9 +1,10 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<classpath>
+-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+-	<classpathentry kind="src" path="src"/>
+-	<classpathentry kind="src" path="gen"/>
+-	<classpathentry kind="output" path="bin/classes"/>
+-</classpath>
++<?xml version="1.0" encoding="UTF-8"?>
++<classpath>
++	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
++	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
++	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
++	<classpathentry kind="src" path="src"/>
++	<classpathentry kind="src" path="gen"/>
++	<classpathentry combineaccessrules="false" kind="src" path="/ApkLauncher"/>
++	<classpathentry kind="output" path="bin/classes"/>
++</classpath>
+diff --git a/Youku_TV/res/layout/activity_home.xml b/Youku_TV/res/layout/activity_home.xml
+index 01c0b2f..96558c7 100644
+--- a/Youku_TV/res/layout/activity_home.xml
++++ b/Youku_TV/res/layout/activity_home.xml
+@@ -16,6 +16,7 @@
+         android:layout_marginTop="@dimen/px10"
+         android:paddingTop="@dimen/px50"
+         android:paddingLeft="@dimen/px136"
++        android:paddingRight="@dimen/px1"
+         android:layout_below="@+id/title_bar"
+         class="com.youku.tv.ui.activity.HomeActivityWithViewPager$HomeNavigatorLayout" />
+ 
+diff --git a/Youku_TV/res/layout/welcome.xml b/Youku_TV/res/layout/welcome.xml
+index 2d503f9..09c7795 100644
+--- a/Youku_TV/res/layout/welcome.xml
++++ b/Youku_TV/res/layout/welcome.xml
+@@ -10,6 +10,7 @@
+         android:layout_width="@dimen/px1010"
+         android:layout_height="@dimen/px410"
+         android:layout_centerInParent="true"
++        android:layout_marginTop="@dimen/px_minus_100"
+         android:src="@drawable/logo" />
+ 
+     <TextView
+@@ -21,6 +22,7 @@
+         android:layout_alignRight="@+id/ivLogo"
+         android:paddingBottom="@dimen/px16"
+         android:paddingRight="@dimen/px40"
++        android:paddingLeft="@dimen/px40"
+         android:text="V:"
+         android:textColor="#ffffff"
+         android:textSize="@dimen/px40"
+diff --git a/Youku_TV/src/com/youku/tv/WelcomeActivity.java b/Youku_TV/src/com/youku/tv/WelcomeActivity.java
+index 231a49b..cf185e6 100644
+--- a/Youku_TV/src/com/youku/tv/WelcomeActivity.java
++++ b/Youku_TV/src/com/youku/tv/WelcomeActivity.java
+@@ -523,7 +523,7 @@
+ 	 * 
+ 	 */
+ 	public void initView() {
+-		Youku.initScreenWidth(this);
++		Youku.initScreenWidth(this.getHostActivity());
+ 
+ 		if (isStartFromOther() && isDataValid()) {
+ 			From.from = From.FROM_CORPERATION;
+@@ -606,7 +606,7 @@
+ 			recordActiveTimeAndVersion();
+ 			checkVersionName();
+ 			// 初始化升级工具类
+-			appUpdate = new AppUpdateManager(WelcomeActivity.this);
++			appUpdate = new AppUpdateManager(WelcomeActivity.this.getHostActivity());
+ 			// 监听升级状态
+ 			appUpdate.setUpdateStateListener(this);
+ 			// 执行检查升级任务，获取统计升级所需数据
+@@ -970,7 +970,7 @@
+ 
+ 		case UpdateState.EXIT: // 强制升级时，退出升级，则退出应用
+ 			finish();
+-			Youku.exit(this);
++			Youku.exit(this.getHostActivity());
+ 			break;
+ 		default:
+ 			break;
+@@ -1109,12 +1109,12 @@
+ 	 * 显示网络连接错误对话框
+ 	 */
+ 	private void showServerTimeOutDialog(ButtonCallback callback) {
+-		DialogManager.showDialog(WelcomeActivity.this,
++		DialogManager.showDialog(WelcomeActivity.this.getHostActivity(),
+ 				DialogManager.SERVER_TIMEOUT_EXCEPTION, callback);
+ 	}
+ 
+ 	private void showHomeExceptionDialog(ButtonCallback callback) {
+-		DialogManager.showDialog(WelcomeActivity.this,
++		DialogManager.showDialog(WelcomeActivity.this.getHostActivity(),
+ 				DialogManager.HOME_EXCEPTION, callback);
+ 
+ 	}
+@@ -1127,7 +1127,7 @@
+ 
+ 	@Override
+ 	public void onClickDialogCancel() {
+-		YoukuTVBaseApplication.exit(this);
++		YoukuTVBaseApplication.exit(this.getHostActivity());
+ 	}
+ 
+ 	private void decideGoHome() {
+@@ -1322,7 +1322,7 @@
+ 		if (KeyEvent.KEYCODE_MENU == event.getKeyCode()
+ 				|| KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
+ 			pressBackKey = true;
+-			YoukuTVBaseApplication.exit(this);
++			YoukuTVBaseApplication.exit(this.getHostActivity());
+ 			return true;
+ 		}
+ 
+@@ -1399,7 +1399,7 @@
+ 				} catch (Exception e) {
+ 					e.printStackTrace();
+ 				}
+-				YoukuTVBaseApplication.exit(activity);
++				YoukuTVBaseApplication.exit(activity.getHostActivity());
+ 				break;
+ 
+ 			case MSG_CHECK_NETOWRK:
+diff --git a/Youku_TV/src/com/youku/tv/Youku.java b/Youku_TV/src/com/youku/tv/Youku.java
+index ad078c9..373d732 100644
+--- a/Youku_TV/src/com/youku/tv/Youku.java
++++ b/Youku_TV/src/com/youku/tv/Youku.java
+@@ -8,6 +8,8 @@
+ import java.util.HashMap;
+ import java.util.List;
+ 
++import org.bbs.apklauncher.emb.IntentHelper;
++
+ import android.annotation.SuppressLint;
+ import android.app.Activity;
+ import android.content.Context;
+@@ -20,6 +22,7 @@
+ import android.preference.PreferenceManager;
+ import android.text.TextUtils;
+ import android.util.DisplayMetrics;
++import android.util.Log;
+ import android.util.LogPrinter;
+ 
+ import com.baseproject.network.HttpIntent;
+@@ -191,6 +194,8 @@
+ 	protected long sLastLoopTime;
+ 
+ 	public void onCreate() {
++		Log.d(TAG, "px_minus_100: " + getBaseContext().getResources().getDimensionPixelSize(R.dimen.px_minus_100));
++		Log.d(TAG, "px_minus_100: " + getBaseContext().getResources().getDimensionPixelSize(R.dimen.px_minus_100));
+ 		Logger.e(TAG, "!!==!! Youku onCreate");
+ 		/**
+ 		 * 修改by：刘兵 说明：解决登录AsyncTask#onPostExecute不被系统回调的问题，google搜到的，勿删
+@@ -494,7 +499,8 @@
+ 	 */
+ 	public static void goPlayer(Context context, PlayHistory ph, String cat,
+ 			String from, int level, final ArrayList<ItemVideo> videoList) {
+-		Intent playIntent = new Intent();
++//		Intent playIntent = new Intent();
++		IntentHelper playIntent = new IntentHelper(new Intent());
+ 		playIntent.setClassName(context, Youku.className);
+ 		// final Bundle playBundle = new Bundle();
+ 		Logger.d("YouKu.goPlayer", ph.getVideoid() + "===" + ph.getTitle()
+@@ -572,6 +578,7 @@
+ 
+ 		perparePlayStatics(context, playIntent);
+ 
++//		playIntent.putExtra("vid", ph.getVideoid());
+ 		startActivity(context, playIntent);
+ 	}
+ 
+diff --git a/Youku_TV/src/com/youku/tv/manager/AppUpdateManager.java b/Youku_TV/src/com/youku/tv/manager/AppUpdateManager.java
+index 74346e4..63f102c 100644
+--- a/Youku_TV/src/com/youku/tv/manager/AppUpdateManager.java
++++ b/Youku_TV/src/com/youku/tv/manager/AppUpdateManager.java
+@@ -95,10 +95,12 @@
+ 				break;
+ 			case UPDATE_DOWNLOAD_NOT_COMPLETE:
+ 				try {
+-					if (object.activity != null && object.activity instanceof BaseActivity) {
++					if (object.activity != null 
++//							&& object.activity instanceof BaseActivity
++							) {
+ 						if (object.showToastOnIncomplete) {
+-							((BaseActivity) object.activity).showToast(
+-									"下载升级包不完整,已取消这次升级。", Toast.LENGTH_LONG);
++//							(object.activity.getActivity()).showToast(
++//									"下载升级包不完整,已取消这次升级。", Toast.LENGTH_LONG);
+ 						}
+ 					}
+ 				} catch (Exception e) {
+diff --git a/Youku_TV/src/com/youku/tv/ui/UgcNormalGridView.java b/Youku_TV/src/com/youku/tv/ui/UgcNormalGridView.java
+index 9ffc4c6..655ea94 100644
+--- a/Youku_TV/src/com/youku/tv/ui/UgcNormalGridView.java
++++ b/Youku_TV/src/com/youku/tv/ui/UgcNormalGridView.java
+@@ -3,10 +3,14 @@
+ import java.util.ArrayList;
+ import java.util.List;
+ 
++import org.bbs.apklauncher.emb.Util;
++
+ import android.content.Context;
+ import android.text.TextUtils;
+ import android.util.AttributeSet;
++
+ import com.baseproject.utils.Logger;
++
+ import android.view.KeyEvent;
+ import android.view.View;
+ import android.view.ViewGroup;
+@@ -235,7 +239,7 @@
+ 			}
+ 			
+ 			private void hideLoadingInActivity() {
+-				((UgcChannelActivity)getContext()).hideLoading();
++				((UgcChannelActivity)Util.getTargetActivity(getContext())).hideLoading();
+ 			};
+ 
+ 			@Override
+diff --git a/Youku_TV/src/com/youku/tv/ui/activity/BaseActivity.java b/Youku_TV/src/com/youku/tv/ui/activity/BaseActivity.java
+index 49093d7..163e77f 100644
+--- a/Youku_TV/src/com/youku/tv/ui/activity/BaseActivity.java
++++ b/Youku_TV/src/com/youku/tv/ui/activity/BaseActivity.java
+@@ -95,7 +95,7 @@
+ 		jumbWelcome("onCreate");
+ 
+ 		if (ENABLE_VIEW_SERVER) {
+-			 ViewServer.get(this).addWindow(this);
++			 ViewServer.get(this).addWindow(this.getHostActivity());
+ 		}
+ 	}
+ 
+@@ -114,7 +114,7 @@
+ 		jumbWelcome("onResume");
+ 		
+ 		if (ENABLE_VIEW_SERVER) {
+-			ViewServer.get(this).setFocusedWindow(this);
++			ViewServer.get(this.getHostActivity()).setFocusedWindow(this.getHostActivity());
+ 		}
+ 	}
+ 
+@@ -123,7 +123,7 @@
+ 		super.onDestroy();
+ 		
+ 		if (ENABLE_VIEW_SERVER) {
+-			ViewServer.get(this).removeWindow(this);
++			ViewServer.get(this.getHostActivity()).removeWindow(this.getHostActivity());
+ 		}
+ 	}
+ 
+diff --git a/Youku_TV/src/com/youku/tv/ui/activity/HistoryActivityNew.java b/Youku_TV/src/com/youku/tv/ui/activity/HistoryActivityNew.java
+index 899857a..fba051f 100644
+--- a/Youku_TV/src/com/youku/tv/ui/activity/HistoryActivityNew.java
++++ b/Youku_TV/src/com/youku/tv/ui/activity/HistoryActivityNew.java
+@@ -684,7 +684,7 @@
+ 			// YoukuTVBaseApplication.umengStat(this, "QUICK_TOOLBAR_CLICK_OPT",
+ 			// "清空");
+ 
+-			DialogManager.showDialog(HistoryActivityNew.this,
++			DialogManager.showDialog(HistoryActivityNew.this.getHostActivity(),
+ 					DialogManager.CLEAR_PLAYHISTORY_CALLBACK,
+ 					new ButtonCallback() {
+ 
+diff --git a/Youku_TV/src/com/youku/tv/ui/activity/HomeActivityWithViewPager.java b/Youku_TV/src/com/youku/tv/ui/activity/HomeActivityWithViewPager.java
+index c99c86c..3efa8b0 100644
+--- a/Youku_TV/src/com/youku/tv/ui/activity/HomeActivityWithViewPager.java
++++ b/Youku_TV/src/com/youku/tv/ui/activity/HomeActivityWithViewPager.java
+@@ -651,11 +651,11 @@
+ 		
+ 		startWeatherService();
+ 		
+-		UIMessageDispatchCenter.getInstance().register(this);
++//		UIMessageDispatchCenter.getInstance().register(this);
+ 		OptionsFragment.callLoginDialog=new CallLoginDialogStubImpl();
+ 		PropertiesFragment.switchMultiscreen=new SwitchMultiScreenStubImpl();
+ 		
+-		YoukuTVBaseApplication.sActivity = this;
++		YoukuTVBaseApplication.sActivity = this.getHostActivity();
+ 	}
+ 
+ 	@Override
+@@ -2047,7 +2047,7 @@
+ 						}, 5000);
+ 						showToast("再次点击返回将退出优酷", Toast.LENGTH_SHORT);
+ 					} else {
+-						YoukuTVBaseApplication.exit(this);
++						YoukuTVBaseApplication.exit(this.getHostActivity());
+ 						unbindYoukuCoreService();
+ 					}
+ 				}
+diff --git a/Youku_TV/src/com/youku/tv/ui/activity/HomeSettingActivity.java b/Youku_TV/src/com/youku/tv/ui/activity/HomeSettingActivity.java
+index cb2a965..d345602 100644
+--- a/Youku_TV/src/com/youku/tv/ui/activity/HomeSettingActivity.java
++++ b/Youku_TV/src/com/youku/tv/ui/activity/HomeSettingActivity.java
+@@ -230,7 +230,7 @@
+ 							// 检查网络情况
+ 							if (!Util.hasInternet()) {
+ 								DialogManager.showDialog(
+-										HomeSettingActivity.this,
++										HomeSettingActivity.this.getHostActivity(),
+ 										DialogManager.NO_NETWORK_FINISH);
+ 								return;
+ 							}
+diff --git a/Youku_TV/src/com/youku/tv/ui/activity/MemberDetailActivity.java b/Youku_TV/src/com/youku/tv/ui/activity/MemberDetailActivity.java
+index bb5dfb8..778f6b3 100644
+--- a/Youku_TV/src/com/youku/tv/ui/activity/MemberDetailActivity.java
++++ b/Youku_TV/src/com/youku/tv/ui/activity/MemberDetailActivity.java
+@@ -743,7 +743,7 @@
+ 
+ 	protected void performLogout() {
+ 		final String oldUsername = Youku.userName;
+-		SelectDialog dia = DialogManager.showDialog(MemberDetailActivity.this,
++		SelectDialog dia = DialogManager.showDialog(MemberDetailActivity.this.getHostActivity(),
+ 				DialogManager.CONFIRM_LOGINOUT, new ButtonCallback() {
+ 					@Override
+ 					public void callback(int btnStringId) {
+diff --git a/Youku_TV/src/com/youku/tv/ui/activity/MyUploadActivity.java b/Youku_TV/src/com/youku/tv/ui/activity/MyUploadActivity.java
+index 4d81abc..d3b5b4e 100644
+--- a/Youku_TV/src/com/youku/tv/ui/activity/MyUploadActivity.java
++++ b/Youku_TV/src/com/youku/tv/ui/activity/MyUploadActivity.java
+@@ -123,7 +123,7 @@
+ 							// 判断视频状态
+ 							if (item.state != 3) {
+ 								// 非正常视频，不允许播放
+-								DialogManager.showDialog(MyUploadActivity.this,
++								DialogManager.showDialog(MyUploadActivity.this.getHostActivity(),
+ 										DialogManager.PLAY_CODE_F106_CALLBACK);
+ 							} else {
+ 
+diff --git a/Youku_TV/src/com/youku/tv/ui/activity/NewSearchActivity.java b/Youku_TV/src/com/youku/tv/ui/activity/NewSearchActivity.java
+index 3a27981..5180126 100644
+--- a/Youku_TV/src/com/youku/tv/ui/activity/NewSearchActivity.java
++++ b/Youku_TV/src/com/youku/tv/ui/activity/NewSearchActivity.java
+@@ -847,7 +847,7 @@
+ 				@Override
+ 				public void onChineseClicked() {
+ 					statSearchOpt_Search1("软键盘-中文");
+-					openSoftInputFromWindow(NewSearchActivity.this, mSearchEdit);
++					openSoftInputFromWindow(NewSearchActivity.this.getHostActivity(), mSearchEdit);
+ 				}
+ 
+ 				@Override
+diff --git a/Youku_TV/src/com/youku/tv/ui/activity/NewSubjectActivity.java b/Youku_TV/src/com/youku/tv/ui/activity/NewSubjectActivity.java
+index 275db39..dc0d45d 100644
+--- a/Youku_TV/src/com/youku/tv/ui/activity/NewSubjectActivity.java
++++ b/Youku_TV/src/com/youku/tv/ui/activity/NewSubjectActivity.java
+@@ -175,7 +175,7 @@
+ 							@Override
+ 							public void onClick(View view) {
+ 								// TODO Auto-generated method stub
+-								Activity activity = NewSubjectActivity.this;
++								Activity activity = NewSubjectActivity.this.getHostActivity();
+ 
+ 								Intent intent = new Intent(activity,
+ 										DetailActivity.class);
+diff --git a/Youku_TV/src/com/youku/tv/ui/activity/PrivateChannelActivity.java b/Youku_TV/src/com/youku/tv/ui/activity/PrivateChannelActivity.java
+index 0dd7384..7b38e76 100644
+--- a/Youku_TV/src/com/youku/tv/ui/activity/PrivateChannelActivity.java
++++ b/Youku_TV/src/com/youku/tv/ui/activity/PrivateChannelActivity.java
+@@ -2,7 +2,7 @@
+ 
+ import java.util.ArrayList;
+ import java.util.List;
+-
++import android.annotation.SuppressLint;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.content.res.Resources;
+@@ -32,7 +32,6 @@
+ import android.widget.RelativeLayout;
+ import android.widget.TextView;
+ import android.widget.Toast;
+-
+ import com.alibaba.fastjson.JSON;
+ import com.baseproject.network.HttpIntent;
+ import com.baseproject.network.HttpRequestManager;
+@@ -69,6 +68,7 @@
+ import com.youku.vo.FollwResponse;
+ import com.youku.vo.PrivateChannelData;
+ 
++@SuppressLint("NewApi")
+ public class PrivateChannelActivity extends BaseActivity {
+ 
+ 	private static final String TAG = PrivateChannelActivity.class.getSimpleName();
+@@ -844,7 +844,7 @@
+ 				// 判断视频状态
+ 				if (userUpload.state != UserUpload.STATE_NORMAL) {
+ 					// 非正常视频，不允许播放
+-					DialogManager.showDialog(PrivateChannelActivity.this,
++					DialogManager.showDialog(PrivateChannelActivity.this.getHostActivity(),
+ 							DialogManager.PLAY_CODE_F106_CALLBACK);
+ 				} else {
+ 
+diff --git a/Youku_TV/src/com/youku/tv/ui/activity/UserCenterActivity.java b/Youku_TV/src/com/youku/tv/ui/activity/UserCenterActivity.java
+index 807267e..20078b2 100644
+--- a/Youku_TV/src/com/youku/tv/ui/activity/UserCenterActivity.java
++++ b/Youku_TV/src/com/youku/tv/ui/activity/UserCenterActivity.java
+@@ -240,7 +240,7 @@
+ 	}
+ 
+ 	public void showNeedLoginAgainDialog() {
+-		DialogManager.showDialog(UserCenterActivity.this, DialogManager.NEED_LOGIN_AGAIN, new ButtonCallback() {
++		DialogManager.showDialog(UserCenterActivity.this.getHostActivity(), DialogManager.NEED_LOGIN_AGAIN, new ButtonCallback() {
+ 			
+ 			@Override
+ 			public void callback(int btnStringId) {
+@@ -738,7 +738,7 @@
+ 										// 非正常视频，不允许播放
+ 										DialogManager
+ 												.showDialog(
+-														UserCenterActivity.this,
++														UserCenterActivity.this.getHostActivity(),
+ 														DialogManager.PLAY_CODE_F106_CALLBACK);
+ 									} else {
+ 										PlayHistory playHistory = playHistoryService
+@@ -1067,7 +1067,7 @@
+ 			// 判断是否登录
+ 			if (Youku.isLogined) {
+ 				final String oldUsername = Youku.userName;
+-				DialogManager.showDialog(UserCenterActivity.this,
++				DialogManager.showDialog(UserCenterActivity.this.getHostActivity(),
+ 						DialogManager.CONFIRM_LOGINOUT, new ButtonCallback() {
+ 
+ 							@Override
+diff --git a/Youku_TV/src/com/youku/tv/ui/fragment/SearchInputFragment.java b/Youku_TV/src/com/youku/tv/ui/fragment/SearchInputFragment.java
+index e774e9c..d1d0e55 100644
+--- a/Youku_TV/src/com/youku/tv/ui/fragment/SearchInputFragment.java
++++ b/Youku_TV/src/com/youku/tv/ui/fragment/SearchInputFragment.java
+@@ -4,6 +4,7 @@
+ import java.util.HashMap;
+ import java.util.List;
+ 
++import android.annotation.SuppressLint;
+ import android.app.Activity;
+ import android.app.Service;
+ import android.content.Context;
+@@ -50,7 +51,6 @@
+ import com.youku.lib.widget.YoukuHandler;
+ import com.youku.tv.R;
+ import com.youku.tv.Youku;
+-import com.youku.tv.ui.activity.BaseActivity;
+ import com.youku.tv.ui.activity.HomeActivityWithViewPager;
+ import com.youku.tv.ui.activity.SearchResultActivity;
+ import com.youku.tv.ui.activity.SearchResultActivity.SokuStat;
+@@ -61,7 +61,10 @@
+ import com.youku.vo.MultiScreenQRCode;
+ import com.youku.vo.SuggestKeywords;
+ 
+-public class SearchInputFragment extends Fragment implements OnFocusChangeListener{
++@SuppressLint("NewApi")
++public class SearchInputFragment extends 
++Fragment 
++implements OnFocusChangeListener{
+ 	
+ 	private static final String TAG = SearchInputFragment.class.getSimpleName();
+ 	
+@@ -69,7 +72,7 @@
+ 	private static final int GET_SEARCH_HOTKEYWORDS = 1;
+ 	private static final int UPDATE_SEARCH_HISTORY = 2;
+ 
+-	private BaseActivity mActivity;
++	private Activity mActivity;
+ 	private View mRootView;
+ 	
+ 	private EditText mSearchEditText; // 搜索输入框
+@@ -143,7 +146,7 @@
+ 	@Override
+ 	public void onAttach(Activity activity) {
+ 		super.onAttach(activity);
+-		mActivity = (BaseActivity)activity;
++		mActivity = (Activity)activity;
+ 	}
+ 	
+ 	@Override
+@@ -378,7 +381,7 @@
+ 						@Override
+ 						public void onChineseClicked() {
+ 							mSearchEditText.requestFocus();
+-							openSoftInputFromWindow(mActivity, mSearchEditText);
++							//getActivity().openSoftInputFromWindow(mActivity, mSearchEditText);
+ 						}
+ 
+ 						@Override
+@@ -411,7 +414,7 @@
+ 			@Override
+ 			public void onFocusChange(View v, boolean hasFocus) {
+ 				if (hasFocus) {
+-					openSoftInputFromWindow(mActivity, mSearchEditText);
++					//getActivity().openSoftInputFromWindow(mActivity, mSearchEditText);
+ 					mSearchEditText.setHintTextColor(getResources()
+ 							.getColor(R.color.search_edittext_hint_focus));
+ 				} else {
