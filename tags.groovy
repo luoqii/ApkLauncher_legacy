@@ -71,6 +71,8 @@ voiceInteractionService,voiceInteractionSessionService,vpnService,wallpaperServi
 inputMethodService
 
 // broadcastreceiver
+broadcastReceiver,appWidgetProvider,deviceAdminReceiver,restrictionsReceiver,
+wakefulBroadcastReceiver
 
 ]
 
