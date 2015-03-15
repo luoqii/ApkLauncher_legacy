@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.zip.ZipFile;
 
 import org.bbs.apklauncher.emb.LoadApk;
+import org.bbs.apklauncher.emb.Util;
 import org.bbs.apkparser.ApkManifestParser;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
@@ -14,10 +15,17 @@ import org.bbs.felixonandroid.R;
 
 import dalvik.system.DexClassLoader;
 import android.app.Activity;
+import android.app.ActivityGroup;
+import android.app.ExpandableListActivity;
+import android.app.ListActivity;
+import android.app.TabActivity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -36,8 +44,7 @@ public class ApkLuncherActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_apk_launcher);
-		
+		setContentView(R.layout.activity_apk_launcher);		
 		
 		RecyclerView recycleView = (RecyclerView) findViewById(R.id.apk_container);
 		LayoutManager layoutM = new LinearLayoutManager(this);
@@ -119,6 +126,7 @@ public class ApkLuncherActivity extends Activity {
 					ClassLoader cl = new DexClassLoader(a.applicationInfo.publicSourceDir, getDir("tmp", 0).getPath(), null, getClassLoader());
 					String superClassName = LoadApk.getActivitySuperClassName(cl, a.name);
 					Intent launcher = new Intent();
+					superClassName = Util.getStubClassName(superClassName);
 					ComponentName com= new ComponentName(getPackageName(), superClassName.replace("Target", "Stub"));
 					launcher.setComponent(com);
 					putExtra(a, launcher);
@@ -130,6 +138,8 @@ public class ApkLuncherActivity extends Activity {
 		}
 		
 	}
+
+
 
 	public static  void putExtra(PackageInfoX.ActivityInfoX a,
 			Intent launcher) {

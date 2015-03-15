@@ -30,7 +30,7 @@ ContextWrapper
 
 	private static final String TAG = LazyContext.class.getSimpleName();
 	
-	private static final boolean ENALBE_SERVICE = true;
+	private static final boolean ENALBE_SERVICE = false;
 	
 	private static String mPackageName;
 	private Resources mResource;

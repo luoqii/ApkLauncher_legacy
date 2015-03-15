@@ -8,14 +8,17 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -25,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.ListView;
 
 public class ReflectUtil {
 		private static final String TAG = ReflectUtil.class.getSimpleName();
@@ -85,6 +89,25 @@ public class ReflectUtil {
 				throw new RuntimeException("getFiled(). fieldName: " + fieldName, e);
 			}
 		}
+		
+		public static void copyAllFields(Class clazz, Object host, Object target) {
+			while (clazz != null) {
+				for (Field f : clazz.getDeclaredFields()) {
+					f.setAccessible(true);
+					try {
+						f.set(target, f.get(host));
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				clazz = clazz.getSuperclass();
+			}
+	}
 
 		public static  Object getFiledValue(Class clazz, Object object, String fieldName) {
 		        Object f = null;
@@ -99,7 +122,7 @@ public class ReflectUtil {
 		        }
 		    }
 		
-		public static class ApplicationUtil {
+		public static class ApplicationUtil {		
 			public static void callAttach(Application app, Context baseContext){
 				try {
 					Method m = Class.forName("android.app.Application").getDeclaredMethod("attach", new Class[]{Context.class});
@@ -299,6 +322,17 @@ public class ReflectUtil {
 					Method m = Activity.class.getDeclaredMethod("onRestoreInstanceState", new Class[]{Bundle.class});
 					m.setAccessible(true);
 					m.invoke(activity, new Object[] {savedInstanceState});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in onPause", e);
+				}
+			}			
+			public static void onRestoreInstanceState(Activity activity,
+					Bundle savedInstanceState, PersistableBundle persistentState) {
+				try {
+					Method m = Activity.class.getDeclaredMethod("onRestoreInstanceState", new Class[]{Bundle.class, PersistableBundle.class});
+					m.setAccessible(true);
+					m.invoke(activity, new Object[] {savedInstanceState, persistentState});
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("error in onPause", e);
@@ -780,6 +814,93 @@ public class ReflectUtil {
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("error in performCreate", e);
+				}
+			}
+
+			public static void onNewIntent(Activity activity,
+					Intent intent) {
+				try {
+					Method m = Activity.class.getDeclaredMethod("onNewIntent", new Class[]{Intent.class});
+					m.setAccessible(true);
+					m.invoke(activity, new Object[]{intent});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in onNewIntent", e);
+				}
+			}
+
+			public static void onSaveInstanceState(
+					Activity activity, Bundle outState) {
+				try {
+					Method m = Activity.class.getDeclaredMethod("onSaveInstanceState", new Class[]{Bundle.class});
+					m.setAccessible(true);
+					m.invoke(activity, new Object[]{outState});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in onSaveInstanceState", e);
+				}
+			}
+
+			public static void onSaveInstanceState(Activity activity,
+					Bundle outState, PersistableBundle outPersistentState) {
+				try {
+					Method m = Activity.class.getDeclaredMethod("onSaveInstanceState", new Class[]{Bundle.class, PersistableBundle.class});
+					m.setAccessible(true);
+					m.invoke(activity, new Object[]{outState, outPersistentState});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in onSaveInstanceState", e);
+				}
+			}
+
+			public static void onApplyThemeResource(
+					Activity activity, Theme theme, int resid,
+					boolean first) {
+				try {
+					Method m = Activity.class.getDeclaredMethod("onApplyThemeResource", new Class[]{Theme.class, int.class, int.class});
+					m.setAccessible(true);
+					m.invoke(activity, new Object[]{theme, resid, first});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in onApplyThemeResource", e);
+				}
+			}
+
+			public static void onChildTitleChanged(
+					Activity activity, Activity childActivity,
+					CharSequence title) {
+				try {
+					Method m = Activity.class.getDeclaredMethod("onChildTitleChanged", new Class[]{Activity.class, CharSequence.class});
+					m.setAccessible(true);
+					m.invoke(activity, new Object[]{childActivity, title});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in onChildTitleChanged", e);
+				}
+			}
+
+			public static void onResumeFragments(
+					FragmentActivity activity) {
+				try {
+					Method m = FragmentActivity.class.getDeclaredMethod("onResumeFragments", (Class[])null);
+					m.setAccessible(true);
+					m.invoke(activity, new Object[]{(Object[]) null});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in onResumeFragments", e);
+				}
+			}
+
+			public static void onListItemClick(
+					ListActivity activity, ListView l, View v,
+					int position, long id) {
+				try {
+					Method m = ListActivity.class.getDeclaredMethod("onListItemClick", new Class[]{ListView.class, View.class, int.class, long.class});
+					m.setAccessible(true);
+					m.invoke(activity, new Object[]{new Object[]{l, v, position, id}});
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException("error in onListItemClick", e);
 				}
 			}
 

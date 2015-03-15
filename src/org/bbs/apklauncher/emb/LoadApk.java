@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bbs.apklauncher.emb.auto_gen.Target_ActionBarActivity;
-import org.bbs.apklauncher.emb.auto_gen.Target_Activity;
-import org.bbs.apklauncher.emb.auto_gen.Target_ActivityGroup;
-import org.bbs.apklauncher.emb.auto_gen.Target_ExpandableListActivity;
 import org.bbs.apklauncher.emb.auto_gen.Target_FragmentActivity;
-import org.bbs.apklauncher.emb.auto_gen.Target_ListActivity;
-import org.bbs.apklauncher.emb.auto_gen.Target_PreferenceActivity;
-import org.bbs.apklauncher.emb.auto_gen.Target_TabActivity;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX;
 
+import android.app.Activity;
+import android.app.ActivityGroup;
 import android.app.Application;
+import android.app.ExpandableListActivity;
+import android.app.ListActivity;
+import android.app.TabActivity;
+import android.preference.PreferenceActivity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import dalvik.system.DexClassLoader;
@@ -57,22 +58,22 @@ public class LoadApk {
 				Class<?> clazz = classloader.loadClass(activityClassName);
 				List<String> superClassNames = new ArrayList<String>();
 				dumpClassType(clazz, superClassNames);
-				if (superClassNames.contains(Target_ActionBarActivity.class.getName())) {
-					cName = Target_ActionBarActivity.class.getName();
-				} else if (superClassNames.contains(Target_FragmentActivity.class.getName())) {
-					cName = Target_FragmentActivity.class.getName();
-				} else if (superClassNames.contains(Target_ListActivity.class.getName())) {
-					cName = Target_ListActivity.class.getName();
-				} else if (superClassNames.contains(Target_ExpandableListActivity.class.getName())) {
-					cName = Target_ExpandableListActivity.class.getName();
-				} else if (superClassNames.contains(Target_Activity.class.getName())) {
-					cName = Target_Activity.class.getName();
-				} else if (superClassNames.contains(Target_PreferenceActivity.class.getName())){
-					cName = Target_PreferenceActivity.class.getName();
-				} else if (superClassNames.contains(Target_TabActivity.class.getName())){
-					cName = Target_TabActivity.class.getName();
-				} else if (superClassNames.contains(Target_ActivityGroup.class.getName())){
-					cName = Target_ActivityGroup.class.getName();
+				if (superClassNames.contains(ActionBarActivity.class.getName())) {
+					cName = ActionBarActivity.class.getName();
+				} else if (superClassNames.contains(FragmentActivity.class.getName())) {
+					cName = FragmentActivity.class.getName();
+				} else if (superClassNames.contains(ListActivity.class.getName())) {
+					cName = ListActivity.class.getName();
+				} else if (superClassNames.contains(ExpandableListActivity.class.getName())) {
+					cName = ExpandableListActivity.class.getName();
+				} else if (superClassNames.contains(Activity.class.getName())) {
+					cName = Activity.class.getName();
+				} else if (superClassNames.contains(PreferenceActivity.class.getName())){
+					cName = PreferenceActivity.class.getName();
+				} else if (superClassNames.contains(TabActivity.class.getName())){
+					cName = TabActivity.class.getName();
+				} else if (superClassNames.contains(ActivityGroup.class.getName())){
+					cName = ActivityGroup.class.getName();
 				}
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block

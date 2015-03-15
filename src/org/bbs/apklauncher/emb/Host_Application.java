@@ -63,7 +63,12 @@ Application
 					app = (Application) clazz.newInstance();
 					appBaseContext.applicationContextReady(app);
 
-					attachBundleAplication(app, appBaseContext);
+					// before onCreate init application.					
+//					attachBundleAplication(app, appBaseContext);
+//					ReflectUtil.ApplicationUtil.callAttach(app, appBaseContext);
+//					ReflectUtil.ApplicationUtil.copyFields(this, app);
+					ReflectUtil.copyAllFields(Application.class, this, app);
+					app.onCreate();
 
 					InstalledAPks.putApplication(apkPath, (app));
 				} catch (Exception e) {

@@ -2,6 +2,14 @@ package org.bbs.apklauncher.emb.auto_gen;
 
 import java.util.List;
 
+import org.bbs.osgi.activity.ReflectUtil.ActivityReflectUtil;
+
+import android.app.Activity;
+import android.app.ActivityGroup;
+import android.app.ListActivity;
+import android.app.TabActivity;
+import android.app.ExpandableListActivity;
+import android.preference.PreferenceActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityGroup;
@@ -62,10 +70,11 @@ public class StubBase_SUPER_CLASS extends SUPER_CLASS {
 	private static boolean LOG_KEY_EVENT = true && LOG;
 	private static boolean LOG_MOTTION_EVENT = true && LOG;
 	
-	protected  Target_SUPER_CLASS mTargetActivity;	
+	protected  SUPER_CLASS mTargetActivity;	
 	
 	public Target_SUPER_CLASS getTargetActivity(){
-		return mTargetActivity;
+//		return mTargetActivity;
+		return null;
 	}
 
 	@Override

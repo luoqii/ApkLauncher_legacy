@@ -79,62 +79,6 @@ D/PackageParser(28077):       0 name : getui.permission.GetuiService -->
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         
-        <activity
-            android:name="org.bbs.felix.activity.bundlemanager.BundleListActivity"  
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="org.bbs.felix.activity.bundlemanager.BundleDetailActivity"    
-            android:label="bundle detail" >
-            <intent-filter>
-                <action android:name="android.intent.action.NOOP" />
-            </intent-filter>
-        </activity>
-        
-        <activity
-            android:name="org.bbs.felix.activity.bundlemanager.DictionaryActivity"
-               android:label="dictionary" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-               <!--  <category android:name="android.intent.category.LAUNCHER" /> -->
-            </intent-filter>
-        </activity>
-        
-        <activity
-            android:name="org.bbs.osgi.activity.BundleActivity"
-            android:label="BundleActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-         <!--        <category android:name="android.intent.category.LAUNCHER" /> -->
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="org.bbs.osgi.activity.embed.EmbeddedBundleActivity"  
-            android:label="EmbeddedActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="org.bbs.felix.activity.apidemo.ApiDemoBundleActicity"  
-            android:label="ApiDemoBundleAct" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        
         <!--  apk laucher -->
         <activity
             android:name="org.bbs.apklauncher.ApkLuncherActivity"  
@@ -153,26 +97,7 @@ D/PackageParser(28077):       0 name : getui.permission.GetuiService -->
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="org.bbs.apklauncher.StubActivity"  
-            android:label="StubActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="org.bbs.apklauncher.embed.Stub_ListActivity"  
-            android:label="StubActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        
+        </activity>        
         
         <activity
             android:name="org.bbs.apklauncher.emb.auto_gen.Stub_ListActivity"  
@@ -185,6 +110,15 @@ D/PackageParser(28077):       0 name : getui.permission.GetuiService -->
         </activity>
         <activity
             android:name="org.bbs.apklauncher.emb.auto_gen.Stub_Activity"  
+            android:label="StubActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.bbs.apklauncher.emb.auto_gen.Stub_ActionBarActivity"  
             android:label="StubActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

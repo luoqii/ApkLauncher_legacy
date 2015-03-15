@@ -8,10 +8,17 @@ import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ServiceInfoX;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityGroup;
+import android.app.ExpandableListActivity;
+import android.app.ListActivity;
+import android.app.TabActivity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceActivity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -25,6 +32,30 @@ public class Util {
 		
 		return levelStr;
 	}
+	
+	public static  String getStubClassName(String superClassName) {
+		String cName = "";
+		if (superClassName.equals(ActionBarActivity.class.getName())) {
+			cName = ActionBarActivity.class.getSimpleName();
+		} else if (superClassName.equals(FragmentActivity.class.getName())) {
+			cName = FragmentActivity.class.getSimpleName();
+		} else if (superClassName.equals(ListActivity.class.getName())) {
+			cName = ListActivity.class.getSimpleName();
+		} else if (superClassName.equals(ExpandableListActivity.class.getName())) {
+			cName = ExpandableListActivity.class.getSimpleName();
+		} else if (superClassName.equals(Activity.class.getName())) {
+			cName = Activity.class.getSimpleName();
+		} else if (superClassName.equals(PreferenceActivity.class.getName())){
+			cName = PreferenceActivity.class.getSimpleName();
+		} else if (superClassName.equals(TabActivity.class.getName())){
+			cName = TabActivity.class.getSimpleName();
+		} else if (superClassName.equals(ActivityGroup.class.getName())){
+			cName = ActivityGroup.class.getSimpleName();
+		} else {
+			throw new RuntimeException("invalid class: " + superClassName);
+		}
+		return "org.bbs.apklauncher.emb.auto_gen" + ".Stub_" + cName;
+	}
 
 	public static void onProcessStartActivityIntent(Intent intent, ClassLoader classLoader, Context realContext) {
 		Log.d(TAG, "processIntent. intent: " + intent);
@@ -33,6 +64,7 @@ public class Util {
 			String c = com.getClassName();
 			if (!TextUtils.isEmpty(c)) {
 				String superClassName = LoadApk.getActivitySuperClassName(classLoader, c);
+				superClassName = getStubClassName(superClassName);
 				com = new ComponentName(realContext.getPackageName(), superClassName.replace("Target", "Stub"));
 				intent.setComponent(com);
 				ActivityInfoX a = InstalledAPks.getInstance().getActivityInfo(c);

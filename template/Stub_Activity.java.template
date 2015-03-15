@@ -24,7 +24,13 @@ import org.bbs.osgi.activity.LazyContext;
 import org.bbs.osgi.activity.ReflectUtil;
 import org.bbs.osgi.activity.ResourcesMerger;
 
+import android.app.Activity;
+import android.app.ActivityGroup;
+import android.app.ListActivity;
+import android.app.TabActivity;
+import android.app.ExpandableListActivity;
 import android.app.Application;
+import android.preference.PreferenceActivity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -33,11 +39,14 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import dalvik.system.DexClassLoader;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 
 public class Stub_SUPER_CLASS extends 
 StubBase_SUPER_CLASS
@@ -170,9 +179,12 @@ implements CallBack {
 			
 			ReflectUtil.ActivityReflectUtil.setActivityApplication(this, app);
 			Class clazz = mClassLoader.loadClass(mActivityClassName);
-			mTargetActivity = (Target_SUPER_CLASS) clazz.newInstance();
+			mTargetActivity = (SUPER_CLASS) clazz.newInstance();
 			mTargetContext.hostActivityReady(this);
-			ReflectUtil.ActivityReflectUtil.attachBaseContext(mTargetActivity, this);
+//			ReflectUtil.ActivityReflectUtil.attachBaseContext(mTargetActivity, this);
+			ReflectUtil.ActivityReflectUtil.attach(this, mTargetActivity);
+			ReflectUtil.ActivityReflectUtil.copyFields(this, mTargetActivity);
+			ReflectUtil.copyAllFields(SUPER_CLASS.class, this, mTargetActivity);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("error in create activity: " + mActivityClassName , e);
