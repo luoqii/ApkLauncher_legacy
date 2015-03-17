@@ -1,113 +1,74 @@
 package org.bbs.apklauncher.emb;
 
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bbs.apklauncher.InstalledAPks;
-import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ServiceInfoX;
+import org.bbs.apkparser.PackageInfoX.ServiceInfoX;
 import org.bbs.osgi.activity.ReflectUtil;
 import org.bbs.osgi.activity.ResourcesMerger;
 
 import android.app.Application;
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.content.res.Resources.Theme;
-import android.os.BaseBundle;
+import android.text.TextUtils;
+import android.util.Log;
 
 public class Stub_Service extends Host_Service {
 	/**
 	 * type {@link ComponentName}
 	 */
-	public static final String EXTRA_COMPONENT = Util.ACTIVITY_EXTRA_COMPONENT_CLASS_NAME;
-	private ClassLoader sLastClassLoader;
-	private ComponentName mComponent;
-	private ClassLoader mClassLoader;
-	private String mApkPath;
-	private String mServiceClassNmae;
-	private boolean mCallOnCreate;
-	public static Map<String, WeakReference<ResourcesMerger>> sApk2ResourceMap = new HashMap<String, WeakReference<ResourcesMerger>>();
+	public static final String EXTRA_COMPONENT_CLASS_NAME = Util.ACTIVITY_EXTRA_COMPONENT_CLASS_NAME;
+	private static final String TAG = Stub_Service.class.getSimpleName();
 	private ResourcesMerger mResourceMerger;
 	private Resources mTargetResource;
 	private Application mRealApplication;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 	}
 	
 	protected void onPrepareServiceStub(Intent intent) {
-		if (null != sLastClassLoader) {
-			return ;
-		}
+		// get target activity info
+		String targetServiceClassName = intent.getStringExtra(EXTRA_COMPONENT_CLASS_NAME);
+		ServiceInfoX s = InstalledAPks.getInstance().getServiceInfo(targetServiceClassName);
 		
-		// how to get classloader berfore parse intent.
-		if (InstalledAPks.sLastClassLoader != null) {
-			sLastClassLoader = InstalledAPks.sLastClassLoader;
-		} 
-		if (sLastClassLoader != null) {
-//			mTargetContext.classLoaderReady(sLastClassLoader);
-			intent.setExtrasClassLoader(sLastClassLoader);
-			intent.getExtras().setClassLoader(sLastClassLoader);
+		String mApkPath = s.applicationInfo.publicSourceDir;		
+		String libPath = s.mPackageInfo.mLibPath;
+		String targetApplicationClassName = s.applicationInfo.className;
+		String mTargetApkPath = s.applicationInfo.publicSourceDir;
+		if (TextUtils.isEmpty(targetApplicationClassName)){
+			targetApplicationClassName = Application.class.getCanonicalName();
+			Log.d(TAG, "no packageName, user default.");
 		}
+		String targetPackageName = s.packageName;
+
+		Log.d(TAG, "host activity              : " + this);
+		Log.d(TAG, "targetApplicationClassName : " + targetApplicationClassName);
+		Log.d(TAG, "targetPackageName          : " + targetPackageName);
+		Log.d(TAG, "targetServiceClassName     : " + targetServiceClassName);
+		Log.d(TAG, "targetApkPath              : " + mTargetApkPath);
+		Log.d(TAG, "libPath                    : " + libPath);
+		ClassLoader mTargetClassLoader = InstalledAPks.makeClassLoader(mRealBaseContext, mTargetApkPath, libPath);
+		mTargetContext.classLoaderReady(mTargetClassLoader);
 		
-		mComponent = intent.getParcelableExtra(EXTRA_COMPONENT);
-		mServiceClassNmae = mComponent.getClassName();
-		ServiceInfoX s = InstalledAPks.getInstance().getServiceInfo(mServiceClassNmae);
-		
-		mApkPath = s.applicationInfo.publicSourceDir;
-		mClassLoader = InstalledAPks.getClassLoader(mApkPath);
-		if (null == mClassLoader) {
-			mClassLoader = onCreateClassLoader(mApkPath, s.mPackageInfo.mLibPath);
-			InstalledAPks.putClassLoader(mApkPath, (mClassLoader));
-		}
-		sLastClassLoader = mClassLoader;
+		// do application init. must before activity init.
+		Application app = ((Host_Application)getApplication()).onPrepareApplictionStub(s.applicationInfo, 
+																						mTargetClassLoader, mSysPm);
 		
 		try {
-			WeakReference<ResourcesMerger> rr = sApk2ResourceMap.get(mApkPath);
-			if (rr != null && rr.get() != null) {
-				mResourceMerger = rr.get();
-				mTargetResource = mResourceMerger.mFirst;
-			} else {
-				mTargetResource = Util.loadApkResource(mApkPath, this);
-				mResourceMerger = new ResourcesMerger(mTargetResource, getResources());
-				sApk2ResourceMap.put(mApkPath, new WeakReference<ResourcesMerger>(mResourceMerger));
-			}
-
-//			if (mTargetThemeId  > 0) {
-//			} else {
-//			}
-//			mTargetThemeId = ReflectUtil.ResourceUtil.selectDefaultTheme(mResourceMerger, mTargetThemeId, mActInfo.applicationInfo.targetSdkVersion);
-//			Log.d(TAG, "resolved activity theme: " + mTargetThemeId);
-//			mTargetContext.setTheme(mTargetThemeId);
-//			mTargetContext.themeReady(mTargetThemeId);
-			
-			mTargetContext.resReady(mResourceMerger);
-			mTargetContext.packageNameReady(s.applicationInfo.packageName);
-			
-			mRealApplication = getApplication();
-			Application app = ((Host_Application)mRealApplication).onPrepareApplictionStub(s.applicationInfo, mClassLoader,
-																							null);
 			ReflectUtil.ActivityReflectUtil.setServiceApplication(this, app);
 			
-			mTargetService = (Target_Service) mClassLoader.loadClass(mServiceClassNmae).newInstance();
-			if (!mCallOnCreate) {
-//				ReflectUtil.ActivityReflectUtil.setApplication(this, app);
-				ReflectUtil.ActivityReflectUtil.attachBaseContext(mTargetService, 
-						this
-//						mTargetContext
-						);
-				mTargetService.onCreate();
-				mCallOnCreate = true;
-			}
+			mTargetService = (Service) mTargetClassLoader.loadClass(targetServiceClassName).newInstance();
+			ReflectUtil.ActivityReflectUtil.attachBaseContext(mTargetService,
+					this
+					);
+			ReflectUtil.ServiceReflectUtil.copyFiled(this, mTargetService);
+			mTargetService.onCreate();
 		} catch (Exception e) {
-			throw new RuntimeException("error in create target service.  class: " + mServiceClassNmae, e);
+			throw new RuntimeException("error in create target service.  class: " + targetServiceClassName, e);
 		}
-	}
-	
-	private ClassLoader onCreateClassLoader(String apkPath, String libPath) {	
-		return InstalledAPks.createClassLoader(apkPath, libPath, this);
 	}
 	
 	@Override
@@ -117,23 +78,5 @@ public class Stub_Service extends Host_Service {
 		}
 		return super.getSystemService(name);
 	}
-	
-//	@Override
-//	public Theme getTheme() {
-//		if (null != mTargetContext) {
-//			return mTargetContext.getTheme();
-//		} else {
-//			return super.getTheme();
-//		}
-//	}
-//
-//	// for Window to get target's resource
-//	public Resources getResources() {
-//		if (null != mTargetContext ) {
-//			return mTargetContext.getResources();
-//		} else {
-//			return super.getResources();
-//		}
-//	}	
-	
+
 }

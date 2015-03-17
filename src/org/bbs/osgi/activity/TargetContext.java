@@ -1,6 +1,7 @@
 package org.bbs.osgi.activity;
 
 import org.bbs.apklauncher.emb.Util;
+import org.bbs.apklauncher.emb.ViewCreater;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
@@ -19,6 +20,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.LayoutInflater.Factory;
 import android.view.View;
 
 /**
@@ -29,11 +31,14 @@ import android.view.View;
 public class TargetContext extends 
 ContextWrapper 
 //ContextThemeWrapper
+ implements Factory
 {
 
 	private static final String TAG = TargetContext.class.getSimpleName();
 	
-	private static final boolean ENALBE_SERVICE = false;
+	private static final boolean ENALBE_SERVICE = true;
+
+	private static final boolean LOG = false;
 	
 	private static String mPackageName;
 	private Resources mResource;
@@ -168,14 +173,15 @@ ContextWrapper
 	
 	@Override
 	public PackageManager getPackageManager() {
+//		Util.dumpStackTrace();
+		
 		PackageManager pm =  doGetPackageManager();
-//		Log.d(TAG, "pm: " + pm);
+		Log.d(TAG, "getPackageManager pm: " + pm);
 			
 		return pm;
-	}	
-	
+	}
+
 	public PackageManager doGetPackageManager() {
-//		new Exception("stack info").printStackTrace();
 		if (mPackageManager != null) {
 			return mPackageManager;
 		}
@@ -195,7 +201,9 @@ ContextWrapper
 	public SharedPreferences getSharedPreferences(String name, int mode) {
 		SharedPreferences pref =  super.getSharedPreferences(name, mode);
 		
-		Log.d(TAG, "SharedPreferences(). name: " + name + " pref: " + pref);
+		if (LOG) {
+			Log.d(TAG, "SharedPreferences(). name: " + name + " pref: " + pref);
+		}
 		return pref;
 	}
 	
@@ -244,12 +252,13 @@ ContextWrapper
 	@Override 
 	public Object getSystemService(String name) {
 		// adjust layout inflater
-//        if (LAYOUT_INFLATER_SERVICE.equals(name)) {
-//            if (mInflater == null) {
-//                mInflater = LayoutInflater.from(getBaseContext()).cloneInContext(this);
-//            }
-//            return mInflater;
-//        }
+        if (LAYOUT_INFLATER_SERVICE.equals(name)) {
+            if (mInflater == null) {
+                mInflater = LayoutInflater.from(getBaseContext()).cloneInContext(this);
+                mInflater.setFactory(this);
+            }
+            return mInflater;
+        }
         return getBaseContext().getSystemService(name);
     }
 
@@ -278,5 +287,10 @@ ContextWrapper
 			}
 		}
 		
+	}
+
+	@Override
+	public View onCreateView(String name, Context context, AttributeSet attrs) {
+		return ViewCreater.onCreateView(name, context, attrs, mClassLoader, null);
 	}
 }

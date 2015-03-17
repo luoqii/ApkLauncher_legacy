@@ -2,7 +2,9 @@ package org.bbs.apklauncher;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
 import org.bbs.osgi.activity.ReflectUtil.ActivityReflectUtil;
+
 import android.R.array;
 import android.annotation.SuppressLint;
 import android.app.Activity;

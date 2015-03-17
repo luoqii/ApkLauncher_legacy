@@ -18,23 +18,32 @@ public abstract class Host_Service extends Service {
 	private static boolean DEBUG_MEMORY = true;
 	private static boolean DEBUG = true;
 	
-	Target_Service mTargetService;
+	Service mTargetService;
 	protected TargetContext mTargetContext;
 	Context mRealBaseContext;
-	private PackageManager mSysPm;
+	protected PackageManager mSysPm;
+	private boolean mPrepared;
 
 	@Override
 	protected void attachBaseContext(Context newBase) {
 		mRealBaseContext = newBase;
 		mTargetContext = new TargetContext(newBase);
+		mSysPm = newBase.getPackageManager();
 		super.attachBaseContext(mTargetContext);
-		mSysPm = getPackageManager();
 	}
 	
 	Context getHostContext() {
 		return mRealBaseContext;
 	}
 
+
+	private void doPrepareServiceStub(Intent intent) {
+		if (!mPrepared) {
+			onPrepareServiceStub(intent);
+//			mTargetService.onCreate();
+			mPrepared = true;
+		}
+	}
 	abstract protected void onPrepareServiceStub(Intent intent) ;
 	
 	@Override
@@ -42,7 +51,7 @@ public abstract class Host_Service extends Service {
 		if (DEBUG) {
 			Log.d(TAG, "onBind(). intent: " + intent);
 		}
-		onPrepareServiceStub(intent);
+		doPrepareServiceStub(intent);
 		return mTargetService.onBind(intent);
 	}
 
@@ -60,7 +69,7 @@ public abstract class Host_Service extends Service {
 	@Override
 	@Deprecated
 	public void onStart(Intent intent, int startId) {
-		onPrepareServiceStub(intent);
+		doPrepareServiceStub(intent);
 		super.onStart(intent, startId);
 		if (null != mTargetService) {
 			mTargetService.onStart(intent, startId);
@@ -69,7 +78,7 @@ public abstract class Host_Service extends Service {
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		onPrepareServiceStub(intent);
+		doPrepareServiceStub(intent);
 //		return super.onStartCommand(intent, flags, startId);
 		return mTargetService.onStartCommand(intent, flags, startId);
 	}

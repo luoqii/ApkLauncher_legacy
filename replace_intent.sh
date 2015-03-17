@@ -17,6 +17,7 @@ echo "file: $file"
 #TabActivity
 cp $file ${file}.bak
 sed  "/^.*new Intent(/ s/\(.*\)new Intent(\(.*\)/\1new org.bbs.apklauncher.emb.IntentHelper(\2/" ${file}.bak > $file
+sed  "/^.* getIntent()/ s/\(.*\) getIntent()\(.*\)/\1 new org.bbs.apklauncher.emb.IntentHelper(getIntent())\2/" ${file}.bak > $file
 rm ${file}.bak
 
 

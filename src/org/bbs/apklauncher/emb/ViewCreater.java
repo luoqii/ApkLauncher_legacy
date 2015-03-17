@@ -51,7 +51,7 @@ public class ViewCreater {
 
 							@Override
 							public void onClick(View v) {
-								if (mHandler == null) {
+								if (mHandler == null && null != object) {
 									try {
 										mHandler = object
 												.getClass()

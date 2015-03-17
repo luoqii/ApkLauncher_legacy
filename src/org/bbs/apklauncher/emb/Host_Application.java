@@ -2,7 +2,6 @@ package org.bbs.apklauncher.emb;
 
 import org.bbs.apklauncher.InstalledAPks;
 import org.bbs.apklauncher.PackageManagerProxy;
-import org.bbs.apklauncher.emb.IntentHelper.PersistentObject;
 import org.bbs.osgi.activity.ReflectUtil;
 import org.bbs.osgi.activity.ResourcesMerger;
 import org.bbs.osgi.activity.TargetContext;
@@ -21,7 +20,7 @@ Application
 {
 	private static final String TAG = Host_Application.class.getSimpleName();;
 	Application mTargetAppliction;
-	private PersistentObject mPersistent;
+//	private PersistentObject mPersistent;
 	
 	public void attachBundleAplication(Application app, Context baseCcontext){
 		ReflectUtil.ActivityReflectUtil.attachBaseContext(app, baseCcontext);
@@ -35,7 +34,7 @@ Application
 		String apkPath = appInfo.publicSourceDir;
 		Application app = InstalledAPks.getApplication(appInfo.packageName);
 		if (null == app) {
-			mPersistent.init(this, classLoader);
+//			mPersistent.init(this, classLoader);
 			
 			String appClassName = appInfo.className;
 			if (!TextUtils.isEmpty(appClassName)) {
@@ -51,8 +50,9 @@ Application
 					}
 					appTheme = ReflectUtil.ResourceUtil.selectDefaultTheme(appRes, appTheme, appInfo.targetSdkVersion);
 					Log.d(TAG, "resolved application theme: " + appTheme);
+					
 					appBaseContext.themeReady(appTheme);
-
+					appBaseContext.classLoaderReady(classLoader);
 					appBaseContext.packageManagerReady(new PackageManagerProxy(pm));
 					appBaseContext.packageNameReady(appInfo.packageName);
 
@@ -78,7 +78,7 @@ Application
 	public void onCreate() {
 		super.onCreate();
 		
-		mPersistent = PersistentObject.getsInstance();
+//		mPersistent = PersistentObject.getsInstance();
 	}
 
 	public void onTerminate() {

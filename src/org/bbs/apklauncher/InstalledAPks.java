@@ -11,10 +11,10 @@ import java.util.zip.ZipFile;
 
 import org.bbs.apklauncher.emb.Util;
 import org.bbs.apkparser.ApkManifestParser;
-import org.bbs.apkparser.ApkManifestParser.PackageInfoX;
-import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
-import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ApplicationInfoX;
-import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ServiceInfoX;
+import org.bbs.apkparser.PackageInfoX;
+import org.bbs.apkparser.PackageInfoX.ActivityInfoX;
+import org.bbs.apkparser.PackageInfoX.ApplicationInfoX;
+import org.bbs.apkparser.PackageInfoX.ServiceInfoX;
 import org.bbs.felix.util.AndroidUtil;
 import org.bbs.osgi.activity.ResourcesMerger;
 
@@ -23,9 +23,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
+import android.util.Log;
 import dalvik.system.DexClassLoader;
 
 public class InstalledAPks {
+	private static final String TAG = null;
+
 	private static InstalledAPks sInstance;
 	
 	public static Map<String, WeakReference<ClassLoader>> sApk2ClassLoaderMap = new HashMap<String, WeakReference<ClassLoader>>();
@@ -76,7 +79,7 @@ public class InstalledAPks {
 	
 	public void init(Application context, File apkDir){
 		mContext = context;
-		mInfos = new ArrayList<ApkManifestParser.PackageInfoX>();
+		mInfos = new ArrayList<PackageInfoX>();
 		
 		scanApkDir(apkDir);
 	}
@@ -89,7 +92,9 @@ public class InstalledAPks {
 		for (String f : files) {
 			File file = new File(apkDir.getAbsolutePath() + "/" + f);
 			if (file.exists() && file.getAbsolutePath().endsWith("apk")){
-				PackageInfoX info = ApkManifestParser.parseAPk(mContext, file.getAbsolutePath());
+				Log.d(TAG, "try to load " + file.getPath());
+				org.bbs.apkparser.PackageInfoX info = ApkManifestParser.parseAPk(mContext, file.getAbsolutePath(), true , true);
+				info.dump(PackageInfoX.DUMP_PERMISSION);
 				mInfos.add(info);
 				
 				try {
@@ -113,11 +118,11 @@ public class InstalledAPks {
 		}
 	}
 	
-	public ApplicationInfoX getApplicationInfo(String applicationName) {
+	public ApplicationInfoX getApplicationInfo(String packageName) {
 		ApplicationInfoX a = null;
 		boolean has = false;
 		for (PackageInfoX m : mInfos) {
-			if (applicationName.equals(m.applicationInfo.name)) {
+			if (packageName.equals(m.applicationInfo.packageName)) {
 				has = true;
 				a = (ApplicationInfoX) m.applicationInfo;
 				break;
@@ -131,6 +136,18 @@ public class InstalledAPks {
 		PackageInfoX p = null;
 		for (PackageInfoX a : mInfos) {
 			if (a.packageName.equals(comName.getPackageName())){
+				p = a;
+				break;
+			}
+		}
+		
+		return p;
+	}
+	
+	public PackageInfoX getPackageInfo(String packageName){
+		PackageInfoX p = null;
+		for (PackageInfoX a : mInfos) {
+			if (a.packageName.equals(packageName)){
 				p = a;
 				break;
 			}

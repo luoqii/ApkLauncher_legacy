@@ -94,7 +94,7 @@ def genActivityFile(File templateFile, File file, String superClassName, String 
         
            it = it.replaceAll(/mHostActivity.isValidFragment\(/, 'ActivityReflectUtil.isValidFragment(mHostActivity, ');
         
-        if (false) {
+        if (true) {
                 //println "replace call with relection... : " + it;
            it = it.replaceAll(/mTargetActivity.onCreate\(/, 'ActivityReflectUtil.onCreate(mTargetActivity, ');
            it = it.replaceAll(/mTargetActivity.onPostCreate\(/, 'ActivityReflectUtil.onPostCreate(mTargetActivity, ');

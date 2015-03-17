@@ -25,9 +25,11 @@ import android.view.MotionEvent;
 
 public class InstrumentationWrapper extends Instrumentation {
 		private static final String TAG = InstrumentationWrapper.class.getSimpleName();
-		private Instrumentation mBase;
+		private static final boolean LOG = true;
+		protected Instrumentation mBase;
 		private InstrumentationWrapper.CallBack mCallback;
 		private Handler mUiHandler;
+		private Activity mTargetActivity;
 		
 		public static interface CallBack {
 			public void processIntent(Intent intent);
@@ -158,8 +160,16 @@ public class InstrumentationWrapper extends Instrumentation {
 			mUiHandler = uiHandler;
 		}
 		
+		public Instrumentation getBase(){
+			return mBase;
+		}
+		
 		public void setCallBack(InstrumentationWrapper.CallBack callback) {
 			mCallback = callback;
+		}
+		
+		public void setActivity(Activity activity) {
+			mTargetActivity = activity;
 		}
 		
 		public void processIntent(Intent intent) {
@@ -168,12 +178,17 @@ public class InstrumentationWrapper extends Instrumentation {
 			}
 		}
 		
-		public static void injectInstrumentation(Activity activity, InstrumentationWrapper.CallBack callback) {
+		public static InstrumentationWrapper injectInstrumentation(Activity activity, InstrumentationWrapper.CallBack callback) {
 			Instrumentation i = (Instrumentation) ActivityReflectUtil.getFiledValue(Activity.class, activity, "mInstrumentation");
 			Field f = ActivityReflectUtil.getFiled(Activity.class, activity, "mInstrumentation");
 			InstrumentationWrapper wrapper = new InstrumentationWrapper(i, new Handler());
+			
+			wrapper.setActivity(activity);
+			
 			wrapper.setCallBack(callback);
 			ActivityReflectUtil.setField(activity, f, wrapper);
+			
+			return wrapper;
 		}
 		
 		public ActivityResult execStartActivity(
@@ -506,106 +521,194 @@ public class InstrumentationWrapper extends Instrumentation {
 
 		@Override
 		public void callActivityOnCreate(Activity activity, Bundle icicle) {
-			Log.d(TAG, "callActivityOnCreate(). activity: " + activity + " icicle: " + icicle);
+			if (LOG) {
+				Log.d(TAG, "callActivityOnCreate(). activity: " + activity + " icicle: " + icicle);
+			}
+			
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnCreate(mTargetActivity, icicle);
+			}
 			mBase.callActivityOnCreate(activity, icicle);
+		}
+
+		private boolean shouldCallTargetActivity() {
+			return mTargetActivity != null;
 		}
 
 		@Override
 		public void callActivityOnCreate(Activity activity, Bundle icicle,
 				PersistableBundle persistentState) {
-			Log.d(TAG, "callActivityOnCreate(). activity: " + activity + " icicle: " + icicle
-					+ " persistentState: " + persistentState);
+			if (LOG) { 
+				Log.d(TAG, "callActivityOnCreate(). activity: " + activity + " icicle: " + icicle
+						+ " persistentState: " + persistentState);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnCreate(mTargetActivity, icicle, persistentState);
+			}
 			mBase.callActivityOnCreate(activity, icicle, persistentState);
 		}
 
 		@Override
 		public void callActivityOnDestroy(Activity activity) {
-			Log.d(TAG, "callActivityOnDestroy(). activity: " + activity);
+			if (LOG) {
+				Log.d(TAG, "callActivityOnDestroy(). activity: " + activity);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnDestroy(mTargetActivity);
+			}
 			mBase.callActivityOnDestroy(activity);
 		}
 
 		@Override
 		public void callActivityOnRestoreInstanceState(Activity activity,
 				Bundle savedInstanceState) {
-			Log.d(TAG, "callActivityOnRestoreInstanceState(). activity: " + activity + " savedInstanceState: " + savedInstanceState) ;
+			if (LOG) {
+				Log.d(TAG, "callActivityOnRestoreInstanceState(). activity: " + activity + " savedInstanceState: " + savedInstanceState) ;
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnRestoreInstanceState(mTargetActivity, savedInstanceState);
+			}
 			mBase.callActivityOnRestoreInstanceState(activity, savedInstanceState);
 		}
 
 		@Override
 		public void callActivityOnRestoreInstanceState(Activity activity,
 				Bundle savedInstanceState, PersistableBundle persistentState) {
-			// TODO Auto-generated method stub
+			if (LOG) {
+				Log.d(TAG, "callActivityOnRestoreInstanceState(). activity: " + activity + " savedInstanceState: " + savedInstanceState
+							+ " persistentState: " + persistentState) ;
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnRestoreInstanceState(mTargetActivity, savedInstanceState,
+						persistentState);
+			}
 			mBase.callActivityOnRestoreInstanceState(activity, savedInstanceState,
 					persistentState);
 		}
 
 		@Override
 		public void callActivityOnPostCreate(Activity activity, Bundle icicle) {
-			Log.d(TAG, "callActivityOnPostCreate(). activity: " + activity + " icicle: " + icicle);
+			if (LOG) {
+				Log.d(TAG, "callActivityOnPostCreate(). activity: " + activity + " icicle: " + icicle);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnPostCreate(mTargetActivity, icicle);
+			}
 			mBase.callActivityOnPostCreate(activity, icicle);
 		}
 
 		@Override
 		public void callActivityOnPostCreate(Activity activity, Bundle icicle,
 				PersistableBundle persistentState) {
-			Log.d(TAG, "callActivityOnPostCreate(). activity: " + activity + " icicle: " + icicle
-					+ " persistentState: " + persistentState);
+			if (LOG) {
+				Log.d(TAG, "callActivityOnPostCreate(). activity: " + activity + " icicle: " + icicle
+						+ " persistentState: " + persistentState);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnPostCreate(mTargetActivity, icicle, persistentState);
+			}
 			mBase.callActivityOnPostCreate(activity, icicle, persistentState);
 		}
 
 		@Override
 		public void callActivityOnNewIntent(Activity activity, Intent intent) {
-			// TODO Auto-generated method stub
+			if (LOG) {
+				Log.d(TAG, "callActivityOnNewIntent(). activity: " + activity + " intent: " + intent);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnNewIntent(mTargetActivity, intent);
+			}
 			mBase.callActivityOnNewIntent(activity, intent);
 		}
 
 		@Override
 		public void callActivityOnStart(Activity activity) {
-			Log.d(TAG, "callActivityOnStart(). activity: " + activity);
+			if (LOG) {
+				Log.d(TAG, "callActivityOnStart(). activity: " + activity);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnStart(mTargetActivity);
+			}
 			mBase.callActivityOnStart(activity);
 		}
 
 		@Override
 		public void callActivityOnRestart(Activity activity) {
-			Log.d(TAG, "callActivityOnRestart(). activity: " + activity);
+			if (LOG) {
+				Log.d(TAG, "callActivityOnRestart(). activity: " + activity);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnRestart(mTargetActivity);
+			}
 			mBase.callActivityOnRestart(activity);
 		}
 
 		@Override
 		public void callActivityOnResume(Activity activity) {
-			Log.d(TAG, "callActivityOnResume(). activity: " + activity);
+			if (LOG) {
+				Log.d(TAG, "callActivityOnResume(). activity: " + activity);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnResume(mTargetActivity);
+			}
 			mBase.callActivityOnResume(activity);
 		}
 
 		@Override
 		public void callActivityOnStop(Activity activity) {
-			// TODO Auto-generated method stub
+			if (LOG) {
+				Log.d(TAG, "callActivityOnStop(). activity: " + activity);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnStop(mTargetActivity);
+			}
 			mBase.callActivityOnStop(activity);
 		}
 
 		@Override
 		public void callActivityOnSaveInstanceState(Activity activity,
 				Bundle outState) {
-			// TODO Auto-generated method stub
+			if (LOG) {
+				Log.d(TAG, "callActivityOnSaveInstanceState(). activity: " + activity + " outState: " + outState);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnSaveInstanceState(mTargetActivity, outState);
+			}
 			mBase.callActivityOnSaveInstanceState(activity, outState);
 		}
 
 		@Override
 		public void callActivityOnSaveInstanceState(Activity activity,
 				Bundle outState, PersistableBundle outPersistentState) {
-			// TODO Auto-generated method stub
+			if (LOG) {
+				Log.d(TAG, "callActivityOnSaveInstanceState(). activity: " + activity + " outState: " + outState
+							+ " outPersistentState: " + outPersistentState);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnSaveInstanceState(mTargetActivity, outState, outPersistentState);
+			}
 			mBase.callActivityOnSaveInstanceState(activity, outState, outPersistentState);
 		}
 
 		@Override
 		public void callActivityOnPause(Activity activity) {
-			// TODO Auto-generated method stub
+			if (LOG) {
+				Log.d(TAG, "callActivityOnPause(). activity: " + activity);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnPause(mTargetActivity);
+			}
 			mBase.callActivityOnPause(activity);
 		}
 
 		@Override
 		public void callActivityOnUserLeaving(Activity activity) {
-			// TODO Auto-generated method stub
+			if (LOG) {
+				Log.d(TAG, "callActivityOnUserLeaving(). activity: " + activity);
+			}
+			if (shouldCallTargetActivity()) {
+				mBase.callActivityOnUserLeaving(mTargetActivity);
+			}
 			mBase.callActivityOnUserLeaving(activity);
 		}
 

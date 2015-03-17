@@ -18,7 +18,6 @@ import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -48,25 +47,33 @@ public class ReflectUtil {
 				}
 			}
 		}
-		
+
 		public static void dumpField(Class clazz, String fieldName){
 			Field[] fs = clazz.getDeclaredFields();
 			for (Field f: fs) {
 				if (f.getName().startsWith(fieldName)) {
-					Log.d(TAG, "method name: " + f.getName());
+					Log.d(TAG, "field name: " + f.getName());
 					Log.d(TAG, "]");
 				}
 			}
 		}
+		
+		public static void dumpField(Class clazz){
+			Field[] fs = clazz.getDeclaredFields();
+			for (Field f: fs) {
+					Log.d(TAG, "field: " + f.getName());
+			}
+		}
 
-		public static void copyFields(Class clazz, String[] fields, Object host, Activity target) {
+		public static void copyFields(Class clazz, String[] fields, Object host, Object target) {
 			for (String f : fields) {
 				Field declaredField = null;
 				try {
 					declaredField = clazz.getDeclaredField(f);
 					setField(target, declaredField, getFiledValue(clazz, host, f));
 				} catch (Exception e) {
-					throw new RuntimeException("setField(). field: " + declaredField, e);
+//					throw new RuntimeException("setField(). field: " + declaredField, e);
+					e.printStackTrace();
 				}
 			}
 		}
@@ -90,11 +97,17 @@ public class ReflectUtil {
 			}
 		}
 		
+		// in nexus 6 this will make sure host == target
 		public static void copyAllFields(Class clazz, Object host, Object target) {
-			while (clazz != null) {
+			while (clazz != null ) {
 				for (Field f : clazz.getDeclaredFields()) {
 					f.setAccessible(true);
+//					if (f.getName().contains("shadow")) {
+//						continue;
+//					}
+					
 					try {
+						Log.d(TAG, "set filed: " + f.getName());
 						f.set(target, f.get(host));
 					} catch (IllegalAccessException e) {
 						// TODO Auto-generated catch block
@@ -191,6 +204,7 @@ public class ReflectUtil {
 		 * @author bysong
 		 *
 		 */
+		@SuppressLint("NewApi")
 		public static class ActivityReflectUtil extends ReflectUtil {
 			public static void onClick(Activity activity, View view){
 				try {
@@ -199,6 +213,17 @@ public class ReflectUtil {
 					m.invoke(activity, new Object[]{view});
 				} catch (Exception e) {
 					throw new RuntimeException("error in onCreate", e);
+				}
+			}
+			
+			public static void setApplicionField(Activity target, Application app){
+				Field field;
+				try {
+					field = Activity.class.getField("mApplication");
+					setField(target, field, app);
+				} catch (NoSuchFieldException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 			
@@ -879,17 +904,17 @@ public class ReflectUtil {
 				}
 			}
 
-			public static void onResumeFragments(
-					FragmentActivity activity) {
-				try {
-					Method m = FragmentActivity.class.getDeclaredMethod("onResumeFragments", (Class[])null);
-					m.setAccessible(true);
-					m.invoke(activity, new Object[]{(Object[]) null});
-				} catch (Exception e) {
-					e.printStackTrace();
-					throw new RuntimeException("error in onResumeFragments", e);
-				}
-			}
+//			public static void onResumeFragments(
+//					FragmentActivity activity) {
+//				try {
+//					Method m = FragmentActivity.class.getDeclaredMethod("onResumeFragments", (Class[])null);
+//					m.setAccessible(true);
+//					m.invoke(activity, new Object[]{(Object[]) null});
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//					throw new RuntimeException("error in onResumeFragments", e);
+//				}
+//			}
 
 			public static void onListItemClick(
 					ListActivity activity, ListView l, View v,
@@ -932,6 +957,18 @@ public class ReflectUtil {
 				}
 				
 				return -1;
+			}
+		}
+		
+		public static class ServiceReflectUtil {
+			public static void copyFiled(Service host, Service target){
+				dumpField(Service.class);
+			    String[] fields = new String[] {
+			            "mThread",
+			            "mApplication",
+			            "mActivityManager",
+			    };
+			    copyFields(Activity.class, fields, host, target);
 			}
 		}
 	}

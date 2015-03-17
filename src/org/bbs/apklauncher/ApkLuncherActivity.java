@@ -2,12 +2,10 @@ package org.bbs.apklauncher;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bbs.apklauncher.emb.IntentHelper;
-import org.bbs.apklauncher.emb.LoadedApk;
 import org.bbs.apklauncher.emb.auto_gen.Stub_Activity;
 import org.bbs.apkparser.ApkManifestParser;
-import org.bbs.apkparser.ApkManifestParser.PackageInfoX;
-import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
+import org.bbs.apkparser.PackageInfoX;
+import org.bbs.apkparser.PackageInfoX.ActivityInfoX;
 import org.bbs.felixonandroid.R;
 
 import android.app.Activity;
@@ -34,7 +32,7 @@ public class ApkLuncherActivity extends Activity {
 		setContentView(R.layout.activity_apk_launcher);
 		
 		InstalledAPks apks = InstalledAPks.getInstance();
-		ListAdapter adapter = new ArrayAdapter<PackageInfoX.ActivityInfoX>(this, android.R.layout.simple_list_item_1, parseLauncher(apks.getAllApks())){
+		ListAdapter adapter = new ArrayAdapter<org.bbs.apkparser.PackageInfoX.ActivityInfoX>(this, android.R.layout.simple_list_item_1, parseLauncher(apks.getAllApks())){
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				View v =  super.getView(position, convertView, parent);
@@ -49,17 +47,18 @@ public class ApkLuncherActivity extends Activity {
 						Log.d(TAG, "onClick. activity: " + a);
 
 						ClassLoader cl = new DexClassLoader(a.applicationInfo.publicSourceDir, getDir("tmp", 0).getPath(), null, getClassLoader());
-						String superClassName = LoadedApk.getActivitySuperClassName(cl, a.name);
+						String superClassName = "";
+//						superClassName = LoadedApk.getActivitySuperClassName(cl, a.name);
 						Intent launcher = new Intent();
 
 		                // inject and replace with our component.
 						String comClassName = superClassName.replace("Target", "Stub");
-						ComponentName com= new ComponentName(getPackageName(), comClassName);
+						ComponentName com= new ComponentName(getPackageName(), Stub_Activity.class.getName());
 						launcher.setComponent(com);
 						launcher.putExtra(Stub_Activity.EXTRA_COMPONENT_CLASS_NAME, a.name);
 //						putExtra(a, launcher);
 						
-						launcher.putExtra(IntentHelper.EXTRA_INJECT, false);
+//						launcher.putExtra(IntentHelper.EXTRA_INJECT, false);
 						startActivity(launcher);
 					}
 				});
@@ -70,7 +69,7 @@ public class ApkLuncherActivity extends Activity {
 	}	
 
 	private List<PackageInfoX.ActivityInfoX> parseLauncher(List<PackageInfoX> ms) {
-		List<PackageInfoX.ActivityInfoX> launchers = new ArrayList<ApkManifestParser.PackageInfoX.ActivityInfoX>();
+		List<PackageInfoX.ActivityInfoX> launchers = new ArrayList<PackageInfoX.ActivityInfoX>();
 		for (PackageInfoX m : ms) {
 			
 			if (m.activities != null) {
@@ -78,7 +77,7 @@ public class ApkLuncherActivity extends Activity {
 					PackageInfoX.ActivityInfoX aX = (ActivityInfoX) a;
 					if (aX.mIntents != null) {
 						for (PackageInfoX.IntentInfoX i : aX.mIntents) {
-							if (i.hasAction(IntentHelper.ACTION_MAIN) && i.hasCategory(IntentHelper.CATEGORY_LAUNCHER)) {
+							if (i.hasAction(Intent.ACTION_MAIN) && i.hasCategory(Intent.CATEGORY_LAUNCHER)) {
 								launchers.add(aX);
 								break;
 							}
@@ -91,7 +90,7 @@ public class ApkLuncherActivity extends Activity {
 	}
 
 	public static  void putExtra(PackageInfoX.ActivityInfoX a,
-			IntentHelper launcher) {
+			Intent launcher) {
 		launcher.putExtra(Stub_Activity.EXTRA_COMPONENT_CLASS_NAME, new ComponentName(a.packageName, a.name));
 	}
 	
