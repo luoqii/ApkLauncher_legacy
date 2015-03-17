@@ -2,12 +2,12 @@ package org.bbs.apklauncher;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
 import org.bbs.osgi.activity.ReflectUtil.ActivityReflectUtil;
-
 import android.R.array;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
+import android.app.Fragment;
 import android.app.Instrumentation;
 import android.app.UiAutomation;
 import android.content.ComponentName;
@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PersistableBundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -92,6 +91,7 @@ public class TargetInstrumentation extends Instrumentation {
 							}
 						}
 		
+						@SuppressLint("NewApi")
 						public static ActivityResult execStartActivity(
 								Instrumentation receiver, Context who,
 								IBinder contextThread, IBinder token, Fragment target,
@@ -236,7 +236,8 @@ public class TargetInstrumentation extends Instrumentation {
 
 	    	disableActivityTransition(target);
 	    }
-	    public ActivityResult execStartActivity(
+	    @SuppressLint("NewApi")
+		public ActivityResult execStartActivity(
 	            Context who, IBinder contextThread, IBinder token, Fragment target,
 	            Intent intent, int requestCode, Bundle options) {
 	    	processIntent(intent);

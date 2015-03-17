@@ -240,6 +240,18 @@ ContextWrapper
 			Log.w(TAG, "unbindService not implemented.");
 		}
 	}
+	
+	@Override 
+	public Object getSystemService(String name) {
+		// adjust layout inflater
+//        if (LAYOUT_INFLATER_SERVICE.equals(name)) {
+//            if (mInflater == null) {
+//                mInflater = LayoutInflater.from(getBaseContext()).cloneInContext(this);
+//            }
+//            return mInflater;
+//        }
+        return getBaseContext().getSystemService(name);
+    }
 
 	class MergedAssetManager 
 //	extends AssetManager 

@@ -29,14 +29,17 @@ adb install sample/ApiDemo/bin/ApiDemo.apk
 
 PROBLEM
 =======
-notification  getHostContext() getHostIdentifier()
-do not user Activity.this (directly or indirectly) in embedded activiy.
-overridePendingTransition(0, 0)
-asset only one (bundel or host) useable.
-Fragment.startActvity()
-native lib
-start activity by custom action.
-intent.putSeriable() (less then 5.0) android has bug which will not use classload we support by Intent.getExtr().setClassLoader().
+* notification  getHostContext() getHostIdentifier()
+* do not user Activity.this (directly or indirectly) in embedded activiy.
+* overridePendingTransition(0, 0)
+* asset only one (bundel or host) useable.
+* Fragment.startActvity()
+* native lib
+* start activity by custom action.
+* intent.putSeriable() (less then 5.0) android has bug which will not use classload we 
+	support by Intent.getExtr().setClassLoader().
+	use IntentHelper instead.
+* do NOt user Application context to get LayoutInflator.
 
 CRASH:
 com.example.android.apis.graphics.BitmapDecode (n6)

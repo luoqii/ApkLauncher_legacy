@@ -2,6 +2,8 @@ package org.bbs.apklauncher.emb.auto_gen;
 
 import java.util.List;
 
+import org.bbs.osgi.activity.ReflectUtil.ActivityReflectUtil;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityGroup;

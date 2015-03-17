@@ -93,6 +93,39 @@ def genActivityFile(File templateFile, File file, String superClassName, String 
         } 
         
            it = it.replaceAll(/mHostActivity.isValidFragment\(/, 'ActivityReflectUtil.isValidFragment(mHostActivity, ');
+        
+        if (false) {
+                //println "replace call with relection... : " + it;
+           it = it.replaceAll(/mTargetActivity.onCreate\(/, 'ActivityReflectUtil.onCreate(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onPostCreate\(/, 'ActivityReflectUtil.onPostCreate(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onRestoreInstanceState\(/, 'ActivityReflectUtil.onRestoreInstanceState(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onStart\(/, 'ActivityReflectUtil.onStart(mTargetActivity');
+           it = it.replaceAll(/mTargetActivity.onRestart\(/, 'ActivityReflectUtil.onRestart(mTargetActivity');
+           it = it.replaceAll(/mTargetActivity.onResume\(/, 'ActivityReflectUtil.onResume(mTargetActivity');
+           it = it.replaceAll(/mTargetActivity.onPostResume\(/, 'ActivityReflectUtil.onPostResume(mTargetActivity');
+           it = it.replaceAll(/mTargetActivity.onPause\(/, 'ActivityReflectUtil.onPause(mTargetActivity');
+           it = it.replaceAll(/mTargetActivity.onStop\(/, 'ActivityReflectUtil.onStop(mTargetActivity');
+           it = it.replaceAll(/mTargetActivity.onDestroy\(/, 'ActivityReflectUtil.onDestroy(mTargetActivity');
+
+           it = it.replaceAll(/mTargetActivity.onTitleChanged\(/, 'ActivityReflectUtil.onTitleChanged(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onUserLeaveHint\(/, 'ActivityReflectUtil.onUserLeaveHint(mTargetActivity');
+
+           it = it.replaceAll(/mTargetActivity.onCreateDialog\(/, 'ActivityReflectUtil.onCreateDialog(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onPrepareDialog\(/, 'ActivityReflectUtil.onPrepareDialog(mTargetActivity, ');
+
+           it = it.replaceAll(/mTargetActivity.onMenuItemSelected\(/, 'ActivityReflectUtil.onMenuItemSelected(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onPrepareOptionsPanel\(/, 'ActivityReflectUtil.onPrepareOptionsPanel(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onPreparePonCreatePanelViewanel\(/, 'ActivityReflectUtil.onPreparePonCreatePanelViewanel(mTargetActivity, ');
+
+           it = it.replaceAll(/mTargetActivity.onNewIntent\(/, 'ActivityReflectUtil.onNewIntent(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onSaveInstanceState\(/, 'ActivityReflectUtil.onSaveInstanceState(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onApplyThemeResource\(/, 'ActivityReflectUtil.onApplyThemeResource(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onActivityResult\(/, 'ActivityReflectUtil.onActivityResult(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onChildTitleChanged\(/, 'ActivityReflectUtil.onChildTitleChanged(mTargetActivity, ');
+           it = it.replaceAll(/mTargetActivity.onResumeFragments\(/, 'ActivityReflectUtil.onResumeFragments(mTargetActivity');
+           it = it.replaceAll(/mTargetActivity.onListItemClick\(/, 'ActivityReflectUtil.onListItemClick(mTargetActivity, ');
+        }
+
 
         file.append(it)
         file.append("\n")

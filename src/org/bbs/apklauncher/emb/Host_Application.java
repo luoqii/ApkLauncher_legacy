@@ -31,7 +31,7 @@ Application
 	}
 	
 	public /*static*/ Application onPrepareApplictionStub(ApplicationInfo appInfo, 
-			ClassLoader classLoader, PackageManager pm	) {
+			ClassLoader classLoader, PackageManager pm) {
 		String apkPath = appInfo.publicSourceDir;
 		Application app = InstalledAPks.getApplication(appInfo.packageName);
 		if (null == app) {
@@ -42,7 +42,7 @@ Application
 				try {
 
 					TargetContext appBaseContext = new TargetContext(this);
-					Resources appRes = Util.loadApkResource(apkPath);
+					Resources appRes = Util.loadApkResource(apkPath, this);
 					appRes = new ResourcesMerger(appRes, getResources());
 					appBaseContext.resReady(appRes);
 					int appTheme = appInfo.theme;

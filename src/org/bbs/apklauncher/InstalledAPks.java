@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipFile;
 
-import org.bbs.apklauncher.emb.TargetClassLoader;
-import org.bbs.apklauncher.emb.TargetClassLoader.RestrictClassLoader;
+import org.bbs.apklauncher.emb.Util;
 import org.bbs.apkparser.ApkManifestParser;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
@@ -23,6 +22,7 @@ import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import dalvik.system.DexClassLoader;
 
 public class InstalledAPks {
@@ -57,35 +57,8 @@ public class InstalledAPks {
 	
 	public static ClassLoader createClassLoader(String apkPath, String libPath, Context baseContext) {		
 			ClassLoader c = null;	
-			
-			// this classlaoder can work on nexus 4, ???
-			/*
-	E/ActivityThread(28347): Caused by: java.lang.IllegalAccessError: Class ref in pre-verified class resolved to unexpected implementation
-	E/ActivityThread(28347): 	at com.youku.lib.support.v4.widget.ViewPager.initViewPager(ViewPager.java:328)
-	E/ActivityThread(28347): 	at com.youku.lib.support.v4.widget.ViewPager.<init>(ViewPager.java:318)
-	E/ActivityThread(28347): 	at com.youku.tv.ui.activity.HomeActivityWithViewPager$HomeViewPager.<init>(HomeActivityWithViewPager.java:2475)
-	E/ActivityThread(28347): 	... 29 more
-	*/
-			c = new DexClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), 
-					libPath,
-					baseContext.getClassLoader()
-					);		
-			
-	//		c = new ClassLoaderMerger(c, mRealBaseContext.getClassLoader());
-			
-	//		c = new ApkClassLoader(apkPath, getDir("apk_code_cache", 0).getPath(), 
-	//				libPath, mRealBaseContext.getClassLoader(), getClassLoader());
-			
-			RestrictClassLoader rc = new TargetClassLoader.RestrictClassLoader();
-			rc.setHostClassLoader(baseContext.getClassLoader());;
-			c = new TargetClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), 
-					libPath,
-					rc
-					);
-	
-	//		c = new TargetClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), libPath, ClassLoader.getSystemClassLoader());
-	//		c = new ClassLoaderMerge(c, baseContext.getClassLoader());
-			
+
+			c = new DexClassLoader(apkPath, baseContext.getDir("apk_code_cache", 0).getPath(), libPath, baseContext.getClassLoader());
 			return c;
 		}
 
@@ -258,5 +231,32 @@ public class InstalledAPks {
 		}
 		
 		return sInstance;
+	}
+
+	public static ResourcesMerger makeTargetResource(String mTargetApkPath,
+			Context context) {
+		WeakReference<ResourcesMerger> rr = InstalledAPks.sApk2ResourceMap.get(mTargetApkPath);
+		Resources targetRes;
+		ResourcesMerger resMerger;
+		if (rr != null && rr.get() != null) {
+			resMerger = rr.get();
+			targetRes = resMerger.mFirst;
+		} else {
+			targetRes = Util.loadApkResource(mTargetApkPath, context);
+			resMerger = new ResourcesMerger(targetRes, context.getResources());
+			InstalledAPks.sApk2ResourceMap.put(mTargetApkPath, new WeakReference<ResourcesMerger>(resMerger));
+		}
+		
+		return resMerger;
+	}
+
+	public static ClassLoader makeClassLoader(Context context, String apkPath, String libPath) {
+		ClassLoader cl = InstalledAPks.getClassLoader(apkPath);
+		if (null == cl) {
+			cl = createClassLoader(apkPath, libPath, context);
+			InstalledAPks.putClassLoader(apkPath, (cl));
+		}
+	
+		return cl;
 	}
 }

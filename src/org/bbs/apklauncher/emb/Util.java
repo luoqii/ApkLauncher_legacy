@@ -3,7 +3,6 @@ package org.bbs.apklauncher.emb;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.bbs.apklauncher.ApkLuncherActivity;
 import org.bbs.apklauncher.InstalledAPks;
 import org.bbs.apklauncher.emb.auto_gen.Stub_Activity;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
@@ -20,6 +19,7 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 
 public class Util {
 	private static final String TAG = Util.class.getSimpleName();;
@@ -145,16 +145,18 @@ public class Util {
 		return o;
 	}
 
-	public static  Resources loadApkResource(String apkFilePath) {
+	public static  Resources loadApkResource(String apkFilePath, Context context) {
 		AssetManager assets = null;
 		try {
 			assets = AssetManager.class.getConstructor(null).newInstance(null);
 			Method method = assets.getClass().getMethod("addAssetPath", new Class[]{String.class});
 			Object r = method.invoke(assets, apkFilePath);
-			DisplayMetrics metrics = null;
-			Configuration config = null;
-			// TODO add confic & metrics
+			DisplayMetrics metrics = new DisplayMetrics();
+			((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
+			// TODO add config & metrics
+			Configuration config = context.getResources().getConfiguration();
 			Resources res = new Resources(assets, metrics, config);
+			res.updateConfiguration(config, metrics);
 			return res;
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block

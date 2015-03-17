@@ -21,7 +21,7 @@ public class Stub_Service extends Host_Service {
 	/**
 	 * type {@link ComponentName}
 	 */
-	public static final String EXTRA_COMPONENT = "EXTRA_COMPONENT";
+	public static final String EXTRA_COMPONENT = Util.ACTIVITY_EXTRA_COMPONENT_CLASS_NAME;
 	private ClassLoader sLastClassLoader;
 	private ComponentName mComponent;
 	private ClassLoader mClassLoader;
@@ -70,7 +70,7 @@ public class Stub_Service extends Host_Service {
 				mResourceMerger = rr.get();
 				mTargetResource = mResourceMerger.mFirst;
 			} else {
-				mTargetResource = Util.loadApkResource(mApkPath);
+				mTargetResource = Util.loadApkResource(mApkPath, this);
 				mResourceMerger = new ResourcesMerger(mTargetResource, getResources());
 				sApk2ResourceMap.put(mApkPath, new WeakReference<ResourcesMerger>(mResourceMerger));
 			}
@@ -87,7 +87,8 @@ public class Stub_Service extends Host_Service {
 			mTargetContext.packageNameReady(s.applicationInfo.packageName);
 			
 			mRealApplication = getApplication();
-			Application app = ((Host_Application)mRealApplication).onPrepareApplictionStub(s.applicationInfo, mClassLoader, null);
+			Application app = ((Host_Application)mRealApplication).onPrepareApplictionStub(s.applicationInfo, mClassLoader,
+																							null);
 			ReflectUtil.ActivityReflectUtil.setServiceApplication(this, app);
 			
 			mTargetService = (Target_Service) mClassLoader.loadClass(mServiceClassNmae).newInstance();

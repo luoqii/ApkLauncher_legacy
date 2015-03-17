@@ -32,23 +32,36 @@ import android.util.Log;
 /**
  * Created by bysong on 15-3-13.
  */
-public class IntentHelper extends Intent {
+public class IntentHelper extends android.content.Intent {
 	
 	public static final String TAG = IntentHelper.class.getSimpleName();
 	
 	/**
 	 * type {@link boolean}
 	 */
-	public static final String EXTRA_INJECT = IntentHelper.class.getName() + ".EXTRA_INJECT";
+	public static final String EXTRA_INJECT = android.content.Intent.class.getName() + ".EXTRA_INJECT";
 	
-	private Intent mTarget;
+	private android.content.Intent mTarget;
 	
 	public IntentHelper(){
-		mTarget = new Intent();
+		mTarget = new android.content.Intent();
 	}
 
-	public IntentHelper(Intent target) {
+	public IntentHelper(android.content.Intent target) {
 		mTarget = target;
+	}
+
+	public IntentHelper(Context context,
+			Class clazz) {
+		mTarget = new android.content.Intent(context, clazz);
+	}
+
+	public IntentHelper(String action) {
+		mTarget = new Intent(action);
+	}
+
+	public IntentHelper(String action, Uri uri) {
+		mTarget = new Intent(action, uri);
 	}
 
 	@Override
@@ -57,7 +70,7 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public Intent cloneFilter() {
+	public android.content.Intent cloneFilter() {
 		return mTarget.cloneFilter();
 	}
 
@@ -112,7 +125,7 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public Intent getSelector() {
+	public android.content.Intent getSelector() {
 		return mTarget.getSelector();
 	}
 
@@ -344,56 +357,56 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public Intent setAction(String action) {
+	public android.content.Intent setAction(String action) {
 		 mTarget.setAction(action);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent setData(Uri data) {
+	public android.content.Intent setData(Uri data) {
 		 mTarget.setData(data);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent setDataAndNormalize(Uri data) {
+	public android.content.Intent setDataAndNormalize(Uri data) {
 		 mTarget.setDataAndNormalize(data);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent setType(String type) {
+	public android.content.Intent setType(String type) {
 		mTarget.setType(type);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent setTypeAndNormalize(String type) {
+	public android.content.Intent setTypeAndNormalize(String type) {
 		 mTarget.setTypeAndNormalize(type);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent setDataAndType(Uri data, String type) {
+	public android.content.Intent setDataAndType(Uri data, String type) {
 		mTarget.setDataAndType(data, type);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent setDataAndTypeAndNormalize(Uri data, String type) {
+	public android.content.Intent setDataAndTypeAndNormalize(Uri data, String type) {
 		 mTarget.setDataAndTypeAndNormalize(data, type);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent addCategory(String category) {
+	public android.content.Intent addCategory(String category) {
 		 mTarget.addCategory(category);
 		 
 		 return this;
@@ -405,7 +418,7 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public void setSelector(Intent selector) {
+	public void setSelector(android.content.Intent selector) {
 		mTarget.setSelector(selector);
 	}
 
@@ -415,77 +428,77 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public Intent putExtra(String name, boolean value) {
+	public android.content.Intent putExtra(String name, boolean value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, byte value) {
+	public android.content.Intent putExtra(String name, byte value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, char value) {
+	public android.content.Intent putExtra(String name, char value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, short value) {
+	public android.content.Intent putExtra(String name, short value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, int value) {
+	public android.content.Intent putExtra(String name, int value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, long value) {
+	public android.content.Intent putExtra(String name, long value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, float value) {
+	public android.content.Intent putExtra(String name, float value) {
 		mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, double value) {
+	public android.content.Intent putExtra(String name, double value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, String value) {
+	public android.content.Intent putExtra(String name, String value) {
 		mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, CharSequence value) {
+	public android.content.Intent putExtra(String name, CharSequence value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, Parcelable value) {
+	public android.content.Intent putExtra(String name, Parcelable value) {
 		Log.d(TAG, "putExtra(). name: " + name + " value: " + value);
 //		 mTarget.putExtra(name, value);
 //		 
@@ -503,7 +516,7 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public Intent putExtra(String name, Parcelable[] value) {
+	public android.content.Intent putExtra(String name, Parcelable[] value) {
 		 mTarget.putExtra(name, value);
 
 		 notSupported();
@@ -512,7 +525,7 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public Intent putParcelableArrayListExtra(String name,
+	public android.content.Intent putParcelableArrayListExtra(String name,
 			ArrayList<? extends Parcelable> value) {
 		 mTarget.putParcelableArrayListExtra(name, value);
 
@@ -522,21 +535,21 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public Intent putIntegerArrayListExtra(String name, ArrayList<Integer> value) {
+	public android.content.Intent putIntegerArrayListExtra(String name, ArrayList<Integer> value) {
 		 mTarget.putIntegerArrayListExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putStringArrayListExtra(String name, ArrayList<String> value) {
+	public android.content.Intent putStringArrayListExtra(String name, ArrayList<String> value) {
 		 mTarget.putStringArrayListExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putCharSequenceArrayListExtra(String name,
+	public android.content.Intent putCharSequenceArrayListExtra(String name,
 			ArrayList<CharSequence> value) {
 		 mTarget.putCharSequenceArrayListExtra(name, value);
 		 
@@ -544,7 +557,7 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public Intent putExtra(String name, Serializable value) {
+	public android.content.Intent putExtra(String name, Serializable value) {
 //		 mTarget.putExtra(name, value);
 		Log.d(TAG, "putExtra(). name: " + name + " value: " + value);
 		File f = PersistentObject.getsInstance().saveObject(value);
@@ -556,103 +569,103 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public Intent putExtra(String name, boolean[] value) {
+	public android.content.Intent putExtra(String name, boolean[] value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, byte[] value) {
+	public android.content.Intent putExtra(String name, byte[] value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, short[] value) {
+	public android.content.Intent putExtra(String name, short[] value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, char[] value) {
+	public android.content.Intent putExtra(String name, char[] value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, int[] value) {
+	public android.content.Intent putExtra(String name, int[] value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, long[] value) {
+	public android.content.Intent putExtra(String name, long[] value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, float[] value) {
+	public android.content.Intent putExtra(String name, float[] value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, double[] value) {
+	public android.content.Intent putExtra(String name, double[] value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, String[] value) {
+	public android.content.Intent putExtra(String name, String[] value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtra(String name, CharSequence[] value) {
+	public android.content.Intent putExtra(String name, CharSequence[] value) {
 		return mTarget.putExtra(name, value);
 	}
 
 	@Override
-	public Intent putExtra(String name, Bundle value) {
+	public android.content.Intent putExtra(String name, Bundle value) {
 		 mTarget.putExtra(name, value);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtras(Intent src) {
+	public android.content.Intent putExtras(android.content.Intent src) {
 		 mTarget.putExtras(src);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent putExtras(Bundle extras) {
+	public android.content.Intent putExtras(Bundle extras) {
 		 mTarget.putExtras(extras);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent replaceExtras(Intent src) {
+	public android.content.Intent replaceExtras(android.content.Intent src) {
 		 mTarget.replaceExtras(src);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent replaceExtras(Bundle extras) {
+	public android.content.Intent replaceExtras(Bundle extras) {
 		 mTarget.replaceExtras(extras);
 		 
 		 return this;
@@ -664,49 +677,49 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public Intent setFlags(int flags) {
+	public android.content.Intent setFlags(int flags) {
 		 mTarget.setFlags(flags);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent addFlags(int flags) {
+	public android.content.Intent addFlags(int flags) {
 		 mTarget.addFlags(flags);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent setPackage(String packageName) {
+	public android.content.Intent setPackage(String packageName) {
 		 mTarget.setPackage(packageName);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent setComponent(ComponentName component) {
+	public android.content.Intent setComponent(ComponentName component) {
 		 mTarget.setComponent(component);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent setClassName(Context packageContext, String className) {
+	public android.content.Intent setClassName(Context packageContext, String className) {
 		 mTarget.setClassName(packageContext, className);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent setClassName(String packageName, String className) {
+	public android.content.Intent setClassName(String packageName, String className) {
 		 mTarget.setClassName(packageName, className);
 		 
 		 return this;
 	}
 
 	@Override
-	public Intent setClass(Context packageContext, Class<?> cls) {
+	public android.content.Intent setClass(Context packageContext, Class<?> cls) {
 		 mTarget.setClass(packageContext, cls);
 		 
 		 return this;
@@ -718,12 +731,12 @@ public class IntentHelper extends Intent {
 	}
 
 	@Override
-	public int fillIn(Intent other, int flags) {
+	public int fillIn(android.content.Intent other, int flags) {
 		return mTarget.fillIn(other, flags);
 	}
 
 	@Override
-	public boolean filterEquals(Intent other) {
+	public boolean filterEquals(android.content.Intent other) {
 		return mTarget.filterEquals(other);
 	}
 
@@ -772,6 +785,12 @@ public class IntentHelper extends Intent {
 
 	    private static PersistentObject sInstance;
 
+	    /**
+	     * 
+	     * @return
+		 * 
+		 * @see #init(Application, ClassLoader)
+	     */
 	    public static PersistentObject getsInstance() {
 	        if (null == sInstance) {
 	            sInstance = new PersistentObject();
@@ -798,7 +817,7 @@ public class IntentHelper extends Intent {
 	        File f = null;
 	        try {
 	            f = File.createTempFile(s.getClass().getName(), ".object", mDir);
-	            Log.d(IntentHelper.TAG, "saveObject. fileName: " + f.getPath() + " data: " + s);
+	            Log.d(TAG, "saveObject. fileName: " + f.getPath() + " data: " + s);
 	            ObjectOutputStream oop = new ObjectOutputStream(new FileOutputStream(f));
 	            oop.writeObject(s);
 	            oop.flush();
@@ -812,7 +831,7 @@ public class IntentHelper extends Intent {
 
 	    public Object getObject(String serialFile){
 	    	File file = new File(mDir, serialFile);
-	        Log.d(IntentHelper.TAG, "getObject. fileName: " + file.getPath());
+	        Log.d(TAG, "getObject. fileName: " + file.getPath());
 	    	Object o = null;
 	    	try {
 	    		ObjectInputStream oin = new OIS(new FileInputStream(file));
