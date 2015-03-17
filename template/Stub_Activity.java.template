@@ -13,8 +13,6 @@ import org.bbs.apklauncher.emb.Util;
 import org.bbs.apklauncher.emb.ViewCreater;
 import org.bbs.apklauncher.emb.auto_gen.Target_Activity;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
-import org.bbs.osgi.activity.BundleActivity;
-import org.bbs.osgi.activity.IActivityAgent;
 import org.bbs.osgi.activity.InstrumentationWrapper;
 import org.bbs.osgi.activity.InstrumentationWrapper.CallBack;
 import org.bbs.osgi.activity.ReflectUtil;

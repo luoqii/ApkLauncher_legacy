@@ -10,7 +10,6 @@ import org.bbs.apkparser.ApkManifestParser.PackageInfoX;
 import org.bbs.apkparser.ApkManifestParser.PackageInfoX.ActivityInfoX;
 import org.bbs.felixonandroid.R;
 
-import dalvik.system.DexClassLoader;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -26,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import dalvik.system.DexClassLoader;
 
 public class ApkLuncherActivity extends Activity {
 	private static final String TAG = ApkLuncherActivity.class.getSimpleName();
@@ -134,7 +134,7 @@ public class ApkLuncherActivity extends Activity {
 
 	public static  void putExtra(PackageInfoX.ActivityInfoX a,
 			Intent launcher) {
-		launcher.putExtra(StubActivity.EXTRA_COMPONENT, new ComponentName(a.packageName, a.name));
+		launcher.putExtra(Stub_Activity.EXTRA_COMPONENT_CLASS_NAME, new ComponentName(a.packageName, a.name));
 	}
 	
 }
