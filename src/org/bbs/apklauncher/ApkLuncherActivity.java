@@ -19,6 +19,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -67,6 +69,32 @@ public class ApkLuncherActivity extends Activity {
 			}
 		};
 		((ListView)findViewById(R.id.apk_container)).setAdapter(adapter);;
+		((ListView)findViewById(R.id.apk_container)).setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+
+				PackageInfoX.ActivityInfoX a = (ActivityInfoX) view.getTag();
+				
+				Log.d(TAG, "onClick. activity: " + a);
+
+				ClassLoader cl = new DexClassLoader(a.applicationInfo.publicSourceDir, getDir("tmp", 0).getPath(), null, getClassLoader());
+				String superClassName = LoadedApk.getActivitySuperClassName(cl, a.name);
+				Intent launcher = new Intent();
+
+                // inject and replace with our component.
+				String comClassName = superClassName.replace("Target", "Stub");
+				ComponentName com= new ComponentName(getPackageName(), comClassName);
+				launcher.setComponent(com);
+				launcher.putExtra(Stub_Activity.EXTRA_COMPONENT_CLASS_NAME, a.name);
+//				putExtra(a, launcher);
+				
+				launcher.putExtra(IntentHelper.EXTRA_INJECT, false);
+				startActivity(launcher);
+				
+			}
+		});
 	}	
 
 	private List<PackageInfoX.ActivityInfoX> parseLauncher(List<PackageInfoX> ms) {
